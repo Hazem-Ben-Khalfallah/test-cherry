@@ -58,7 +58,9 @@ public class GenerateTestMethods extends AnAction {
 
 
     public GenerateTestMethods() {
-        super("Generate Test Methods", "Generate test methods for current file", IconLoader.getIcon("/images/junitopenmrs.gif"));
+        super("Generate Test Methods",
+                "Generate test methods for current file",
+                IconLoader.getIcon("/images/logo.png"));
     }
 
     /**
