@@ -1,0 +1,80 @@
+<idea-plugin>
+    <id>com.blacknebula.JavaTestGenerator</id>
+    <name>JavaTestGenerator</name>
+    <vendor email="benkhalfallahhazem@gmail.com" >
+        Black Nebula
+    </vendor>
+
+    <version>1.0</version>
+
+    <idea-version since-build="2020.2"/>
+
+    <change-notes>
+        <![CDATA[
+       <p>1.0</p>
+       <ul>
+          <li>Fixed to work with IntelliJ IDEA 2020.2</li>
+       </ul>
+     ]]>
+    </change-notes>
+
+    <description><![CDATA[
+    Plugin to generate unit test methods with meaningful names based in described behaviours with @should tags in interface methods javadoc</p>
+		 <p>To see how to use it: <a href="http://elespaciodejaime.wordpress.com/2011/05/29/generate-test-cases-intellij-plugin/">http://elespaciodejaime.wordpress.com/2011/05/29/generate-test-cases-intellij-plugin/</a> or <a href="http://plugins.intellij.net/plugin/?idea&id=5847">http://plugins.intellij.net/plugin/?idea&id=5847</a>
+		 or for a usage video <a href="http://www.youtube.com/watch?v=WYET6PECxuc">http://www.youtube.com/watch?v=WYET6PECxuc</a>
+		 </p>
+		 <p>This Plugin is a fork of  <a href="https://github.com/hablutzel1/GenerateTestCases">GenerateTestCases</a> project. </p>
+		 <p>Credits go to <a href="https://github.com/hablutzel1">Jaime Hablutzel</a>
+		 <p>Credits for the @should style testing should go to <a href="https://wiki.openmrs.org/display/docs/Generate+Test+Case+Plugin">OpenMRS</a> team
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.modules.lang</depends>
+
+    <project-components>
+        <component>
+            <implementation-class>com.blacknebula.javatestgenerator.model.GenerateTestCasesSettings</implementation-class>
+        </component>
+    </project-components>
+
+    <actions>
+        <action id="com.blacknebula.javatestgenerator.actions.GenerateTestMethods"
+                class="com.blacknebula.javatestgenerator.actions.GenerateTestMethods" text="Generate Test Methods"
+                description="It generates BDD test methods for class">
+            <add-to-group group-id="ToolbarRunGroup" anchor="first"/>
+        </action>
+    </actions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!--for settings-->
+        <projectConfigurable id="generatetestcases"
+                             provider="com.blacknebula.javatestgenerator.codeinsight.GenerateTestCasesConfigurable"/>
+        <!--for inspections of missing test methods -->
+        <inspectionToolProvider implementation="com.blacknebula.javatestgenerator.inspection.BddInspectionsToolProvider"/>
+
+        <!--for adding support for @should tag-->
+        <javadocTagInfo implementation="com.blacknebula.javatestgenerator.javadoc.ShouldTagInfo"/>
+
+        <!--*****************************************************-->
+        <!--for references with renaming support of PsiDocTag-->
+        <!--*******************************************************-->
+
+        <psi.referenceContributor implementation="com.blacknebula.javatestgenerator.util.ReferenceContributor"/>
+        <!-- dpending on a PsiElement type it suggest names (including the principal one) in the rename dialog-->
+        <nameSuggestionProvider
+                implementation="com.blacknebula.javatestgenerator.refactor.ShouldDescriptionNameSuggestionProvider"/>
+
+        <!-- rename element processor without support for inline renaming, TODO add support for inline renaming-->
+        <renamePsiElementProcessor
+                implementation="com.blacknebula.javatestgenerator.refactor.ShouldTagsAwareRenameProccessor" order="first"/>
+
+        <!--********************************************        -->
+        <!--For listening to method renamings-->
+        <!--**************************************-->
+        <refactoring.elementListenerProvider
+                implementation="com.blacknebula.javatestgenerator.refactor.listener.TestMethodRefactoringElementListenerProvider"/>
+    </extensions>
+
+</idea-plugin>
