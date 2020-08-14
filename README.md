@@ -71,6 +71,9 @@ You can download the plugin "**testCherry**" directly from the IDE.
 * Open class in editor
 * Add some test use cases using **@should** style annotation in method javadoc
 * Press the "Generate Test Methods" ![logo](src/main/resources/images/logo.png) button in toolbar to generate test methods for each test use case.
+![logo](snapshots/cherryTest_image1.png)
+* A unit test will be generated automatically
+![logo](snapshots/cherryTest_image2.png)
 
 <h2>Change Notes</h2>
 **<p>1.0</p>**

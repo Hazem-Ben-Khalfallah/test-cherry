@@ -1,10 +1,31 @@
 <idea-plugin>
     <id>com.blacknebula.TestCherry</id>
-    <name>Test Cherry</name>
+    <name>TestCherry</name>
     <vendor email="benkhalfallahhazem@gmail.com"
             url="https://github.com/Hazem-Ben-Khalfallah/test-cherry">
         Hazem Ben Khalfallah
     </vendor>
+
+    <description><![CDATA[
+    <b>About</b>
+    <br/>
+    Test Cherry Plugin <img src="https://github.com/Hazem-Ben-Khalfallah/test-cherry/raw/master/src/main/resources/images/logo.png"> aides java developers with writing @should style test units.
+It aims to make it easier to make TDD with a really cool and easy approach that consist in annotating interface method with desired behaviour
+    <br/>
+    <a href="https://github.com/Hazem-Ben-Khalfallah/test-cherry/raw/master/snapshots/cherryTest_image1.png"><img src="https://github.com/Hazem-Ben-Khalfallah/test-cherry/raw/master/snapshots/cherryTest_image1.png" width="800"></a>
+    <br/>
+    <br/>
+    So with this plugin you could generate a test class for this interface like this one automatically:
+    <br/>
+    <a href="https://github.com/Hazem-Ben-Khalfallah/test-cherry/raw/master/snapshots/cherryTest_image2.png"><img src="https://github.com/Hazem-Ben-Khalfallah/test-cherry/raw/master/snapshots/cherryTest_image2.png" width="800"></a>
+    <br/>
+    Follow this link to get more details <a href="https://github.com/Hazem-Ben-Khalfallah/test-cherry/blob/master/README.md">https://github.com/Hazem-Ben-Khalfallah/test-cherry/blob/master/README.md</a>.
+    <br/><br/>
+    <b>Credits</b>
+    <br/>
+    This Project is based on <a href="https://github.com/hablutzel1/GenerateTestCases">GenerateTestCases</a> project.
+  ]]></description>
+
 
     <version>1.0</version>
 
