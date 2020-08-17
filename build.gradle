@@ -25,6 +25,7 @@ patchPluginXml {
     changeNotes """
        <p>2.0</p>
        <ul>
+          <li>Fix at should comment rename</li>
           <li>Fix test lib initialization</li>
           <li>Add plugin icon</li>
        </ul>
