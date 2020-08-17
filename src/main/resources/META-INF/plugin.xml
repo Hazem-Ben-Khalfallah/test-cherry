@@ -38,7 +38,7 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
 
     <project-components>
         <component>
-            <implementation-class>com.blacknebula.testcherry.model.GenerateTestCasesSettings</implementation-class>
+            <implementation-class>com.blacknebula.testcherry.model.TestCherrySettings</implementation-class>
         </component>
     </project-components>
 
@@ -54,7 +54,7 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
     <extensions defaultExtensionNs="com.intellij">
         <!--for settings-->
         <projectConfigurable id="testcherry"
-                             instance="com.blacknebula.testcherry.codeinsight.GenerateTestCasesConfigurable"/>
+                             instance="com.blacknebula.testcherry.codeinsight.TestCherryConfigurable"/>
         <!--for inspections of missing test methods -->
         <inspectionToolProvider implementation="com.blacknebula.testcherry.inspection.BddInspectionsToolProvider"/>
 

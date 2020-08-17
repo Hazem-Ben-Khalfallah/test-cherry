@@ -2,14 +2,13 @@ package com.blacknebula.testcherry.inspection;
 
 import com.intellij.codeInsight.daemon.HighlightDisplayKey;
 import com.intellij.codeInspection.AbstractBaseJavaLocalInspectionTool;
-import com.intellij.codeInspection.BaseJavaLocalInspectionTool;
 import com.intellij.codeInspection.CustomSuppressableInspectionTool;
 import com.intellij.codeInspection.InspectionManager;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.blacknebula.testcherry.model.BDDCore;
-import com.blacknebula.testcherry.model.GenerateTestCasesSettings;
+import com.blacknebula.testcherry.model.TestCherrySettings;
 import com.blacknebula.testcherry.model.TestClass;
 import com.blacknebula.testcherry.model.TestMethod;
 import com.blacknebula.testcherry.model.TestMethodImpl;
@@ -94,7 +93,7 @@ public class MissingTestMethodInspection  extends AbstractBaseJavaLocalInspectio
 
         String testFramework;
         if (!ApplicationManager.getApplication().isUnitTestMode()) {
-            testFramework = GenerateTestCasesSettings.getInstance(project).getTestFramework();
+            testFramework = TestCherrySettings.getInstance(project).getTestFramework();
             if (StringUtils.isEmpty(testFramework)) {
                 return null;
             }

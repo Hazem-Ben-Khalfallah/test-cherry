@@ -62,7 +62,7 @@ public final class BDDCore {
         if (ApplicationManager.getApplication().isUnitTestMode()) {
             testFramework = "JUNIT3";
         } else {
-            testFramework = GenerateTestCasesSettings.getInstance(project).getTestFramework();
+            testFramework = TestCherrySettings.getInstance(project).getTestFramework();
             if (StringUtils.isEmpty(testFramework)) {
                 throw new TestFrameworkNotConfigured();
             }

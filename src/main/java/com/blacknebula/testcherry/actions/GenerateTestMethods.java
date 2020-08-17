@@ -1,10 +1,10 @@
 package com.blacknebula.testcherry.actions;
 
 import com.blacknebula.testcherry.TestCherryBundle;
-import com.blacknebula.testcherry.codeinsight.GenerateTestCasesConfigurable;
+import com.blacknebula.testcherry.codeinsight.TestCherryConfigurable;
 import com.blacknebula.testcherry.codeinsight.generation.PsiDocAnnotationMember;
 import com.blacknebula.testcherry.model.BDDCore;
-import com.blacknebula.testcherry.model.GenerateTestCasesSettings;
+import com.blacknebula.testcherry.model.TestCherrySettings;
 import com.blacknebula.testcherry.model.TestClass;
 import com.blacknebula.testcherry.model.TestMethod;
 import com.blacknebula.testcherry.testframework.SupportedFrameworks;
@@ -96,16 +96,15 @@ public class GenerateTestMethods extends AnAction {
         } else {
 
 
-            GenerateTestCasesSettings casesSettings = GenerateTestCasesSettings.getInstance(project);
+            TestCherrySettings casesSettings = TestCherrySettings.getInstance(project);
             testFrameworkProperty = casesSettings.getTestFramework();
 
             if (StringUtils.isEmpty(testFrameworkProperty)) { //  it haven't been defined yet
 
                 ConfigurableEP[] extensions = project.getExtensions(ExtensionPointName.<ConfigurableEP>create("com.intellij.projectConfigurable"));
-//                List<Configurable> list = new ArrayList<Configurable>();
                 for (ConfigurableEP component : extensions) {
                     Configurable configurable = (Configurable) component.createConfigurable();
-                    if (configurable instanceof GenerateTestCasesConfigurable) {
+                    if (configurable instanceof TestCherryConfigurable) {
                         ShowSettingsUtil.getInstance().editConfigurable(project, configurable);
                         break;
                     }

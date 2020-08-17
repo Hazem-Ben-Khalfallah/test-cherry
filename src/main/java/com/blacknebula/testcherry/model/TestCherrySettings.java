@@ -7,25 +7,25 @@ import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
 @State(
-        name = "GenerateTestCasesSettings",
+        name = "TestCherrySettings",
         storages = {
                 @Storage(file = "$WORKSPACE_FILE$")}
 )
-public class GenerateTestCasesSettings implements PersistentStateComponent<GenerateTestCasesSettings> { // TODO research about idea ProjectComponent interface
+public class TestCherrySettings implements PersistentStateComponent<TestCherrySettings> { // TODO research about idea ProjectComponent interface
 
 
-    public GenerateTestCasesSettings() {
+    public TestCherrySettings() {
         testFramework = "";
     }
 
     /**
-     * Return an instance of GenerateTestCasesSettings which holds plugin preferences as testFramework
+     * Return an instance of TestCherrySettings which holds plugin preferences as testFramework
      *
      * @param project
      * @return
      */
-    public static GenerateTestCasesSettings getInstance(Project project) {
-        return project.getComponent(GenerateTestCasesSettings.class);
+    public static TestCherrySettings getInstance(Project project) {
+        return project.getComponent(TestCherrySettings.class);
     }
 
 
@@ -39,11 +39,11 @@ public class GenerateTestCasesSettings implements PersistentStateComponent<Gener
 
     String testFramework;
 
-    public GenerateTestCasesSettings getState() {
+    public TestCherrySettings getState() {
         return this;
     }
 
-    public void loadState(GenerateTestCasesSettings state) {
+    public void loadState(TestCherrySettings state) {
         XmlSerializerUtil.copyBean(state, this);
     }
 

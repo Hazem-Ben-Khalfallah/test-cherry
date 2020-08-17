@@ -1,6 +1,6 @@
 package com.blacknebula.testcherry.codeinsight;
 
-import com.blacknebula.testcherry.model.GenerateTestCasesSettings;
+import com.blacknebula.testcherry.model.TestCherrySettings;
 import com.blacknebula.testcherry.testframework.SupportedFrameworks;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * User: Jaime Hablutzel
  */
-public class GenerateTestCasesConfigurable extends BaseConfigurable implements SearchableConfigurable {
+public class TestCherryConfigurable extends BaseConfigurable implements SearchableConfigurable {
 
 
     private static final String EMPTY_STRING = "";
@@ -24,7 +24,7 @@ public class GenerateTestCasesConfigurable extends BaseConfigurable implements S
     private MyComponent myComponent;
 
 
-    public GenerateTestCasesConfigurable(Project myProject) {
+    public TestCherryConfigurable(Project myProject) {
         this.myProject = myProject;
     }
 
@@ -61,7 +61,7 @@ public class GenerateTestCasesConfigurable extends BaseConfigurable implements S
 
         DefaultComboBoxModel aModel = new DefaultComboBoxModel(strings.toArray());
 
-        GenerateTestCasesSettings casesSettings = GenerateTestCasesSettings.getInstance(myProject);
+        TestCherrySettings casesSettings = TestCherrySettings.getInstance(myProject);
 
 
         String testFramework = casesSettings.getTestFramework();
@@ -80,7 +80,7 @@ public class GenerateTestCasesConfigurable extends BaseConfigurable implements S
     public void apply() throws ConfigurationException {
 
         //  get settings holder
-        GenerateTestCasesSettings casesSettings = GenerateTestCasesSettings.getInstance(myProject);
+        TestCherrySettings casesSettings = TestCherrySettings.getInstance(myProject);
         //  persist currently selected test framework
         String s = myComponent.comboBox.getSelectedItem().toString();
         if (!s.equals("-")) {
@@ -98,7 +98,7 @@ public class GenerateTestCasesConfigurable extends BaseConfigurable implements S
 
     @Override
     public boolean isModified() {
-        GenerateTestCasesSettings casesSettings = GenerateTestCasesSettings.getInstance(myProject);
+        TestCherrySettings casesSettings = TestCherrySettings.getInstance(myProject);
         String o = (String) myComponent.comboBox.getSelectedItem();
         String s = casesSettings.getTestFramework();
         if (o.equals("-")) {
