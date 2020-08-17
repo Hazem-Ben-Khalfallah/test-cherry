@@ -27,7 +27,7 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
   ]]></description>
 
 
-    <version>1.0</version>
+    <version>1.1</version>
 
     <idea-version since-build="2020.2"/>
 
@@ -38,13 +38,13 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
 
     <project-components>
         <component>
-            <implementation-class>com.blacknebula.javatestgenerator.model.GenerateTestCasesSettings</implementation-class>
+            <implementation-class>com.blacknebula.testcherry.model.GenerateTestCasesSettings</implementation-class>
         </component>
     </project-components>
 
     <actions>
-        <action id="com.blacknebula.javatestgenerator.actions.GenerateTestMethods"
-                class="com.blacknebula.javatestgenerator.actions.GenerateTestMethods"
+        <action id="com.blacknebula.testcherry.actions.GenerateTestMethods"
+                class="com.blacknebula.testcherry.actions.GenerateTestMethods"
                 text="Generate Test Methods"
                 description="It generates BDD test methods for class">
             <add-to-group group-id="ToolbarRunGroup" anchor="first"/>
@@ -53,32 +53,32 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
 
     <extensions defaultExtensionNs="com.intellij">
         <!--for settings-->
-        <projectConfigurable id="generatetestcases"
-                             provider="com.blacknebula.javatestgenerator.codeinsight.GenerateTestCasesConfigurable"/>
+        <projectConfigurable id="testcherry"
+                             instance="com.blacknebula.testcherry.codeinsight.GenerateTestCasesConfigurable"/>
         <!--for inspections of missing test methods -->
-        <inspectionToolProvider implementation="com.blacknebula.javatestgenerator.inspection.BddInspectionsToolProvider"/>
+        <inspectionToolProvider implementation="com.blacknebula.testcherry.inspection.BddInspectionsToolProvider"/>
 
         <!--for adding support for @should tag-->
-        <javadocTagInfo implementation="com.blacknebula.javatestgenerator.javadoc.ShouldTagInfo"/>
+        <javadocTagInfo implementation="com.blacknebula.testcherry.javadoc.ShouldTagInfo"/>
 
         <!--*****************************************************-->
         <!--for references with renaming support of PsiDocTag-->
         <!--*******************************************************-->
 
-        <psi.referenceContributor implementation="com.blacknebula.javatestgenerator.util.ReferenceContributor"/>
-        <!-- dpending on a PsiElement type it suggest names (including the principal one) in the rename dialog-->
+        <psi.referenceContributor implementation="com.blacknebula.testcherry.util.ReferenceContributor"/>
+        <!-- depending on a PsiElement type it suggest names (including the principal one) in the rename dialog-->
         <nameSuggestionProvider
-                implementation="com.blacknebula.javatestgenerator.refactor.ShouldDescriptionNameSuggestionProvider"/>
+                implementation="com.blacknebula.testcherry.refactor.ShouldDescriptionNameSuggestionProvider"/>
 
         <!-- rename element processor without support for inline renaming, TODO add support for inline renaming-->
         <renamePsiElementProcessor
-                implementation="com.blacknebula.javatestgenerator.refactor.ShouldTagsAwareRenameProccessor" order="first"/>
+                implementation="com.blacknebula.testcherry.refactor.ShouldTagsAwareRenameProcessor" order="first"/>
 
-        <!--********************************************        -->
-        <!--For listening to method renamings-->
+        <!--********************************************-->
+        <!--For listening to method renaming-->
         <!--**************************************-->
         <refactoring.elementListenerProvider
-                implementation="com.blacknebula.javatestgenerator.refactor.listener.TestMethodRefactoringElementListenerProvider"/>
+                implementation="com.blacknebula.testcherry.refactor.listener.TestMethodRefactoringElementListenerProvider"/>
     </extensions>
 
 </idea-plugin>
