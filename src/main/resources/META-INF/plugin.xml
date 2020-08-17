@@ -1,6 +1,8 @@
 <idea-plugin>
     <id>com.blacknebula.TestCherry</id>
     <name>TestCherry</name>
+    <version>2.0</version>
+
     <vendor email="benkhalfallahhazem@gmail.com"
             url="https://github.com/Hazem-Ben-Khalfallah/test-cherry">
         Hazem Ben Khalfallah
@@ -25,9 +27,6 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
     <br/>
     This Project is based on <a href="https://github.com/hablutzel1/GenerateTestCases">GenerateTestCases</a> project.
   ]]></description>
-
-
-    <version>2.0</version>
 
     <idea-version since-build="2020.2"/>
 

@@ -19,6 +19,7 @@ dependencies {
 intellij {
     version '2020.2'
     plugins 'java'
+    buildSearchableOptions.enabled = true
 }
 patchPluginXml {
     changeNotes """

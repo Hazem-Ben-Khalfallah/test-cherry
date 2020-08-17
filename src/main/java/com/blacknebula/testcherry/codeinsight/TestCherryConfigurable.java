@@ -63,14 +63,11 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
 
         TestCherrySettings casesSettings = TestCherrySettings.getInstance(myProject);
 
+        myComponent = new MyComponent();
 
-        String testFramework = casesSettings.getTestFramework();
-        if (!testFramework.equals(EMPTY_STRING)) {
-            aModel.setSelectedItem(testFramework);
+        if (casesSettings != null) {
+            addComboBoxItems(aModel, casesSettings);
         }
-
-        myComponent = new MyComponent()
-                .setModel(aModel);
 
         //To change body of implemented methods use File | Settings | File Templates.
         return myComponent.getPanel();
@@ -111,6 +108,14 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
 
     @Override
     public void disposeUIResources() {
+    }
+
+    private void addComboBoxItems(DefaultComboBoxModel aModel, TestCherrySettings casesSettings) {
+        String testFramework = casesSettings.getTestFramework();
+        if (!testFramework.equals(EMPTY_STRING)) {
+            aModel.setSelectedItem(testFramework);
+        }
+        myComponent.setModel(aModel);
     }
 
     private static class MyComponent {
