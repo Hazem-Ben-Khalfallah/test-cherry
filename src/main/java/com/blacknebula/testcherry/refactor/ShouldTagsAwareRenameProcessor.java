@@ -26,14 +26,17 @@ public class ShouldTagsAwareRenameProcessor extends RenameJavaMethodProcessor {
 
 
     /**
-     * its nameSuggestionContext isn't using the same logic than the refactor provider to find the element to rename from the refactor, it is passing a whitespace when the cursor is after (at)should tag, so we should use the same logic than the refactor provider to know where are we located in the editor.
+     * its nameSuggestionContext isn't using the same logic as the refactor provider to find the element to rename from
+     * the refactor, it is passing a whitespace when the cursor is after (at)should tag, so we should use the same logic
+     * than the refactor provider to know where are we located in the editor.
      *
      * @should create ShouldTagRenameDialog instead of RenameDialog when element is a TestMethod got from a (at)should tag reference
      */
     @Override
     public RenameDialog createRenameDialog(Project project, PsiElement element, PsiElement nameSuggestionContext, Editor editor) {
 
-        PsiReference shouldRef = TargetElementUtilBase.findReference(editor, 0);
+        int offset = editor.getCaretModel().getOffset();
+        PsiReference shouldRef = TargetElementUtilBase.findReference(editor, offset);
 
         //  add refactor to doctag to NoExistentTestMethodLightReference and make the ShouldTagRenameDialog aware of it
 
