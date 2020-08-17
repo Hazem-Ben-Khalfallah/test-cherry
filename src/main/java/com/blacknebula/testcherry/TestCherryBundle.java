@@ -23,14 +23,14 @@ import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 import java.util.ResourceBundle;
 
-public class GenerateTestCasesBundle {
+public class TestCherryBundle {
 
     private static Reference<ResourceBundle> ourBundle;
 
     @NonNls
-    private static final String BUNDLE = "GenerateTestCasesBundle";
+    private static final String BUNDLE = "TestCherryBundle";
 
-    private GenerateTestCasesBundle() {
+    private TestCherryBundle() {
     }
 
     public static String message(@PropertyKey(resourceBundle = BUNDLE) String key, Object... params) {

@@ -1,6 +1,6 @@
 package com.blacknebula.testcherry.actions;
 
-import com.blacknebula.testcherry.GenerateTestCasesBundle;
+import com.blacknebula.testcherry.TestCherryBundle;
 import com.blacknebula.testcherry.codeinsight.GenerateTestCasesConfigurable;
 import com.blacknebula.testcherry.codeinsight.generation.PsiDocAnnotationMember;
 import com.blacknebula.testcherry.model.BDDCore;
@@ -27,8 +27,6 @@ import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.extensions.ExtensionPointName;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurableEP;
 import com.intellij.openapi.options.ShowSettingsUtil;
@@ -119,8 +117,8 @@ public class GenerateTestMethods extends AnAction {
                 if (StringUtils.isEmpty(testFrameworkProperty)) {
 
                     //  show dialog displaying that there is no framework selection
-                    Messages.showMessageDialog(GenerateTestCasesBundle.message("plugin.testCherry.framework.notselected.desc"),
-                            GenerateTestCasesBundle.message("plugin.testCherry.framework.notselected"),
+                    Messages.showMessageDialog(TestCherryBundle.message("plugin.testCherry.framework.notselected.desc"),
+                            TestCherryBundle.message("plugin.testCherry.framework.notselected"),
                             Messages.getWarningIcon());
 
                     return;
@@ -231,7 +229,7 @@ public class GenerateTestMethods extends AnAction {
             //  if backing test class exists, just create the methods in the same
             //  para cada uno de los seleccionados llamar a create
             //  create an appropiate command name
-            final String commandName = GenerateTestCasesBundle.message("plugin.testCherry.creatingtestcase", testClass.getClassUnderTest().getName());
+            final String commandName = TestCherryBundle.message("plugin.testCherry.creatingtestcase", testClass.getClassUnderTest().getName());
             final PsiDirectory finalDestinationRoot = destinationRoot;
             final boolean finalCreateParent = createParent;
             new WriteCommandAction(project, commandName) {

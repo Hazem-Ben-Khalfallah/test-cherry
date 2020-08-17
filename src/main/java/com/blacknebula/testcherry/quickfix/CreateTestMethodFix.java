@@ -1,6 +1,6 @@
 package com.blacknebula.testcherry.quickfix;
 
-import com.blacknebula.testcherry.GenerateTestCasesBundle;
+import com.blacknebula.testcherry.TestCherryBundle;
 import com.blacknebula.testcherry.model.TestClass;
 import com.blacknebula.testcherry.model.TestMethod;
 import com.blacknebula.testcherry.model.TestMethodImpl;
@@ -40,14 +40,14 @@ public class CreateTestMethodFix implements IntentionAction {
         String testMethodName = testFrameworkStrategy.getExpectedNameForThisTestMethod(testMethod.getSutMethod().getName(), testMethod.getDescription());
         TestClass parent = tMethod.getParent();
         String candidateClassName = testFrameworkStrategy.getCandidateTestClassName(parent.getClassUnderTest());
-        return GenerateTestCasesBundle.message("plugin.testCherry.createtestmethod",
+        return TestCherryBundle.message("plugin.testCherry.createtestmethod",
                 candidateClassName + "." + testMethodName + "()");
     }
 
     @NotNull
     @Override
     public String getFamilyName() {
-        return GenerateTestCasesBundle.message("plugin.testCherry.bdd.family");
+        return TestCherryBundle.message("plugin.testCherry.bdd.family");
     }
 
     @Override

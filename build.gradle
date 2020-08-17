@@ -24,6 +24,7 @@ patchPluginXml {
     changeNotes """
        <p>1.1</p>
        <ul>
+          <li>Fix test lib initialization</li>
           <li>Add plugin icon</li>
        </ul>
       <p>1.0</p>
