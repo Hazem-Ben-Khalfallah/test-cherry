@@ -1,8 +1,10 @@
-<H1>Test Cherry  Plugin </H1>
+<h1>Test Cherry  Plugin </h1>
+
 This Project is based on <a href="https://github.com/hablutzel1/GenerateTestCases">GenerateTestCases</a> project.
 
 
 <h2>What it does?</h2>
+
 **Test Cherry Plugin** aides java developers with writing **@should** style test units.
 
 It aims to make it easier to make **TDD** with a really cool and easy approach that consist in
@@ -62,12 +64,14 @@ Auto-generated the test class and test method (using the plugin) and then tested
 Nothing more.
 
 <h2>How to install</h2>
+
 You can download the plugin "**testCherry**" directly from the IDE. 
 * Go to **Settings > Plugin** enter "**testCherry**" 
 * Hit enter 
 * Select the plugin and press install.
 
 <h2>How to use</h2>
+
 * Open class in editor
 * Add some test use cases using **@should** style annotation in method javadoc
 * Press the "Generate Test Methods" ![logo](src/main/resources/images/logo.png) button in toolbar to generate test methods for each test use case.
@@ -76,26 +80,26 @@ You can download the plugin "**testCherry**" directly from the IDE.
 ![logo](snapshots/cherryTest_image2.png)
 
 <h2>How to test from source code</h2>
+
 * Clone repository
-* run `gradlew runIde`
+* run ```gradlew runIde```
 
 
 <h2>How to build</h2>
-* run `gradlew build`
+
+* run ```gradlew build```
 
 <h2>Change Notes</h2>
-**<p>2.0</p>**
-    <ul>
-      <li>Fix at should comment rename</li>
-      <li>Fix test lib initialization</li>
-      <li>Add plugin icon</li>
-   </ul>
+
+**2.0**
+* Fix at should comment rename
+* Fix test lib initialization
+* Add plugin icon
        
-**<p>1.0</p>**
-   <ul>
-      <li>Implement test case generation for with IntelliJ IDEA version **2020.2**</li>
-   </ul>
+**1.0**
+* Implement test case generation for with IntelliJ IDEA version **2020.2**
 
 <h2>Credits</h2>
+
 * To <a href="https://github.com/hablutzel1/GenerateTestCases">GenerateTestCases</a> project author <a href="https://github.com/hablutzel1">Jaime Hablutzel</a>
 * To <a href="https://wiki.openmrs.org/display/docs/Generate+Test+Case+Plugin">OpenMRS</a> team for @should style testing

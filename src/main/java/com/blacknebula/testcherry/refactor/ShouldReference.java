@@ -4,6 +4,7 @@ import com.blacknebula.testcherry.model.TestMethod;
 import com.blacknebula.testcherry.refactor.psi.NoExistentTestMethodLightReference;
 import com.blacknebula.testcherry.util.*;
 import com.intellij.lang.StdLanguages;
+import com.intellij.lang.java.JavaLanguage;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -88,7 +89,7 @@ public class ShouldReference implements PsiReference {
         }
 
         //  return a dummy refactor so we can rename  @should's without a method created
-        return new NoExistentTestMethodLightReference(psiDocTag.getManager(), StdLanguages.JAVA);
+        return new NoExistentTestMethodLightReference(psiDocTag.getManager(), JavaLanguage.INSTANCE);
     }
 
     @NotNull
