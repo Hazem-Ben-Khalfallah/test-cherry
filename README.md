@@ -1,3 +1,5 @@
+![test-cherry](https://socialify.git.ci/Hazem-Ben-Khalfallah/test-cherry/image?description=1&descriptionEditable=An%20Intellij%20Plugin%20that%20generates%20unit%20test%20methods%20from%20%40should%20tags%20in%20methods%20javadoc&font=Source%20Code%20Pro&language=1&logo=https%3A%2F%2Fgithub.com%2FHazem-Ben-Khalfallah%2Ftest-cherry%2Fraw%2Fmaster%2Fsnapshots%2Fcherry.png&owner=1&pattern=Brick%20Wall&stargazers=1&theme=Dark)
+
 <h1>Test Cherry  Plugin </h1>
 
 This Project is based on <a href="https://github.com/hablutzel1/GenerateTestCases">GenerateTestCases</a> project.
