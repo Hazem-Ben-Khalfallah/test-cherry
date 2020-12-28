@@ -26,7 +26,6 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.jsp.jspJava.JspClass;
 import com.intellij.psi.javadoc.PsiDocTag;
-import com.intellij.util.IncorrectOperationException;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -142,12 +141,8 @@ public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspection
 
                 public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
                     final PsiElement psiElement = descriptor.getPsiElement();
-                    try {
-                        LOG.assertTrue(psiElement.isValid());
-                        createTestMethodFix.invoke();
-                    } catch (IncorrectOperationException e) {
-                        LOG.error(e);
-                    }
+                    LOG.assertTrue(psiElement.isValid());
+                    createTestMethodFix.invoke();
                 }
 
                 @NotNull

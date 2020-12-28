@@ -24,7 +24,9 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.extensions.ExtensionPoint;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurableEP;
@@ -51,6 +53,7 @@ import java.util.List;
  * Time: 12:27:20 PM
  */
 public class GenerateTestMethods extends AnAction {
+    private static final Logger LOG = Logger.getInstance(GenerateTestMethods.class);
 
 
     public GenerateTestMethods() {
@@ -100,7 +103,8 @@ public class GenerateTestMethods extends AnAction {
 
             if (StringUtils.isEmpty(testFrameworkProperty)) { //  it haven't been defined yet
 
-                ConfigurableEP[] extensions = project.getExtensions(ExtensionPointName.create("com.intellij.projectConfigurable"));
+                final ExtensionPoint<ConfigurableEP> extensionPoint = project.getExtensionArea().getExtensionPoint(ExtensionPointName.create("com.intellij.projectConfigurable"));
+                ConfigurableEP[] extensions = extensionPoint.getExtensions();
                 for (ConfigurableEP component : extensions) {
                     Configurable configurable = (Configurable) component.createConfigurable();
                     if (configurable instanceof TestCherryConfigurable) {
@@ -249,9 +253,9 @@ public class GenerateTestMethods extends AnAction {
                                 }
                             }
                             //  if something has been created jump to the last created test method, this is 'lastTestMethod'
-//                        if (lastTestMethod != null) {
-                            lastTestMethod.navigate();
-//                        }
+                            if (lastTestMethod != null) {
+                                lastTestMethod.navigate();
+                            }
                         } finally {
                             action.finish();
                         }

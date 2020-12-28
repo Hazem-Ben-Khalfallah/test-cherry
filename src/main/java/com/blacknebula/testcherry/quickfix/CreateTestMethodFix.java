@@ -59,9 +59,6 @@ public class CreateTestMethodFix implements IntentionAction {
 
 
     /**
-     * @param project
-     * @param editor
-     * @param file
      * @throws IncorrectOperationException
      * @should jump to target test method in editor
      * @should create test method
@@ -75,7 +72,6 @@ public class CreateTestMethodFix implements IntentionAction {
     /**
      * It will provide undo capability
      *
-     * @return
      * @see IntentionAction#startInWriteAction()
      */
     @Override

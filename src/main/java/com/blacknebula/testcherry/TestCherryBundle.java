@@ -15,6 +15,7 @@
  */
 package com.blacknebula.testcherry;
 
+import com.intellij.AbstractBundle;
 import com.intellij.CommonBundle;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.PropertyKey;
@@ -33,7 +34,7 @@ public class TestCherryBundle {
     }
 
     public static String message(@PropertyKey(resourceBundle = BUNDLE) String key, Object... params) {
-        return CommonBundle.message(getBundle(), key, params);
+        return AbstractBundle.message(getBundle(), key, params);
     }
 
     private static ResourceBundle getBundle() {
@@ -41,7 +42,7 @@ public class TestCherryBundle {
         if (ourBundle != null) bundle = ourBundle.get();
         if (bundle == null) {
             bundle = ResourceBundle.getBundle(BUNDLE);
-            ourBundle = new SoftReference<ResourceBundle>(bundle);
+            ourBundle = new SoftReference<>(bundle);
         }
         return bundle;
     }

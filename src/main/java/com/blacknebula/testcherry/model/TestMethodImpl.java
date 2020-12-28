@@ -7,6 +7,7 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.javadoc.PsiDocTag;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.concurrency.Promise;
 
 /**
  * User: Jaime Hablutzel
@@ -77,9 +78,7 @@ public class TestMethodImpl implements TestMethod {
         this.sutMethod = method;
     }
 
-    /**
-     *
-     */
+    @Override
     public boolean reallyExists() {
         PsiMethod method1 = null;
         if (this.parent.getBackingElement() != null) {
@@ -96,22 +95,19 @@ public class TestMethodImpl implements TestMethod {
         this.getBackingElement().navigate(true);
     }
 
+    @Override
     public void create() {
-
-
         if (parent == null) {
             // TODO need to look for the parent psi test class in some other way
             // TODO create a stub for the parent or look in registry
             // TODO log it
-        } else if (parent != null && !parent.reallyExists()) {
+        } else if (!parent.reallyExists()) {
             //  if parent doesn't exist, create it
             parent.create(null);
-
         }
 
 
         PsiMethod realTestMethod = testFrameworkStrategy.createBackingTestMethod(parent.getBackingElement(), sutMethod, description);
-//        this.backingMethod = realTestMethod;
 
         CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(project);
 
@@ -122,8 +118,6 @@ public class TestMethodImpl implements TestMethod {
     public String getDescription() {
         return description;  //To change body of implemented methods use File | Settings | File Templates.
     }
-
-//    private boolean existsInSut;
 
     public PsiMethod getSutMethod() {
         return this.sutMethod;
@@ -139,21 +133,5 @@ public class TestMethodImpl implements TestMethod {
             method = testFrameworkStrategy.findBackingTestMethod(this.parent.getBackingElement(), sutMethod, description);
         }
         return method;
-    }
-
-    /**
-     * TODO implement
-     * State class for two possible states that TestMetho c
-     */
-    private class TestMethodState {
-
-        private void created(TestMethod tm) {
-
-        }
-
-        private void notCreated(TestMethod tm) {
-
-        }
-
     }
 }

@@ -12,6 +12,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.testIntegration.TestFramework;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.concurrency.Promise;
 
 /**
  * User: JHABLUTZEL
@@ -55,7 +56,7 @@ public class JUnit3Strategy extends JUnitStrategyBase {
      * @should add junit 3 specific imports
      */
     @Override // just created to test implementation details for this specific framework
-    public PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
+    public @NotNull PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
         return super.createBackingTestMethod(testClass, sutMethod, testDescription);
     }
 

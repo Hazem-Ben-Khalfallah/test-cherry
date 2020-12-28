@@ -1,9 +1,6 @@
 package com.blacknebula.testcherry.testframework;
 
 import com.blacknebula.testcherry.util.BddUtil;
-import com.intellij.codeInsight.intention.AddAnnotationFix;
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiMethod;
@@ -28,26 +25,21 @@ public class JUnit4Strategy extends JUnitStrategyBase {
         return BddUtil.findTestFrameworkByName("JUnit4");
     }
 
-    @NotNull
     @Override
-    public PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
-        PsiMethod backingTestMethod = super.createBackingTestMethod(testClass, sutMethod, testDescription);
-        DataManager.getInstance().getDataContextFromFocusAsync()
-                .then(dataContext -> dataContext.getData(CommonDataKeys.EDITOR))
-                .onSuccess(editor -> {
-                    if (editor != null) {
-                        //  add the annotation to the method
-                        AddAnnotationFix fix = new AddAnnotationFix("org.junit.Test", backingTestMethod);
-                        if (fix.isAvailable(sutMethod.getProject(), editor, backingTestMethod.getContainingFile())) {
-                            fix.invoke(sutMethod.getProject(), editor, backingTestMethod.getContainingFile());
-                        }
-                    }
-                });
-        return backingTestMethod;
+    public @NotNull PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
+        final PsiMethod psiMethod = super.createBackingTestMethod(testClass, sutMethod, testDescription);
+        //  add the annotation to the method
+        AddAnnotationFix fix = new AddAnnotationFix("org.junit.Test", psiMethod);
+        if (fix.isAvailable(sutMethod.getProject(), psiMethod.getContainingFile())) {
+            fix.invoke();
+        }
+
+        return psiMethod;
     }
 
     @Override
     protected String getFrameworkBasePackage() {
         return "org.junit";
     }
+
 }

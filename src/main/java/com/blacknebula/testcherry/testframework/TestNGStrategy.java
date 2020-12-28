@@ -1,9 +1,6 @@
 package com.blacknebula.testcherry.testframework;
 
 import com.blacknebula.testcherry.util.BddUtil;
-import com.intellij.codeInsight.intention.AddAnnotationFix;
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -35,12 +32,9 @@ public class TestNGStrategy extends AbstractTestFrameworkStrategy {
      * @should add org.testng.Assert import if it doesn't collide with another x.Assert import
      * @should add org.testng.Assert.fail("Not yet implemented"); statement to method under test
      */
-    @NotNull
     @Override
-    public PsiMethod createBackingTestMethod(@NotNull PsiClass testClass, @NotNull PsiMethod sutMethod, @NotNull String testDescription) {
-        PsiMethod backingTestMethod = super.createBackingTestMethod(testClass, sutMethod, testDescription);
-
-
+    public @NotNull PsiMethod createBackingTestMethod(@NotNull PsiClass testClass, @NotNull PsiMethod sutMethod, @NotNull String testDescription) {
+        final PsiMethod backingTestMethod = super.createBackingTestMethod(testClass, sutMethod, testDescription);
         // TODO add import for org.testng.Assert if it doesn't collides with another x.
         //  Assert import as in com.blacknebula.javatestgenerator.testframework.JUnitStrategyBase.createBackingTestMethod()
 
@@ -65,18 +59,10 @@ public class TestNGStrategy extends AbstractTestFrameworkStrategy {
         backingTestMethod.getBody().addAfter(statement, backingTestMethod.getBody().getLastBodyElement());
 
         //  add the annotation to the method
-        DataManager.getInstance().getDataContextFromFocusAsync()
-                .then(dataContext -> dataContext.getData(CommonDataKeys.EDITOR))
-                .onSuccess(editor -> {
-                    if (editor != null) {
-                        //  add the annotation to the method
-                        AddAnnotationFix fix = new AddAnnotationFix("org.testng.annotations.Test", backingTestMethod);
-                        if (fix.isAvailable(sutMethod.getProject(), null, backingTestMethod.getContainingFile())) {
-                            fix.invoke(sutMethod.getProject(), null, backingTestMethod.getContainingFile());
-                        }
-                    }
-                });
-
+        final AddAnnotationFix fix = new AddAnnotationFix("org.testng.annotations.Test", backingTestMethod);
+        if (fix.isAvailable(sutMethod.getProject(), backingTestMethod.getContainingFile())) {
+            fix.invoke();
+        }
         return backingTestMethod;
     }
 

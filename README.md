@@ -91,9 +91,12 @@ You can download the plugin "**testCherry**" directly from the IDE.
 
 <h2>Change Notes</h2>
 
+**3.1**
+* fix multiple test method generation
+
 **3.0**
 * Add support to IntelliJ IDEA version **2020.3**
-* Reduce depricated methods usage 
+* Reduce deprecated methods usage 
 
 **2.0**
 * Fix at should comment rename

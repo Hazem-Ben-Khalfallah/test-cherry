@@ -24,6 +24,7 @@ public interface TestFrameworkStrategy {
      * @param testClass
      * @param sutMethod
      * @param testDescription @return
+     * @return
      */
     @NotNull PsiMethod createBackingTestMethod(@NotNull PsiClass testClass, @NotNull PsiMethod sutMethod, @NotNull String testDescription);
 
