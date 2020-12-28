@@ -29,7 +29,6 @@ public interface TestFrameworkStrategy {
 
 
     /**
-     *
      * @param sutClass
      * @param sourceRoot
      * @return
@@ -37,27 +36,25 @@ public interface TestFrameworkStrategy {
     PsiClass createBackingTestClass(PsiClass sutClass, PsiDirectory sourceRoot);
 
 
-
     @Nullable PsiMethod findBackingTestMethod(@NotNull PsiClass testClass, @NotNull PsiMethod sutMethod, @NotNull String testDescription);
 
     /**
      * This method can delegate to com.intellij.testIntegration.TestFramework#isLibraryAttached(com.intellij.openapi.module.Module)
      * or it can make by its own the required verification to determine if the library for the module is available,
-     *
+     * <p>
      * This operation will be helpful to clients to determine if they should add the required library, before beginning to
-     * make use of create operations that could result in broken references if the required libraries aren't available 
+     * make use of create operations that could result in broken references if the required libraries aren't available
      *
-     * @return
      * @param module
+     * @return
      */
     boolean isTestFrameworkLibraryAvailable(Module module);
 
 
     /**
-     *
      * @param sutClass
      * @return
-     * @should ignore anonymous classes 
+     * @should ignore anonymous classes
      */
     PsiClass findBackingPsiClass(PsiClass sutClass);
 
@@ -79,5 +76,5 @@ public interface TestFrameworkStrategy {
      *
      * @return
      */
-    public abstract TestFramework getTestFramework();
+    TestFramework getTestFramework();
 }

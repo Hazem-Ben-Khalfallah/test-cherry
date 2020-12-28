@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CreateTestMethodFix implements IntentionAction {
 
-    private TestMethod testMethod;
+    private final TestMethod testMethod;
 
     public CreateTestMethodFix(TestMethod testMethod) {
         this.testMethod = testMethod;

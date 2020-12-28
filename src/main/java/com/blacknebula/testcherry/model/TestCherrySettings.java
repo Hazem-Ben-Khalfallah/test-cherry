@@ -14,6 +14,8 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 public class TestCherrySettings implements PersistentStateComponent<TestCherrySettings> { // TODO research about idea ProjectComponent interface
 
 
+    String testFramework;
+
     public TestCherrySettings() {
         testFramework = "";
     }
@@ -28,7 +30,6 @@ public class TestCherrySettings implements PersistentStateComponent<TestCherrySe
         return project.getComponent(TestCherrySettings.class);
     }
 
-
     public String getTestFramework() {
         return testFramework;
     }
@@ -36,8 +37,6 @@ public class TestCherrySettings implements PersistentStateComponent<TestCherrySe
     public void setTestFramework(String testFramework) {
         this.testFramework = testFramework;
     }
-
-    String testFramework;
 
     public TestCherrySettings getState() {
         return this;

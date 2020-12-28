@@ -25,10 +25,9 @@ import java.util.ResourceBundle;
 
 public class TestCherryBundle {
 
-    private static Reference<ResourceBundle> ourBundle;
-
     @NonNls
     private static final String BUNDLE = "TestCherryBundle";
+    private static Reference<ResourceBundle> ourBundle;
 
     private TestCherryBundle() {
     }

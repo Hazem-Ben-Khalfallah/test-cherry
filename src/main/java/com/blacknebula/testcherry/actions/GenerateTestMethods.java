@@ -23,7 +23,6 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.extensions.ExtensionPointName;
@@ -57,7 +56,7 @@ public class GenerateTestMethods extends AnAction {
     public GenerateTestMethods() {
         super("Generate Test Methods",
                 "Generate test methods for current file",
-                IconLoader.getIcon("/images/logo.png"));
+                IconLoader.getIcon("/images/logo.png", GenerateTestMethods.class));
     }
 
     @Nullable
@@ -101,7 +100,7 @@ public class GenerateTestMethods extends AnAction {
 
             if (StringUtils.isEmpty(testFrameworkProperty)) { //  it haven't been defined yet
 
-                ConfigurableEP[] extensions = project.getExtensions(ExtensionPointName.<ConfigurableEP>create("com.intellij.projectConfigurable"));
+                ConfigurableEP[] extensions = project.getExtensions(ExtensionPointName.create("com.intellij.projectConfigurable"));
                 for (ConfigurableEP component : extensions) {
                     Configurable configurable = (Configurable) component.createConfigurable();
                     if (configurable instanceof TestCherryConfigurable) {
@@ -231,35 +230,33 @@ public class GenerateTestMethods extends AnAction {
             final String commandName = TestCherryBundle.message("plugin.testCherry.creatingtestcase", testClass.getClassUnderTest().getName());
             final PsiDirectory finalDestinationRoot = destinationRoot;
             final boolean finalCreateParent = createParent;
-            new WriteCommandAction(project, commandName) {
+            WriteCommandAction.writeCommandAction(project)
+                    .withName(commandName)
+                    .run(() -> {
+                        LocalHistoryAction action = LocalHistoryAction.NULL;
+                        //  wrap this with error management
+                        try {
 
-                @Override
-                protected void run(Result result) throws Throwable {
-                    LocalHistoryAction action = LocalHistoryAction.NULL;
-                    //  wrap this with error management
-                    try {
-
-                        action = LocalHistory.getInstance().startAction(commandName);
-                        if (finalCreateParent) {
-                            testClass.create(finalDestinationRoot);
-                        }
-                        TestMethod lastTestMethod = null;
-                        for (TestMethod testMethod : methodsToCreate) {
-                            if (!testMethod.reallyExists()) {
-                                testMethod.create();
-                                lastTestMethod = testMethod;
+                            action = LocalHistory.getInstance().startAction(commandName);
+                            if (finalCreateParent) {
+                                testClass.create(finalDestinationRoot);
                             }
-                        }
-                        //  if something has been created jump to the last created test method, this is 'lastTestMethod'
+                            TestMethod lastTestMethod = null;
+                            for (TestMethod testMethod : methodsToCreate) {
+                                if (!testMethod.reallyExists()) {
+                                    testMethod.create();
+                                    lastTestMethod = testMethod;
+                                }
+                            }
+                            //  if something has been created jump to the last created test method, this is 'lastTestMethod'
 //                        if (lastTestMethod != null) {
-                        lastTestMethod.navigate();
+                            lastTestMethod.navigate();
 //                        }
-                    } finally {
-                        action.finish();
-                    }
+                        } finally {
+                            action.finish();
+                        }
 
-                }
-            }.execute();
+                    });
 
 
         }

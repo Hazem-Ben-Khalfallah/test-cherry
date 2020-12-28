@@ -1,6 +1,6 @@
 package com.blacknebula.testcherry.javadoc;
 
-import com.blacknebula.testcherry.util.*;
+import com.blacknebula.testcherry.util.Constants;
 import com.intellij.pom.java.LanguageLevel;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;

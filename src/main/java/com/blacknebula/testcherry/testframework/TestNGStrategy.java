@@ -1,7 +1,9 @@
 package com.blacknebula.testcherry.testframework;
 
-import com.intellij.codeInsight.intention.AddAnnotationFix;
 import com.blacknebula.testcherry.util.BddUtil;
+import com.intellij.codeInsight.intention.AddAnnotationFix;
+import com.intellij.ide.DataManager;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -30,11 +32,6 @@ public class TestNGStrategy extends AbstractTestFrameworkStrategy {
 
 
     /**
-     *
-     * @param testClass
-     * @param sutMethod
-     * @param testDescription @return
-     * @return
      * @should add org.testng.Assert import if it doesn't collide with another x.Assert import
      * @should add org.testng.Assert.fail("Not yet implemented"); statement to method under test
      */
@@ -44,12 +41,13 @@ public class TestNGStrategy extends AbstractTestFrameworkStrategy {
         PsiMethod backingTestMethod = super.createBackingTestMethod(testClass, sutMethod, testDescription);
 
 
-        // TODO add import for org.testng.Assert if it doesn't collides with another x.Assert import as in com.blacknebula.javatestgenerator.testframework.JUnitStrategyBase.createBackingTestMethod()
+        // TODO add import for org.testng.Assert if it doesn't collides with another x.
+        //  Assert import as in com.blacknebula.javatestgenerator.testframework.JUnitStrategyBase.createBackingTestMethod()
 
         PsiJavaFile javaFile = (PsiJavaFile) testClass.getContainingFile();
         boolean assertImportExists = javaFile.getImportList().findSingleImportStatement("Assert") != null;
 
-        if (!assertImportExists){
+        if (!assertImportExists) {
             BddUtil.addImportToClass(sutMethod.getProject(), testClass, "org.testng.Assert");
         }
 
@@ -64,15 +62,20 @@ public class TestNGStrategy extends AbstractTestFrameworkStrategy {
 
         //  add failed assert in testng terms
 
-
-
         backingTestMethod.getBody().addAfter(statement, backingTestMethod.getBody().getLastBodyElement());
 
         //  add the annotation to the method
-        AddAnnotationFix fix = new AddAnnotationFix("org.testng.annotations.Test", backingTestMethod);
-        if (fix.isAvailable(sutMethod.getProject(), null, backingTestMethod.getContainingFile())) {
-            fix.invoke(sutMethod.getProject(), null, backingTestMethod.getContainingFile());
-        }
+        DataManager.getInstance().getDataContextFromFocusAsync()
+                .then(dataContext -> dataContext.getData(CommonDataKeys.EDITOR))
+                .onSuccess(editor -> {
+                    if (editor != null) {
+                        //  add the annotation to the method
+                        AddAnnotationFix fix = new AddAnnotationFix("org.testng.annotations.Test", backingTestMethod);
+                        if (fix.isAvailable(sutMethod.getProject(), null, backingTestMethod.getContainingFile())) {
+                            fix.invoke(sutMethod.getProject(), null, backingTestMethod.getContainingFile());
+                        }
+                    }
+                });
 
         return backingTestMethod;
     }

@@ -1,5 +1,14 @@
 package com.blacknebula.testcherry.inspection;
 
+import com.blacknebula.testcherry.model.BDDCore;
+import com.blacknebula.testcherry.model.TestCherrySettings;
+import com.blacknebula.testcherry.model.TestClass;
+import com.blacknebula.testcherry.model.TestMethod;
+import com.blacknebula.testcherry.model.TestMethodImpl;
+import com.blacknebula.testcherry.quickfix.CreateTestMethodFix;
+import com.blacknebula.testcherry.testframework.SupportedFrameworks;
+import com.blacknebula.testcherry.util.BddUtil;
+import com.blacknebula.testcherry.util.Constants;
 import com.intellij.codeInsight.daemon.HighlightDisplayKey;
 import com.intellij.codeInspection.AbstractBaseJavaLocalInspectionTool;
 import com.intellij.codeInspection.CustomSuppressableInspectionTool;
@@ -7,15 +16,6 @@ import com.intellij.codeInspection.InspectionManager;
 import com.intellij.codeInspection.LocalQuickFix;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.ProblemHighlightType;
-import com.blacknebula.testcherry.model.BDDCore;
-import com.blacknebula.testcherry.model.TestCherrySettings;
-import com.blacknebula.testcherry.model.TestClass;
-import com.blacknebula.testcherry.model.TestMethod;
-import com.blacknebula.testcherry.model.TestMethodImpl;
-import com.blacknebula.testcherry.quickfix.*;
-import com.blacknebula.testcherry.testframework.SupportedFrameworks;
-import com.blacknebula.testcherry.util.BddUtil;
-import com.blacknebula.testcherry.util.Constants;
 import com.intellij.codeInspection.SuppressIntentionAction;
 import com.intellij.codeInspection.SuppressManager;
 import com.intellij.openapi.application.ApplicationManager;
@@ -38,9 +38,9 @@ import java.util.List;
  * This inspection will search for classes not tested yet, and it will inspect should annotations
  * without a test method created
  */
-public class MissingTestMethodInspection  extends AbstractBaseJavaLocalInspectionTool implements CustomSuppressableInspectionTool {
+public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspectionTool implements CustomSuppressableInspectionTool {
 
-      private static final Logger LOG = Logger.getInstance(MissingTestMethodInspection.class);
+    private static final Logger LOG = Logger.getInstance(MissingTestMethodInspection.class);
 
     @Nls
     @NotNull
@@ -72,7 +72,6 @@ public class MissingTestMethodInspection  extends AbstractBaseJavaLocalInspectio
      * @should create problem for classes without backing class
      * @should create problem for should annotations without test methods
      * @should ignore unsupported psiClasses
-     *
      */
     @Override
     public ProblemDescriptor[] checkClass(@NotNull PsiClass aClass, @NotNull InspectionManager manager, boolean isOnTheFly) {
@@ -158,8 +157,8 @@ public class MissingTestMethodInspection  extends AbstractBaseJavaLocalInspectio
             };
 
             ProblemDescriptor problemDescriptor = manager.createProblemDescriptor(docOffsetPair.getStart(), docOffsetPair.getEnd(),
-                        "Missing test method for should annotation", ProblemHighlightType.GENERIC_ERROR_OR_WARNING, isOnTheFly, localQuickFix==null?null:new LocalQuickFix[]{localQuickFix});
-                result.add(problemDescriptor);
+                    "Missing test method for should annotation", ProblemHighlightType.GENERIC_ERROR_OR_WARNING, isOnTheFly, localQuickFix == null ? null : new LocalQuickFix[]{localQuickFix});
+            result.add(problemDescriptor);
         }
     }
 

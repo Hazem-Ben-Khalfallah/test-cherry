@@ -23,9 +23,9 @@ package com.blacknebula.testcherry.inspection;
 import com.intellij.codeInspection.InspectionToolProvider;
 
 public class BddInspectionsToolProvider implements InspectionToolProvider {
-  public Class[] getInspectionClasses() {
-      return new Class[]{
-              MissingTestMethodInspection.class
-      };
+    public Class[] getInspectionClasses() {
+        return new Class[]{
+                MissingTestMethodInspection.class
+        };
     }
 }

@@ -18,12 +18,12 @@ public abstract class JUnitStrategyBase extends AbstractTestFrameworkStrategy {
 
 //    private
 
+    private final Project project;
+
     protected JUnitStrategyBase(Project project) {
         super(project);
         this.project = project;
     }
-
-    private final Project project;
 
     /**
      * This method completes the test method structure returned by {@link AbstractTestFrameworkStrategy#createBackingTestMethod(com.intellij.psi.PsiClass, com.intellij.psi.PsiMethod, String)} in the way JUNIT 3 and 4 expect.

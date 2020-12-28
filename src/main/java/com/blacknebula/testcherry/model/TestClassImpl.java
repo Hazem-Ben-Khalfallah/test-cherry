@@ -20,10 +20,9 @@ import java.util.List;
  */
 public class TestClassImpl implements TestClass {
 
-    List<TestMethod> testMethods;
     private final PsiClass sutClass;
-
     private final TestFrameworkStrategy frameworkStrategy;
+    List<TestMethod> testMethods;
 
 
     private TestClassImpl(PsiClass psiClass, TestFrameworkStrategy frameworkStrategy) { // package protected

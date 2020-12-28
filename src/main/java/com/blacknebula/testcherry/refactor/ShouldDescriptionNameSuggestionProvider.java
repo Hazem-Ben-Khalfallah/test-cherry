@@ -40,7 +40,7 @@ public class ShouldDescriptionNameSuggestionProvider implements NameSuggestionPr
             PsiElement prevSibling = nameSuggestionContext.getPrevSibling();
             if (prevSibling instanceof PsiDocTag) {
                 boolean validShouldTag = BddUtil.isValidShouldTag((PsiDocTag) prevSibling);
-                if (validShouldTag ) {
+                if (validShouldTag) {
                     shouldDocTag = (PsiDocTag) prevSibling;
                 }
             }

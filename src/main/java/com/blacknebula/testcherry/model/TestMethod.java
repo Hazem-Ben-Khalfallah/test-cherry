@@ -5,7 +5,7 @@ import com.intellij.psi.PsiMethod;
 /**
  * User: Jaime Hablutzel
  */
-public interface TestMethod extends TestMember{
+public interface TestMethod extends TestMember {
 
     // TODO agregar operaciones que permitan conocer la ubicacion del tag javadoc
 
@@ -24,7 +24,7 @@ public interface TestMethod extends TestMember{
      * under test this test method has been created for
      *
      * @return
-     * @should return the sut method for this method 
+     * @should return the sut method for this method
      */
     PsiMethod getSutMethod();
 
@@ -35,7 +35,7 @@ public interface TestMethod extends TestMember{
      * othewise it will return null
      *
      * @return
-     * @should return a valid psiMethod if reallyExists returns true, false otherwise 
+     * @should return a valid psiMethod if reallyExists returns true, false otherwise
      */
     PsiMethod getBackingElement();
 

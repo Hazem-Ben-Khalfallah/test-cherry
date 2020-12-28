@@ -1,7 +1,7 @@
 package com.blacknebula.testcherry.model;
 
 import com.blacknebula.testcherry.testframework.TestFrameworkStrategy;
-import com.blacknebula.testcherry.util.*;
+import com.blacknebula.testcherry.util.BddUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.codeStyle.CodeStyleManager;
@@ -14,58 +14,14 @@ import org.jetbrains.annotations.NotNull;
 public class TestMethodImpl implements TestMethod {
 
 
-    /**
-     * Static factory method
-     * Effective Java item 1
-     *
-     * @param shouldTag
-     * @param parent
-     * @param frameworkStrategy
-     * @return
-     */
-    static TestMethodImpl newInstance(@NotNull PsiDocTag shouldTag, @NotNull TestClass parent, TestFrameworkStrategy frameworkStrategy) {
-        return new TestMethodImpl(shouldTag, parent, frameworkStrategy);
-    }
-
-    @Override
-    public TestFrameworkStrategy getTestFrameworkStrategy() {
-        return testFrameworkStrategy;
-    }
-
     private final TestFrameworkStrategy testFrameworkStrategy;
-
-    /**
-     * TODO implement
-     * State class for two possible states that TestMetho c
-     */
-    private class TestMethodState {
-
-        private void created(TestMethod tm) {
-
-        }
-
-        private void notCreated(TestMethod tm) {
-
-        }
-
-    }
-
-    // TODO create a strategy for creating test methods
-
-
-    private PsiMethod sutMethod;
-
     private final PsiDocTag shouldTag;
-
     private final String description;
-
-    public TestClass getParent() {
-        return parent;
-    }
-
     private final TestClass parent;
 
+    // TODO create a strategy for creating test methods
     private final Project project;
+    private PsiMethod sutMethod;
 
     // package protected
     private TestMethodImpl(@NotNull PsiDocTag shouldTag, @NotNull TestClass parent, TestFrameworkStrategy frameworkStrategy) {
@@ -94,17 +50,35 @@ public class TestMethodImpl implements TestMethod {
         this.parent = parent;
     }
 
+    /**
+     * Static factory method
+     * Effective Java item 1
+     *
+     * @param shouldTag
+     * @param parent
+     * @param frameworkStrategy
+     * @return
+     */
+    static TestMethodImpl newInstance(@NotNull PsiDocTag shouldTag, @NotNull TestClass parent, TestFrameworkStrategy frameworkStrategy) {
+        return new TestMethodImpl(shouldTag, parent, frameworkStrategy);
+    }
+
+    @Override
+    public TestFrameworkStrategy getTestFrameworkStrategy() {
+        return testFrameworkStrategy;
+    }
+
+    public TestClass getParent() {
+        return parent;
+    }
 
     private void resolveSutMethod(PsiDocTag shouldTag) {
         PsiMethod method = (PsiMethod) shouldTag.getParent().getContext();
         this.sutMethod = method;
     }
 
-
     /**
      *
-
-
      */
     public boolean reallyExists() {
         PsiMethod method1 = null;
@@ -128,7 +102,7 @@ public class TestMethodImpl implements TestMethod {
         if (parent == null) {
             // TODO need to look for the parent psi test class in some other way
             // TODO create a stub for the parent or look in registry
-            // TODO log it 
+            // TODO log it
         } else if (parent != null && !parent.reallyExists()) {
             //  if parent doesn't exist, create it
             parent.create(null);
@@ -145,17 +119,15 @@ public class TestMethodImpl implements TestMethod {
 
     }
 
-//    private boolean existsInSut;
-
-
     public String getDescription() {
         return description;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+//    private boolean existsInSut;
+
     public PsiMethod getSutMethod() {
         return this.sutMethod;
     }
-
 
     public PsiDocTag getBackingTag() {
         return shouldTag;
@@ -167,5 +139,21 @@ public class TestMethodImpl implements TestMethod {
             method = testFrameworkStrategy.findBackingTestMethod(this.parent.getBackingElement(), sutMethod, description);
         }
         return method;
+    }
+
+    /**
+     * TODO implement
+     * State class for two possible states that TestMetho c
+     */
+    private class TestMethodState {
+
+        private void created(TestMethod tm) {
+
+        }
+
+        private void notCreated(TestMethod tm) {
+
+        }
+
     }
 }

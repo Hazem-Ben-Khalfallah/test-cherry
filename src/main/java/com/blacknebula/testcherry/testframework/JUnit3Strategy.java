@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
  * make class to extends junit.framework.TestCase
  */
 public class JUnit3Strategy extends JUnitStrategyBase {
-    
+
     public JUnit3Strategy(Project project) {
         super(project);
     }
@@ -40,16 +40,6 @@ public class JUnit3Strategy extends JUnitStrategyBase {
     }
 
 
-//    public boolean isTestFrameworkLibraryAvailable(Module module) {
-//        return getTestFramework().isLibraryAttached(module);
-//    }
-
-//    @Override
-//    protected void afterCreatingMethod(Project project, PsiMethod realTestMethod) {
-//
-//
-//    }
-
     @Override
     protected String getFrameworkBasePackage() {
         String s = "junit.framework";
@@ -58,13 +48,11 @@ public class JUnit3Strategy extends JUnitStrategyBase {
 
 
     /**
-     *
      * @param testClass
      * @param sutMethod
      * @param testDescription @return
      * @return
      * @should add junit 3 specific imports
-     *
      */
     @Override // just created to test implementation details for this specific framework
     public PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
