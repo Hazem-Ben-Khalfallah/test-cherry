@@ -2,10 +2,8 @@ package com.blacknebula.testcherry.refactor;
 
 import com.blacknebula.testcherry.model.TestMethod;
 import com.blacknebula.testcherry.refactor.psi.NoExistentTestMethodLightReference;
-import com.blacknebula.testcherry.util.*;
-import com.intellij.lang.StdLanguages;
+import com.blacknebula.testcherry.util.BddUtil;
 import com.intellij.lang.java.JavaLanguage;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
@@ -47,9 +45,9 @@ public class ShouldReference implements PsiReference {
     /**
      * It  supports multiline descriptions too, and for these the hyperlink continue over
      * asterisks.
-     *
+     * <p>
      * TODO IT will return an empty range for (at)should tags without a test method created * so any link is created for the user, but it disables the refactor
-      *
+     *
      * @return
      * @should return only the range for the description without the javadoc tag
      */
@@ -64,14 +62,14 @@ public class ShouldReference implements PsiReference {
 
         PsiElement start = elementPairsInDocTag.get(0).getStart();
 
-        PsiElement lastEl = elementPairsInDocTag.get(elementPairsInDocTag.size()-1).getEnd();
+        PsiElement lastEl = elementPairsInDocTag.get(elementPairsInDocTag.size() - 1).getEnd();
 
         int fullStart = start.getTextRange().getStartOffset();
         int fullEnd = lastEl.getTextRange().getEndOffset();
         int referenceStart = psiDocTag.getTextRange().getStartOffset();
 
 
-        return new TextRange(fullStart-referenceStart, fullEnd - referenceStart);
+        return new TextRange(fullStart - referenceStart, fullEnd - referenceStart);
     }
 
 

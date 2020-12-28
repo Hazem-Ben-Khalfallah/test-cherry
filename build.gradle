@@ -1,11 +1,11 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.21'
+    id 'org.jetbrains.intellij' version '0.6.5'
     id 'java-library'
 }
 
 group 'com.blacknebula'
-version '2.0'
+version '3.1'
 
 repositories {
     mavenCentral()
@@ -17,12 +17,23 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
+    // do not change:  this is the version to be used to build the plugin. Not the target
     version '2020.2'
     plugins 'java'
     buildSearchableOptions.enabled = true
 }
+
 patchPluginXml {
     changeNotes """
+        <p>3.1</p>
+       <ul>
+          <li>fix multiple test method generation</li>
+       </ul>
+       <p>3.0</p>
+       <ul>
+          <li>Add support to IntelliJ IDEA version **2020.3**</li>
+          <li>Reduce deprecated methods usage</li>
+       </ul>
        <p>2.0</p>
        <ul>
           <li>Fix at should comment rename</li>

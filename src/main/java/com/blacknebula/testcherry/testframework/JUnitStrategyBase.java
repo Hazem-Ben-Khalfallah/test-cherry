@@ -18,12 +18,12 @@ public abstract class JUnitStrategyBase extends AbstractTestFrameworkStrategy {
 
 //    private
 
+    private final Project project;
+
     protected JUnitStrategyBase(Project project) {
         super(project);
         this.project = project;
     }
-
-    private final Project project;
 
     /**
      * This method completes the test method structure returned by {@link AbstractTestFrameworkStrategy#createBackingTestMethod(com.intellij.psi.PsiClass, com.intellij.psi.PsiMethod, String)} in the way JUNIT 3 and 4 expect.
@@ -36,12 +36,9 @@ public abstract class JUnitStrategyBase extends AbstractTestFrameworkStrategy {
      * @should manage appropiately any condition of the backing test class (imports, existing methods, modifiers, etc)
      * @should add Assert.fail("Not yet implemented") statement to method body
      */
-    @NotNull
     @Override
-    public PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
-
-        PsiMethod realTestMethod = super.createBackingTestMethod(testClass, sutMethod, testDescription);
-
+    public @NotNull PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
+        final PsiMethod realTestMethod = super.createBackingTestMethod(testClass, sutMethod, testDescription);
         //  add org.junit.Assert.fail("Not yet implemented");,
         PsiJavaFile javaFile = (PsiJavaFile) testClass.getContainingFile();
 

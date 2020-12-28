@@ -8,7 +8,6 @@ import com.blacknebula.testcherry.model.TestMethodImpl;
 import com.blacknebula.testcherry.testframework.TestFrameworkStrategy;
 import com.blacknebula.testcherry.util.BddUtil;
 import com.blacknebula.testcherry.util.Constants;
-import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
@@ -47,6 +46,7 @@ public class ShouldTagRenameDialog extends RenameDialog {
         return !StringUtils.isEmpty(getNewName());
     }
 
+    @Override
     protected void doAction() {
 
 
@@ -85,33 +85,30 @@ public class ShouldTagRenameDialog extends RenameDialog {
 
 
         final String finalNewTestMethodName = newTestMethodName;
-        new WriteCommandAction(project, "Renaming Test Case @should tag") {
+        WriteCommandAction.writeCommandAction(project)
+                .withName("Renaming Test Case @should tag")
+                .run(() -> {
+                    //  rename description
+                    changePsiDocTagContent(shouldDocTag, getNewName());
 
-            @Override
-            protected void run(Result result) throws Throwable {
-                //  rename description
-                changePsiDocTagContent(shouldDocTag, getNewName());
+                    if (finalNewTestMethodName != null) {
+                        performRename(finalNewTestMethodName);
 
-                if (finalNewTestMethodName != null) {
-                    performRename(finalNewTestMethodName);
-
-                    //  rename @verifies in test method
-                    PsiDocComment docComment = ((PsiMethodImpl) testMethod).getDocComment();
-                    PsiDocTag[] tags = docComment.getTags(); // TODO manage nullity with tests
-                    for (PsiDocTag tag : tags) {
-                        if (tag.getName().equals(Constants.VERIFIES_DOC_TAG)) {
-                            String contents = getNewName();
-                            changePsiDocTagContent(tag, contents);
+                        //  rename @verifies in test method
+                        PsiDocComment docComment = ((PsiMethodImpl) testMethod).getDocComment();
+                        PsiDocTag[] tags = docComment.getTags(); // TODO manage nullity with tests
+                        for (PsiDocTag tag : tags) {
+                            if (tag.getName().equals(Constants.VERIFIES_DOC_TAG)) {
+                                String contents = getNewName();
+                                changePsiDocTagContent(tag, contents);
+                            }
                         }
+
+
+                    } else { // we have only renamed the tag
+                        close(DialogWrapper.OK_EXIT_CODE);
                     }
-
-
-                } else { // we have only renamed the tag
-                    close(DialogWrapper.OK_EXIT_CODE);
-                }
-            }
-        }.execute();
-
+                });
     }
 
 

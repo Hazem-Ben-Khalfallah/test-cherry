@@ -13,7 +13,7 @@ import com.intellij.psi.javadoc.PsiDocTag;
  * Time: 22:15
  * To change this template use File | Settings | File Templates.
  */
-public class ReferenceContributor extends PsiReferenceContributor{
+public class ReferenceContributor extends PsiReferenceContributor {
 
 
     @Override

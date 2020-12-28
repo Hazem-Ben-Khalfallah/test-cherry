@@ -8,11 +8,10 @@ import java.util.List;
 /**
  * User: Jaime Hablutzel
  */
-public interface TestClass  extends  TestMember{
+public interface TestClass extends TestMember {
 
 
     /**
-     *
      * @return
      * @should get all test methods matching sut should tags
      * @should always reflect the test class state of created methods
@@ -27,10 +26,9 @@ public interface TestClass  extends  TestMember{
      * will be created in the specified sourceRoot directory, if a class called do.com.Zas (fully qualified name) is created
      * then two packages will be verified/created in the specified sourceRoot.
      *
-     *
+     * @param sourceRoot the specific PsiDirectory source root where the test class and package should be created
      * @should create the new java test class in the same directory that the origin class if testRoot is null, in the specified test root if not null
      * @should create the backing test class in the same package than the sut class
-     * @param sourceRoot the specific PsiDirectory source root where the test class and package should be created
      */
     void create(PsiDirectory sourceRoot);
 
@@ -58,14 +56,11 @@ public interface TestClass  extends  TestMember{
 
     /**
      * This method will return the sut that this test class has been created for
+     *
      * @return
      * @should return the sut class
      */
     PsiClass getClassUnderTest();
-
-
-
-
 
 
 }

@@ -120,8 +120,8 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
 
     private static class MyComponent {
 
-        private JComboBox comboBox;
-        private JPanel panel;
+        private final JComboBox comboBox;
+        private final JPanel panel;
 
         private MyComponent() {
             comboBox = new ComboBox();

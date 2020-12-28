@@ -1,10 +1,10 @@
 package com.blacknebula.testcherry.refactor.listener;
 
-import com.blacknebula.testcherry.*;
+import com.blacknebula.testcherry.TestFrameworkNotConfigured;
 import com.blacknebula.testcherry.model.BDDCore;
 import com.blacknebula.testcherry.model.TestClass;
 import com.blacknebula.testcherry.model.TestMethod;
-import com.blacknebula.testcherry.util.*;
+import com.blacknebula.testcherry.util.BddUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.refactoring.listeners.RefactoringElementListener;

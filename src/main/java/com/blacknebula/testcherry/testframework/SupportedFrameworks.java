@@ -7,9 +7,9 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Enum containing one element per supported framework, every entry should implement {@link TestFrameworkStrategy} and have at least one constructor
  * receiving only one parameter of type {@link Project} even if the implementation doesn't need it FIXME redesign to remove this obligation
- *
+ * <p>
  * // TODO create extension point to allow another extensions to create implementations to allow to create test cases
- *
+ * <p>
  * User: Jaime Hablutzel
  */
 public enum SupportedFrameworks {

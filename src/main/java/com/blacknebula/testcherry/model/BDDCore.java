@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * In a 'service provider framework' like BDDCore would be the 'service access API'
  * Effective java, item 1
- *
+ * <p>
  * User: Jaime Hablutzel
  */
 public final class BDDCore {
@@ -41,10 +41,9 @@ public final class BDDCore {
      * creates a new TestClass will all of its test methods not yet
      * created, but available in {@link TestClass#getAllMethods()}
      * <p>
-     *     <b>Note:</b>
-     *     In unit test mode it will use the JUNIT3 Test Framework
+     * <b>Note:</b>
+     * In unit test mode it will use the JUNIT3 Test Framework
      * </p>
-     *
      *
      * @param sutClass the sut class to be tested
      * @return
@@ -52,7 +51,6 @@ public final class BDDCore {
      * @should return a test class that already exists for a sut class with some test methods initialized
      * @should ignore should tags without a description when creating bdd test methods
      * @should throw exception if there is a try to create a test class with an unsupported PsiClass
-     *
      */
     public static TestClass createTestClass(PsiClass sutClass) throws TestFrameworkNotConfigured {
         Project project = sutClass.getProject();

@@ -1,6 +1,5 @@
 package com.blacknebula.testcherry.testframework;
 
-import com.intellij.codeInsight.intention.AddAnnotationFix;
 import com.blacknebula.testcherry.util.BddUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
@@ -15,41 +14,32 @@ import org.jetbrains.annotations.NotNull;
  */
 public class JUnit4Strategy extends JUnitStrategyBase {
 
- 
 
-    public  JUnit4Strategy(Project project) {
+    public JUnit4Strategy(Project project) {
         super(project);
     }
 
 
     @Override
     public TestFramework getTestFramework() {
-        return  BddUtil.findTestFrameworkByName("JUnit4");
+        return BddUtil.findTestFrameworkByName("JUnit4");
     }
 
-
-
-
-//    @Override // add junit 4 Test annotation
-//    protected void afterCreatingJunitMethod(Project project, PsiMethod realTestMethod) {
-//
-//    }
-
-    @NotNull
     @Override
-    public PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
-        PsiMethod backingTestMethod = super.createBackingTestMethod(testClass, sutMethod, testDescription);
-
+    public @NotNull PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
+        final PsiMethod psiMethod = super.createBackingTestMethod(testClass, sutMethod, testDescription);
         //  add the annotation to the method
-        AddAnnotationFix fix = new AddAnnotationFix("org.junit.Test", backingTestMethod);
-        if (fix.isAvailable(sutMethod.getProject(), null, backingTestMethod.getContainingFile())) {
-            fix.invoke(sutMethod.getProject(), null, backingTestMethod.getContainingFile());
+        AddAnnotationFix fix = new AddAnnotationFix("org.junit.Test", psiMethod);
+        if (fix.isAvailable(sutMethod.getProject(), psiMethod.getContainingFile())) {
+            fix.invoke();
         }
-        return backingTestMethod;
+
+        return psiMethod;
     }
 
     @Override
     protected String getFrameworkBasePackage() {
         return "org.junit";
     }
+
 }

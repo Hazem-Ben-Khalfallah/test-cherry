@@ -1,6 +1,6 @@
 package com.blacknebula.testcherry.model;
 
-import com.blacknebula.testcherry.testframework.*;
+import com.blacknebula.testcherry.testframework.TestFrameworkStrategy;
 import com.intellij.psi.PsiElement;
 
 /**

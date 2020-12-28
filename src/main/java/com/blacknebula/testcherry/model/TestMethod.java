@@ -1,11 +1,13 @@
 package com.blacknebula.testcherry.model;
 
 import com.intellij.psi.PsiMethod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.concurrency.Promise;
 
 /**
  * User: Jaime Hablutzel
  */
-public interface TestMethod extends TestMember{
+public interface TestMethod extends TestMember {
 
     // TODO agregar operaciones que permitan conocer la ubicacion del tag javadoc
 
@@ -24,7 +26,7 @@ public interface TestMethod extends TestMember{
      * under test this test method has been created for
      *
      * @return
-     * @should return the sut method for this method 
+     * @should return the sut method for this method
      */
     PsiMethod getSutMethod();
 
@@ -35,7 +37,7 @@ public interface TestMethod extends TestMember{
      * othewise it will return null
      *
      * @return
-     * @should return a valid psiMethod if reallyExists returns true, false otherwise 
+     * @should return a valid psiMethod if reallyExists returns true, false otherwise
      */
     PsiMethod getBackingElement();
 
@@ -56,7 +58,6 @@ public interface TestMethod extends TestMember{
      * it only exists as a should javadoc tag, and it
      * can be created with {@link TestMethod#create()}
      *
-     * @return
      * @should return true only if this test method has a backing psiMethod
      */
     boolean reallyExists();

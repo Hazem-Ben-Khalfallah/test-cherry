@@ -1,8 +1,7 @@
 package com.blacknebula.testcherry.util;
 
-import com.intellij.openapi.extensions.Extensions;
+import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiAnonymousClass;
 import com.intellij.psi.PsiClass;
@@ -28,6 +27,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.intellij.ide.highlighter.JavaFileType.INSTANCE;
 
 /**
  * User: Jaime Hablutzel
@@ -123,42 +124,14 @@ public final class BddUtil {
     public static void addImportToClass(Project project1, PsiClass testClass, String packageToBeAdded) {
 
         String packageToBeAdded1 = "import " + packageToBeAdded + ";";
-        String ext = StdFileTypes.JAVA.getDefaultExtension();
+        FileType type = INSTANCE;
+        String ext = type.getDefaultExtension();
         @NonNls String fileName = "_Dummy_." + ext;
-        FileType type = StdFileTypes.JAVA;
         PsiJavaFile javaFile = (PsiJavaFile) PsiFileFactory.getInstance(project1).createFileFromText(type, fileName, packageToBeAdded1, 0, packageToBeAdded1.length());
         PsiImportStatement statement = javaFile.getImportList().getImportStatements()[0];
         PsiImportList list = ((PsiJavaFile) testClass.getContainingFile()).getImportList();
         list.add(statement);
     }
-
-    public static class DocOffsetPair {
-
-        public DocOffsetPair(PsiElement start, PsiElement end) {
-            this.start = start;
-            this.end = end;
-        }
-
-        public PsiElement getStart() {
-            return start;
-        }
-
-        public void setStart(PsiElement start) {
-            this.start = start;
-        }
-
-        public PsiElement getEnd() {
-            return end;
-        }
-
-        public void setEnd(PsiElement end) {
-            this.end = end;
-        }
-
-        public PsiElement start;
-        public PsiElement end;
-    }
-
 
     /**
      * For a should tag it will return a collection of pairs that correspond
@@ -219,7 +192,7 @@ public final class BddUtil {
                 PsiElement child = children[i];
                 if (child instanceof PsiDocTagValue) {
                     PsiElement leadingAsterisks = children[i + 2];
-                    if (children.length > i + 2 &&  leadingAsterisks instanceof PsiDocToken && ((PsiDocToken) leadingAsterisks).getTokenType().toString().equals("DOC_COMMENT_LEADING_ASTERISKS")) {
+                    if (children.length > i + 2 && leadingAsterisks instanceof PsiDocToken && ((PsiDocToken) leadingAsterisks).getTokenType().toString().equals("DOC_COMMENT_LEADING_ASTERISKS")) {
                         oneLineOrWeirdCharsShouldTag = false;
                     }
                 }
@@ -255,7 +228,6 @@ public final class BddUtil {
         return returnPairs;
     }
 
-
     public static List<PsiImportStatementBase> findImportsInClass(PsiClass testBackingClass, String importName) {
 
         final PsiImportList[] psiImportList = {null};
@@ -287,7 +259,6 @@ public final class BddUtil {
         return matchingImports;
     }
 
-
     /**
      * It will search in com.intellij.testFrameworkDescriptor extension point
      * for descriptors with the expected name
@@ -298,7 +269,7 @@ public final class BddUtil {
     public static JavaTestFramework findTestFrameworkByName(String name) {
 
         //  get a test framework from platform extension
-        for (final TestFramework descriptor : Extensions.getExtensions(TestFramework.EXTENSION_NAME)) {
+        for (final TestFramework descriptor : ExtensionPointName.<TestFramework>create("com.intellij.testFramework").getExtensionList()) {
             if (descriptor.getName().equals(name)) {
                 return (JavaTestFramework) descriptor;
             }
@@ -323,6 +294,33 @@ public final class BddUtil {
                     .substring(0, i);
         } else {
             return null;
+        }
+    }
+
+    public static class DocOffsetPair {
+
+        public PsiElement start;
+        public PsiElement end;
+
+        public DocOffsetPair(PsiElement start, PsiElement end) {
+            this.start = start;
+            this.end = end;
+        }
+
+        public PsiElement getStart() {
+            return start;
+        }
+
+        public void setStart(PsiElement start) {
+            this.start = start;
+        }
+
+        public PsiElement getEnd() {
+            return end;
+        }
+
+        public void setEnd(PsiElement end) {
+            this.end = end;
         }
     }
 

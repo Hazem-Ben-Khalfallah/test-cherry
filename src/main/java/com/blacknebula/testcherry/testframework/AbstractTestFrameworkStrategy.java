@@ -23,7 +23,6 @@ import com.intellij.psi.PsiType;
 import com.intellij.psi.javadoc.PsiDocTag;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiUtil;
-import com.intellij.testIntegration.TestFramework;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -201,7 +200,7 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
      * @return
      * @should create a test method with the expected generic body and javadoc and verify class structure
      */
-    public PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
+    public @NotNull PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
         PsiElementFactory elementFactory;
 
         elementFactory = JavaPsiFacade.getElementFactory(sutMethod.getProject());
@@ -245,9 +244,6 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
 
         PsiComment psiComment = elementFactory.createCommentFromText(commentText, null);
         psiComment.add(docTag);
-
-//        final JavaCodeStyleManager codeStyleManagerEx = JavaCodeStyleManager.getInstance(project);
-
 
         realTestMethod.addBefore(psiComment, realTestMethod.getFirstChild());
 
