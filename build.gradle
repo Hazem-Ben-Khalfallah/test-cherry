@@ -17,8 +17,9 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    // do not change:  this is the version to be used to build the plugin. Not the target
-    version '2020.2'
+    // Update this version to support future intellij versions
+    version '2020.3'
+    //version '2020.2'
     plugins 'java'
     buildSearchableOptions.enabled = true
 }
