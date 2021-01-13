@@ -14,7 +14,10 @@ import java.lang.reflect.InvocationTargetException;
  */
 public enum SupportedFrameworks {
 
-    JUNIT3(JUnit3Strategy.class), JUNIT4(JUnit4Strategy.class), TESTNG(TestNGStrategy.class);
+    JUNIT3(JUnit3Strategy.class),
+    JUNIT4(JUnit4Strategy.class),
+    JUNIT5(JUnit5Strategy.class),
+    TESTNG(TestNGStrategy.class);
 
     private final Class<? extends TestFrameworkStrategy> clazz;
 
@@ -25,18 +28,15 @@ public enum SupportedFrameworks {
 
     /**
      * Should return a framework strategy based on a String
-     * <p/>
-     *
-     * @param project
-     * @param s
-     * @return
      */
     public static TestFrameworkStrategy getStrategyForFramework(Project project, String s) {
 
         try {
             SupportedFrameworks supportedFrameworks = SupportedFrameworks.valueOf(s);
             try {
-                TestFrameworkStrategy testFrameworkStrategy = supportedFrameworks.clazz.getConstructor(Project.class).newInstance(project);
+                TestFrameworkStrategy testFrameworkStrategy = supportedFrameworks.clazz
+                        .getConstructor(Project.class)
+                        .newInstance(project);
 
                 return testFrameworkStrategy;
 

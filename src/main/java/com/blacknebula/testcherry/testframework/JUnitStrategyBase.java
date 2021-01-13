@@ -39,35 +39,23 @@ public abstract class JUnitStrategyBase extends AbstractTestFrameworkStrategy {
     @Override
     public @NotNull PsiMethod createBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
         final PsiMethod realTestMethod = super.createBackingTestMethod(testClass, sutMethod, testDescription);
-        //  add org.junit.Assert.fail("Not yet implemented");,
         PsiJavaFile javaFile = (PsiJavaFile) testClass.getContainingFile();
 
-        boolean assertImportExists = javaFile.getImportList().findSingleImportStatement("Assert") != null;
+        boolean assertImportExists = javaFile.getImportList().findSingleImportStatement(getAssertionClassSimpleName()) != null;
         boolean makeFullQualified = false;
 
+        final String assertionClassFullQualifiedName = getFrameworkBasePackage() + "." + getAssertionClassSimpleName();
         //  if Assert exists and is different to both of previous, place fully qualified statement
         if (assertImportExists) {
-
-            //  verify if junit.framework.Assert exists, if it does do not import org.junit.Assert
-            //  verify import for Assert before actually importing
-
-
             //  replace it by ((PsiJavaFile) testClass.getContainingFile()).getImportList()
-            PsiImportStatement bei = javaFile.getImportList().findSingleClassImportStatement("org.junit.Assert");
-//            List<PsiImportStatementBase> basicExpectedImport = BddUtil.findImportsInClass(testClass, );
-
-            PsiImportStatement oei = javaFile.getImportList().findSingleClassImportStatement("junit.framework.Assert");
-//            List<PsiImportStatementBase> otherExpectedImport = BddUtil.findImportsInClass(testClass, "");
-
-            if (bei == null && oei == null) {
+            final PsiImportStatement psiImportStatement = javaFile.getImportList().findSingleClassImportStatement(assertionClassFullQualifiedName);
+            if (psiImportStatement == null) {
                 // then it is a weird class
                 makeFullQualified = true;
             }
-
-
         } else {
             //  create basic import
-            BddUtil.addImportToClass(sutMethod.getProject(), testClass, getFrameworkBasePackage() + ".Assert");
+            BddUtil.addImportToClass(sutMethod.getProject(), testClass, assertionClassFullQualifiedName);
         }
 
 
@@ -76,9 +64,9 @@ public abstract class JUnitStrategyBase extends AbstractTestFrameworkStrategy {
 
         PsiStatement statement;
         if (makeFullQualified) {
-            statement = elementFactory2.createStatementFromText(getFrameworkBasePackage() + ".Assert.fail(\"Not yet implemented\");", null);
+            statement = elementFactory2.createStatementFromText(assertionClassFullQualifiedName + ".fail(\"Not yet implemented\");", null);
         } else {
-            statement = elementFactory2.createStatementFromText("Assert.fail(\"Not yet implemented\");", null);
+            statement = elementFactory2.createStatementFromText(getAssertionClassSimpleName() + ".fail(\"Not yet implemented\");", null);
         }
 
         realTestMethod.getBody().addAfter(statement, realTestMethod.getBody().getLastBodyElement());
@@ -87,6 +75,8 @@ public abstract class JUnitStrategyBase extends AbstractTestFrameworkStrategy {
     }
 
     protected abstract String getFrameworkBasePackage();
+
+    protected abstract String getAssertionClassSimpleName();
 
 
 }
