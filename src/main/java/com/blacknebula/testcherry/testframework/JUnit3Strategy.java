@@ -47,6 +47,11 @@ public class JUnit3Strategy extends JUnitStrategyBase {
         return s;
     }
 
+    @Override
+    protected String getAssertionClassSimpleName() {
+        return "Assert";
+    }
+
 
     /**
      * @param testClass

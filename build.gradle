@@ -1,11 +1,11 @@
 plugins {
-    id 'java'
     id 'org.jetbrains.intellij' version '0.6.5'
+    id 'java'
     id 'java-library'
 }
 
 group 'com.blacknebula'
-version '3.2'
+version '3.3'
 
 repositories {
     mavenCentral()
@@ -13,6 +13,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
@@ -21,18 +22,25 @@ intellij {
     version '2020.3'
     //version '2020.2'
     plugins 'java'
-    buildSearchableOptions.enabled = true
+   buildSearchableOptions.enabled = false
 }
 
 patchPluginXml {
     changeNotes """
+       <p>3.3</p>
+       <ul>
+          <li>Add support to Junit 5</li>
+       </ul>
+       <p>3.2</p>
+       <ul>
+          <li>Add support to IntelliJ IDEA version 2020.3</li>
+       </ul>
         <p>3.1</p>
        <ul>
           <li>fix multiple test method generation</li>
        </ul>
        <p>3.0</p>
        <ul>
-          <li>Add support to IntelliJ IDEA version **2020.3**</li>
           <li>Reduce deprecated methods usage</li>
        </ul>
        <p>2.0</p>
