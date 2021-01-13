@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.blacknebula.TestCherry</id>
     <name>TestCherry</name>
-    <version>3.2</version>
+    <version>3.3</version>
 
     <vendor email="benkhalfallahhazem@gmail.com"
             url="https://github.com/Hazem-Ben-Khalfallah/test-cherry">
