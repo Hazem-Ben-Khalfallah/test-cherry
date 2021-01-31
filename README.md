@@ -108,7 +108,21 @@ You can download the plugin "**testCherry**" directly from the IDE.
 **1.0**
 * Implement test case generation for with IntelliJ IDEA version **2020.2**
 
+<h2>Java doc generation Workaround</h2>
+When generating javadoc from code, the javadoc tool generates errors while encountering the TestCherry tags:
+
+> error: unknown tag: should
+> error: unknown tag: verifies
+
+This can be solved by adding the following to the javadoc commandline:
+`-tag should:a:"Should:" -tag verifies:a:"Verifies:"`
+
+In IntelliJ, this could be done by adding it at the 'Other command line arguments'
+![image](https://user-images.githubusercontent.com/2254658/105058726-cf919f00-5a76-11eb-8aa5-c91c13a2e9cc.png)
+
+
 <h2>Credits</h2>
 
-* To <a href="https://github.com/hablutzel1/GenerateTestCases">GenerateTestCases</a> project author <a href="https://github.com/hablutzel1">Jaime Hablutzel</a>
-* To <a href="https://wiki.openmrs.org/display/docs/Generate+Test+Case+Plugin">OpenMRS</a> team for @should style testing
+* To <a href="https://github.com/hablutzel1/GenerateTestCases">GenerateTestCases</a> project author <a href="https://github.com/hablutzel1">Jaime Hablutzel</a>.
+* To <a href="https://wiki.openmrs.org/display/docs/Generate+Test+Case+Plugin">OpenMRS</a> team for @should style testing.
+* To <a href="https://github.com/Fontyschriek">@Fontyschriek</a> for his suggestions to improve the plugin.
