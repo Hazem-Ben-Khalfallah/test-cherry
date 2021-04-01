@@ -1,11 +1,11 @@
 plugins {
-    id 'org.jetbrains.intellij' version '0.6.5'
+    id 'org.jetbrains.intellij' version '0.7.2'
     id 'java'
     id 'java-library'
 }
 
 group 'com.blacknebula'
-version '3.3'
+version '3.4'
 
 repositories {
     mavenCentral()
@@ -19,14 +19,18 @@ dependencies {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     // Update this version to support future intellij versions
-    version '2020.3'
+    version 'LATEST-EAP-SNAPSHOT'
     //version '2020.2'
     plugins 'java'
-   buildSearchableOptions.enabled = false
+    buildSearchableOptions.enabled = false
 }
 
 patchPluginXml {
     changeNotes """
+       <p>3.4</p>
+       <ul>
+          <li>Add support to IntelliJ IDEA version 2021.1</li>
+       </ul>
        <p>3.3</p>
        <ul>
           <li>Add support to Junit 5</li>
