@@ -1,5 +1,6 @@
 package com.blacknebula.testcherry.model;
 
+import com.blacknebula.testcherry.testframework.NamingConvention;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
@@ -15,6 +16,7 @@ public class TestCherrySettings implements PersistentStateComponent<TestCherrySe
 
 
     String testFramework;
+    NamingConvention namingConvention;
 
     public TestCherrySettings() {
         testFramework = "";
@@ -36,6 +38,14 @@ public class TestCherrySettings implements PersistentStateComponent<TestCherrySe
 
     public void setTestFramework(String testFramework) {
         this.testFramework = testFramework;
+    }
+
+    public NamingConvention getNamingConvention() {
+        return namingConvention;
+    }
+
+    public void setNamingConvention(final NamingConvention namingConvention) {
+        this.namingConvention = namingConvention;
     }
 
     public TestCherrySettings getState() {

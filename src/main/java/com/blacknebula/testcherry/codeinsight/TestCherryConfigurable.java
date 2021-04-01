@@ -1,6 +1,7 @@
 package com.blacknebula.testcherry.codeinsight;
 
 import com.blacknebula.testcherry.model.TestCherrySettings;
+import com.blacknebula.testcherry.testframework.NamingConvention;
 import com.blacknebula.testcherry.testframework.SupportedFrameworks;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.ConfigurationException;
@@ -11,6 +12,7 @@ import org.jetbrains.annotations.Nls;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,21 +54,25 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
 
     @Override
     public JComponent createComponent() {
-        List<String> strings = new ArrayList<String>();
-        strings.add("-");
+        List<String> supportedFrameworkNames = new ArrayList<>();
+        supportedFrameworkNames.add("-");
         SupportedFrameworks[] frameworks = SupportedFrameworks.values();
         for (SupportedFrameworks framework : frameworks) {
-            strings.add(framework.toString());
+            supportedFrameworkNames.add(framework.toString());
         }
 
-        DefaultComboBoxModel aModel = new DefaultComboBoxModel(strings.toArray());
+        List<NamingConvention> namingConventionNames = new ArrayList<>(Arrays.asList(NamingConvention.values()));
+
+        DefaultComboBoxModel aModel = new DefaultComboBoxModel(supportedFrameworkNames.toArray());
+        DefaultComboBoxModel namingConventionComboBox = new DefaultComboBoxModel(namingConventionNames.toArray());
 
         TestCherrySettings casesSettings = TestCherrySettings.getInstance(myProject);
 
         myComponent = new MyComponent();
 
         if (casesSettings != null) {
-            addComboBoxItems(aModel, casesSettings);
+            addTestingTypeComboBoxItems(aModel, casesSettings);
+            addNamingConventionComboBoxItems(namingConventionComboBox, casesSettings);
         }
 
         //To change body of implemented methods use File | Settings | File Templates.
@@ -74,17 +80,20 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
     }
 
     @Override
-    public void apply() throws ConfigurationException {
+    public void apply() {
 
         //  get settings holder
         TestCherrySettings casesSettings = TestCherrySettings.getInstance(myProject);
         //  persist currently selected test framework
-        String s = myComponent.comboBox.getSelectedItem().toString();
-        if (!s.equals("-")) {
-            casesSettings.setTestFramework(s);
+        String testFramework = myComponent.comboBoxTestType.getSelectedItem().toString();
+        if (!testFramework.equals("-")) {
+            casesSettings.setTestFramework(testFramework);
         } else {
             casesSettings.setTestFramework(EMPTY_STRING);
         }
+
+        NamingConvention namingConvention =  (NamingConvention) myComponent.comboBoxNamingConvention.getSelectedItem();
+        casesSettings.setNamingConvention(namingConvention);
 
     }
 
@@ -96,7 +105,7 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
     @Override
     public boolean isModified() {
         TestCherrySettings casesSettings = TestCherrySettings.getInstance(myProject);
-        String o = (String) myComponent.comboBox.getSelectedItem();
+        String o = (String) myComponent.comboBoxTestType.getSelectedItem();
         String s = casesSettings.getTestFramework();
         if (o.equals("-")) {
             return !s.equals(EMPTY_STRING);
@@ -110,27 +119,41 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
     public void disposeUIResources() {
     }
 
-    private void addComboBoxItems(DefaultComboBoxModel aModel, TestCherrySettings casesSettings) {
+    private void addTestingTypeComboBoxItems(DefaultComboBoxModel aModel, TestCherrySettings casesSettings) {
         String testFramework = casesSettings.getTestFramework();
         if (!testFramework.equals(EMPTY_STRING)) {
             aModel.setSelectedItem(testFramework);
         }
-        myComponent.setModel(aModel);
+        myComponent.setTestingTypeModel(aModel);
+    }
+
+    private void addNamingConventionComboBoxItems(DefaultComboBoxModel aModel, TestCherrySettings casesSettings) {
+        NamingConvention namingConvention = casesSettings.getNamingConvention();
+        if (namingConvention != null) {
+            aModel.setSelectedItem(namingConvention);
+        }
+
+        myComponent.setNamingConventionModel(aModel);
     }
 
     private static class MyComponent {
 
-        private final JComboBox comboBox;
-        private final JPanel panel;
+        private final JComboBox comboBoxTestType = new ComboBox();
+        private final JComboBox<NamingConvention> comboBoxNamingConvention = new ComboBox<>();
+        private final JPanel panel = new JPanel();
 
         private MyComponent() {
-            comboBox = new ComboBox();
-            panel = new JPanel();
-            panel.add(comboBox);
+            panel.add(comboBoxTestType);
+            panel.add(comboBoxNamingConvention);
         }
 
-        private MyComponent setModel(ComboBoxModel model) {
-            comboBox.setModel(model);
+        private MyComponent setTestingTypeModel(ComboBoxModel model) {
+            comboBoxTestType.setModel(model);
+            return this;
+        }
+
+        private MyComponent setNamingConventionModel(ComboBoxModel<NamingConvention> model) {
+            comboBoxNamingConvention.setModel(model);
             return this;
         }
 

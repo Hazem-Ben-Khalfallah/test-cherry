@@ -33,9 +33,11 @@ import org.jetbrains.annotations.NotNull;
 public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStrategy {
 
     private final Project project;
+    private final NamingConvention namingConvention;
 
-    public AbstractTestFrameworkStrategy(Project project) {
+    public AbstractTestFrameworkStrategy(Project project, NamingConvention namingConvention) {
         this.project = project;
+        this.namingConvention = namingConvention;
     }
 
     /**
@@ -47,7 +49,7 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
      * @should create a appropiate name for the test method
      * @should fail if wrong args
      */
-    protected static String generateGenericTestMethodName(@NotNull String originMethodName, @NotNull String shouldDescription) {
+    protected String generateGenericTestMethodName(@NotNull String originMethodName, @NotNull String shouldDescription) {
 
         if (StringUtils.isBlank(originMethodName) || StringUtils.isBlank(shouldDescription)) {
             throw new IllegalArgumentException();
@@ -58,16 +60,26 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
         @NotNull
         String[] tokens = shouldDescription.split("\\s+");
         for (String token : tokens) {
-            char[] allChars = token.toCharArray();
-            StringBuilder validChars = new StringBuilder();
-            for (char validChar : allChars) {
-                if (Character.isJavaIdentifierPart(validChar)) {
-                    validChars.append(validChar);
-                }
-            }
-            builder.append(toCamelCase(validChars.toString()));
+            builder.append(getValidatedToken(token));
         }
         return builder.toString();
+    }
+
+    @NotNull
+    private String getValidatedToken(final String token) {
+        char[] allChars = token.toCharArray();
+        StringBuilder validChars = new StringBuilder();
+        for (char validChar : allChars) {
+            if (Character.isJavaIdentifierPart(validChar)) {
+                validChars.append(validChar);
+            }
+        }
+
+        if (namingConvention == NamingConvention.CAMEL_CASE_NAMING) {
+            return toCamelCase(validChars.toString());
+        } else {
+            return "_" + validChars;
+        }
     }
 
     private static String toCamelCase(String input) {

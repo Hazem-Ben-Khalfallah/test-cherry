@@ -20,8 +20,8 @@ public abstract class JUnitStrategyBase extends AbstractTestFrameworkStrategy {
 
     private final Project project;
 
-    protected JUnitStrategyBase(Project project) {
-        super(project);
+    protected JUnitStrategyBase(Project project, NamingConvention namingConvention) {
+        super(project, namingConvention);
         this.project = project;
     }
 
