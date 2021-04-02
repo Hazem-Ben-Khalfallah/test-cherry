@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 public class JUnit4Strategy extends JUnitStrategyBase {
 
 
-    public JUnit4Strategy(Project project) {
-        super(project);
+    public JUnit4Strategy(Project project, NamingConvention namingConvention) {
+        super(project, namingConvention);
     }
 
 

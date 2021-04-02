@@ -6,7 +6,9 @@ import com.blacknebula.testcherry.model.TestClass;
 import com.blacknebula.testcherry.model.TestMethod;
 import com.blacknebula.testcherry.model.TestMethodImpl;
 import com.blacknebula.testcherry.quickfix.CreateTestMethodFix;
+import com.blacknebula.testcherry.testframework.NamingConvention;
 import com.blacknebula.testcherry.testframework.SupportedFrameworks;
+import com.blacknebula.testcherry.testframework.TestFrameworkStrategy;
 import com.blacknebula.testcherry.util.BddUtil;
 import com.blacknebula.testcherry.util.Constants;
 import com.intellij.codeInsight.daemon.HighlightDisplayKey;
@@ -88,10 +90,11 @@ public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspection
         }
 
         Project project = aClass.getProject();
+        TestCherrySettings testCherrySettings = TestCherrySettings.getInstance(project);
 
         String testFramework;
         if (!ApplicationManager.getApplication().isUnitTestMode()) {
-            testFramework = TestCherrySettings.getInstance(project).getTestFramework();
+            testFramework = testCherrySettings.getTestFramework();
             if (StringUtils.isEmpty(testFramework)) {
                 return null;
             }
@@ -100,7 +103,9 @@ public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspection
         }
 
         //  create TestClass for current class
-        TestClass testClass = BDDCore.createTestClass(aClass, SupportedFrameworks.getStrategyForFramework(project, testFramework));
+        NamingConvention namingConvention = testCherrySettings.getNamingConvention();
+        TestFrameworkStrategy strategyForFramework = SupportedFrameworks.getStrategyForFramework(project, testFramework, namingConvention);
+        TestClass testClass = BDDCore.createTestClass(aClass, strategyForFramework);
 
 
         //  highlight warning should cover test class name

@@ -29,14 +29,14 @@ public enum SupportedFrameworks {
     /**
      * Should return a framework strategy based on a String
      */
-    public static TestFrameworkStrategy getStrategyForFramework(Project project, String s) {
+    public static TestFrameworkStrategy getStrategyForFramework(Project project, String testFramework, NamingConvention namingConvention) {
 
         try {
-            SupportedFrameworks supportedFrameworks = SupportedFrameworks.valueOf(s);
+            SupportedFrameworks supportedFrameworks = SupportedFrameworks.valueOf(testFramework);
             try {
                 TestFrameworkStrategy testFrameworkStrategy = supportedFrameworks.clazz
-                        .getConstructor(Project.class)
-                        .newInstance(project);
+                        .getConstructor(Project.class, NamingConvention.class)
+                        .newInstance(project, namingConvention);
 
                 return testFrameworkStrategy;
 
@@ -51,7 +51,7 @@ public enum SupportedFrameworks {
             }
 
         } catch (IllegalArgumentException e) {
-            throw new UnsupportedOperationException("Unsupported framework: " + s);
+            throw new UnsupportedOperationException("Unsupported framework: " + testFramework);
         }
 
     }

@@ -24,8 +24,8 @@ import org.jetbrains.concurrency.Promise;
  */
 public class JUnit3Strategy extends JUnitStrategyBase {
 
-    public JUnit3Strategy(Project project) {
-        super(project);
+    public JUnit3Strategy(Project project, NamingConvention namingConvention) {
+        super(project, namingConvention);
     }
 
     @NotNull

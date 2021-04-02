@@ -10,10 +10,9 @@ import org.jetbrains.annotations.NotNull;
 public class JUnit5Strategy extends JUnitStrategyBase {
 
 
-    public JUnit5Strategy(Project project) {
-        super(project);
+    public JUnit5Strategy(Project project, NamingConvention namingConvention) {
+        super(project, namingConvention);
     }
-
 
     @Override
     public TestFramework getTestFramework() {

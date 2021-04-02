@@ -18,8 +18,8 @@ import org.jetbrains.annotations.NotNull;
 public class TestNGStrategy extends AbstractTestFrameworkStrategy {
 
 
-    public TestNGStrategy(Project project) {
-        super(project);
+    public TestNGStrategy(Project project, NamingConvention namingConvention) {
+        super(project, namingConvention);
     }
 
     @Override

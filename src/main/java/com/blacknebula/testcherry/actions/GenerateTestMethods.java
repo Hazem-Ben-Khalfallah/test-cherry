@@ -90,15 +90,13 @@ public class GenerateTestMethods extends AnAction {
         //  to get the current project
         final Project project = PlatformDataKeys.PROJECT.getData(dataContext);
         Editor editor = getEditor(dataContext);
+        TestCherrySettings casesSettings = TestCherrySettings.getInstance(project);
 
         //  prompt to choose the strategy if it haven't been choosen before
         String testFrameworkProperty;
         if (ApplicationManager.getApplication().isUnitTestMode()) {
             testFrameworkProperty = "JUNIT3";
         } else {
-
-
-            TestCherrySettings casesSettings = TestCherrySettings.getInstance(project);
             testFrameworkProperty = casesSettings.getTestFramework();
 
             if (StringUtils.isEmpty(testFrameworkProperty)) { //  it haven't been defined yet
@@ -138,7 +136,7 @@ public class GenerateTestMethods extends AnAction {
 
 
             // TODO replace it by strong typed way to determine the framework
-            TestFrameworkStrategy tfs = SupportedFrameworks.getStrategyForFramework(project, testFrameworkProperty);
+            TestFrameworkStrategy tfs = SupportedFrameworks.getStrategyForFramework(project, testFrameworkProperty, casesSettings.getNamingConvention());
 
             final TestClass testClass = BDDCore.createTestClass(psiClass, tfs);
 
