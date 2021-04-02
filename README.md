@@ -126,3 +126,4 @@ In IntelliJ, this could be done by adding it at the 'Other command line argument
 * To <a href="https://github.com/hablutzel1/GenerateTestCases">GenerateTestCases</a> project author <a href="https://github.com/hablutzel1">Jaime Hablutzel</a>.
 * To <a href="https://wiki.openmrs.org/display/docs/Generate+Test+Case+Plugin">OpenMRS</a> team for @should style testing.
 * To <a href="https://github.com/Fontyschriek">@Fontyschriek</a> for his suggestions to improve the plugin.
+* To <a href="https://github.com/yanislavm">@yanislavm</a> for his valuable improvements.
