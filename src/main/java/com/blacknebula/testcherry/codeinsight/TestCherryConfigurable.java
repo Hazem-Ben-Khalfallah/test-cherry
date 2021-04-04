@@ -94,7 +94,6 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
 
         NamingConvention namingConvention =  (NamingConvention) myComponent.comboBoxNamingConvention.getSelectedItem();
         casesSettings.setNamingConvention(namingConvention);
-
     }
 
     @Override
@@ -105,15 +104,24 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
     @Override
     public boolean isModified() {
         TestCherrySettings casesSettings = TestCherrySettings.getInstance(myProject);
-        String o = (String) myComponent.comboBoxTestType.getSelectedItem();
-        String s = casesSettings.getTestFramework();
-        if (o.equals("-")) {
-            return !s.equals(EMPTY_STRING);
+        return isTestTypeModified(casesSettings) || isNamingConventionModified(casesSettings);
+    }
+
+    private boolean isTestTypeModified(final TestCherrySettings casesSettings) {
+        String currentTestTypeValue = (String) myComponent.comboBoxTestType.getSelectedItem();
+        String savedTestTypeValue = casesSettings.getTestFramework();
+        if (currentTestTypeValue.equals("-")) {
+            return !EMPTY_STRING.equals(savedTestTypeValue);
         } else {
-            return !o.equals(s);
+            return !currentTestTypeValue.equals(savedTestTypeValue);
         }
     }
 
+    private boolean isNamingConventionModified(final TestCherrySettings casesSettings) {
+        NamingConvention selectedNamingConvention = (NamingConvention) myComponent.comboBoxNamingConvention.getSelectedItem();
+        NamingConvention savedNamingConventionValue = casesSettings.getNamingConvention();
+        return selectedNamingConvention != savedNamingConventionValue;
+    }
 
     @Override
     public void disposeUIResources() {
@@ -138,7 +146,7 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
 
     private static class MyComponent {
 
-        private final JComboBox comboBoxTestType = new ComboBox();
+        private final JComboBox<String> comboBoxTestType = new ComboBox();
         private final JComboBox<NamingConvention> comboBoxNamingConvention = new ComboBox<>();
         private final JPanel panel = new JPanel();
 
@@ -147,7 +155,7 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
             panel.add(comboBoxNamingConvention);
         }
 
-        private MyComponent setTestingTypeModel(ComboBoxModel model) {
+        private MyComponent setTestingTypeModel(ComboBoxModel<String> model) {
             comboBoxTestType.setModel(model);
             return this;
         }
