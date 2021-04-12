@@ -27,6 +27,10 @@ intellij {
 
 patchPluginXml {
     changeNotes """
+        <p>3.5</p>
+       <ul>
+          <li>Add ability the user to choose the naming convention for the generated test cases. Now it supports Snake Case and Camel Case. </li>
+       </ul>
        <p>3.4</p>
        <ul>
           <li>Add support to IntelliJ IDEA version 2021.1</li>
