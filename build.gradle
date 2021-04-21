@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.blacknebula'
-version '3.5'
+version '3.6'
 
 repositories {
     mavenCentral()
@@ -27,7 +27,12 @@ intellij {
 
 patchPluginXml {
     changeNotes """
-        <p>3.5</p>
+       <p>3.6</p>
+       <ul>
+          <li>Fix a Nullpointer Exception that is thrown during various refactorings.</li>
+          <li>Added verifies as a tag in order to prevent the warnings in IntelliJ Idea</li>
+       </ul>
+       <p>3.5</p>
        <ul>
           <li>Add ability the user to choose the naming convention for the generated test cases. Now it supports Snake Case and Camel Case. </li>
        </ul>
