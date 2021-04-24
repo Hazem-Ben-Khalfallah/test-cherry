@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.blacknebula.TestCherry</id>
     <name>TestCherry</name>
-    <version>3.5</version>
+    <version>3.6</version>
 
     <vendor email="benkhalfallahhazem@gmail.com"
             url="https://github.com/Hazem-Ben-Khalfallah/test-cherry">
@@ -61,6 +61,9 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
 
         <!--for adding support for @should tag-->
         <javadocTagInfo implementation="com.blacknebula.testcherry.javadoc.ShouldTagInfo"/>
+
+        <!--for adding support for @verifies tag-->
+        <javadocTagInfo implementation="com.blacknebula.testcherry.javadoc.VerifiesTagInfo"/>
 
         <!--*****************************************************-->
         <!--for references with renaming support of PsiDocTag-->

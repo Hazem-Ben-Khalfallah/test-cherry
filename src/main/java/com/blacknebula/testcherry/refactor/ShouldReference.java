@@ -29,9 +29,7 @@ public class ShouldReference implements PsiReference {
      * @param testMethod
      */
     public ShouldReference(PsiDocTag psiDocTag, TestMethod testMethod) {
-
         // TODO assert psiDocTag is valid for us
-
         this.psiDocTag = psiDocTag;
         this.testMethod = testMethod;
     }
@@ -80,9 +78,7 @@ public class ShouldReference implements PsiReference {
      */
     @Override
     public PsiElement resolve() {
-
-
-        if (testMethod.reallyExists()) {
+        if (testMethod != null && testMethod.reallyExists()) {
             return testMethod.getBackingElement();
         }
 
@@ -102,7 +98,7 @@ public class ShouldReference implements PsiReference {
         // TODO rename PsiDocTag and test method
         // consider PsiPolyVariantReference
         // consider BindablePsiReference for fixing refactoring
-        // look for implementation that make use of bindToElement method
+        // look for implementation that make use ShouldReferenceof bindToElement method
 
 //          <renamePsiElementProcessor implementation="com.intellij.refactoring.rename.RenamePsiFileProcessor" order="last"/> if nothing else works
 //        return null;
