@@ -92,6 +92,12 @@ You can download the plugin "**testCherry**" directly from the IDE.
 * run ```gradlew build```
 
 <h2>Change Notes</h2>
+
+**3.6**
+* Fixing a NullPointerException that is thrown in IntelliJ Idea
+* Fixing outOfBoundException when generating a test case
+* adding a comment tag for verifies to prevent the warnings
+
 **3.5**
 * Support for snake case test cases generation
 
