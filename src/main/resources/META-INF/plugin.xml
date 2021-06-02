@@ -30,7 +30,7 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
 
     <!-- Upgrade this version to support newer version of intellij IDE
     please see: https://jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_configuration_file.html-->
-    <idea-version since-build="2021.1"/>
+    <idea-version since-build="2021.2"/>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->

@@ -1,11 +1,11 @@
 plugins {
-    id 'org.jetbrains.intellij' version '0.7.2'
+    id 'org.jetbrains.intellij' version '1.0'
     id 'java'
     id 'java-library'
 }
 
 group 'com.blacknebula'
-version '3.6'
+version '3.7'
 
 repositories {
     mavenCentral()
@@ -18,15 +18,18 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
+    version = 'LATEST-EAP-SNAPSHOT'
     // Update this version to support future intellij versions
-    version 'LATEST-EAP-SNAPSHOT'
     //version '2020.2'
-    plugins 'java'
-    buildSearchableOptions.enabled = false
+    plugins = ['java']
 }
 
 patchPluginXml {
-    changeNotes """
+    changeNotes.set("""
+       <p>3.7</p>
+       <ul>
+          <li>Add support to IntelliJ IDEA version 2021.2</li>
+       </ul>
        <p>3.6</p>
        <ul>
           <li>Fix a Nullpointer Exception that is thrown during various refactorings.</li>
@@ -65,5 +68,5 @@ patchPluginXml {
       <p>1.0</p>
        <ul>
           <li>Fixed to work with IntelliJ IDEA 2020.2</li>
-       </ul>"""
+       </ul>""")
 }
