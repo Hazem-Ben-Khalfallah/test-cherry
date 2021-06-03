@@ -92,6 +92,9 @@ You can download the plugin "**testCherry**" directly from the IDE.
 * run ```gradlew build```
 
 <h2>Change Notes</h2>
+**3.7**
+* Add support for IntelliJ IDEA version **2021.2**
+
 **3.5**
 * Support for snake case test cases generation
 
