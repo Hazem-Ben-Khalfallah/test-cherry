@@ -93,6 +93,9 @@ You can download the plugin "**testCherry**" directly from the IDE.
 
 <h2>Change Notes</h2>
 
+**3.7**
+* Add support for IntelliJ IDEA version **2021.2**
+
 **3.6**
 * Fixing a NullPointerException that is thrown in IntelliJ Idea
 * Fixing outOfBoundException when generating a test case
