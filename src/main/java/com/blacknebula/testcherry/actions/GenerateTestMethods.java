@@ -41,11 +41,14 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 /**
  * User: JHABLUTZEL
@@ -155,7 +158,6 @@ public class GenerateTestMethods extends AnAction {
             } else {
 
                 // TODO if methods is empty show message dialog, or disable button to generate
-                //  iterar sobre los metodos de prueba
                 for (TestMethod method : allMethodsInOriginClass) {
 
                     if (!method.reallyExists()) {
@@ -166,13 +168,13 @@ public class GenerateTestMethods extends AnAction {
                 }
 
                 ClassMember[] classMembers = array.toArray(new ClassMember[array.size()]);
-                MemberChooser<ClassMember> chooser = new MemberChooser<ClassMember>(classMembers, false, true, project);
+                MemberChooser<ClassMember> chooser = new MemberChooser<>(classMembers, false, true, project);
                 chooser.setTitle("Choose should annotations");
                 chooser.setCopyJavadocVisible(false);
                 chooser.show();
                 final List<ClassMember> selectedElements = chooser.getSelectedElements();
 
-                if (selectedElements == null || selectedElements.size() == 0) {
+                if (isEmpty(selectedElements)) {
                     //  canceled or nothing selected
                     return;
                 }
@@ -193,7 +195,7 @@ public class GenerateTestMethods extends AnAction {
 
                     //  get a list of all test roots
                     final PsiManager manager = PsiManager.getInstance(project);
-                    List<PsiDirectory> allTestRoots = new ArrayList<PsiDirectory>(2);
+                    List<PsiDirectory> allTestRoots = new ArrayList<>(2);
                     for (VirtualFile sourceRoot : sourceRoots) {
                         if (sourceRoot.isDirectory()) {
                             PsiDirectory directory = manager.findDirectory(sourceRoot);
@@ -203,6 +205,10 @@ public class GenerateTestMethods extends AnAction {
                         }
                     }
 
+                    if (isEmpty(allTestRoots)) {
+                        //  just cancel
+                        return;
+                    }
 
                     //  only display if more than one source root
                     if (allTestRoots.size() > 1) {
