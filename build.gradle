@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.blacknebula'
-version '3.7'
+version '3.8'
 
 repositories {
     mavenCentral()
@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
+    compile group: 'org.jetbrains', name: 'annotations', version: '23.0.0'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
@@ -26,6 +26,10 @@ intellij {
 
 patchPluginXml {
     changeNotes.set("""
+       <p>3.8</p>
+       <ul>
+          <li>Add support to IntelliJ IDEA version 2021.3</li>
+       </ul>
        <p>3.7</p>
        <ul>
           <li>Add support to IntelliJ IDEA version 2021.2</li>
