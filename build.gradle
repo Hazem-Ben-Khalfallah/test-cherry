@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.blacknebula'
-version '3.8'
+version '3.9'
 
 repositories {
     mavenCentral()
@@ -26,6 +26,10 @@ intellij {
 
 patchPluginXml {
     changeNotes.set("""
+       <p>3.9</p>
+       <ul>
+          <li>Add support to IntelliJ IDEA version 2022.1</li>
+       </ul>
        <p>3.8</p>
        <ul>
           <li>Add support to IntelliJ IDEA version 2021.3</li>
