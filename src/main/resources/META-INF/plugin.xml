@@ -1,12 +1,16 @@
 <idea-plugin>
     <id>com.blacknebula.TestCherry</id>
     <name>TestCherry</name>
-    <version>3.8</version>
+    <version>3.9</version>
 
     <vendor email="benkhalfallahhazem@gmail.com"
             url="https://github.com/Hazem-Ben-Khalfallah/test-cherry">
         Hazem Ben Khalfallah
     </vendor>
+
+    <!-- Upgrade this version to support newer version of intellij IDE
+    please see: https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html#intellij-platform-based-products-of-recent-ide-versions-->
+    <idea-version since-build="222" until-build="222.*"/>
 
     <description><![CDATA[
     <b>About</b>
@@ -28,14 +32,11 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
     This Project is based on <a href="https://github.com/hablutzel1/GenerateTestCases">GenerateTestCases</a> project.
   ]]></description>
 
-    <!-- Upgrade this version to support newer version of intellij IDE
-    please see: https://jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_configuration_file.html-->
-    <idea-version since-build="2021.3"/>
-
-    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <depends>com.intellij.modules.java</depends>
+    <!-- Product and plugin compatibility requirements. Read more:
+    https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.java</depends>
 
     <project-components>
         <component>
