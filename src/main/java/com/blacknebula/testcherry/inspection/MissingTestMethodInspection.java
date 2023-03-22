@@ -112,9 +112,11 @@ public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspection
         //  if test class doesn't exists place warning at class level
         if (!testClass.reallyExists()) {
             //  create warning
-            return new ProblemDescriptor[]{
-                    manager.createProblemDescriptor(testClass.getClassUnderTest().getNameIdentifier(), "Missing Test Class",
-                            isOnTheFly, LocalQuickFix.EMPTY_ARRAY, ProblemHighlightType.GENERIC_ERROR_OR_WARNING)};
+            if (testClass.getClassUnderTest() != null && testClass.getClassUnderTest().getNameIdentifier() != null) {
+                return new ProblemDescriptor[]{
+                        manager.createProblemDescriptor(testClass.getClassUnderTest().getNameIdentifier(), "Missing Test Class",
+                                isOnTheFly, LocalQuickFix.EMPTY_ARRAY, ProblemHighlightType.GENERIC_ERROR_OR_WARNING)};
+            }
         }
 
         List<ProblemDescriptor> result = new ArrayList<ProblemDescriptor>();
