@@ -4,7 +4,7 @@ plugins {
     // Java support
     id("java")
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.8.1"
+    id("org.jetbrains.intellij") version "1.13.2"
 }
 
 group = properties("pluginGroup")
@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     testImplementation("junit:junit:4.13.2")
-    implementation("org.jetbrains:annotations:23.0.0")
+    implementation("org.jetbrains:annotations:24.0.1")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin

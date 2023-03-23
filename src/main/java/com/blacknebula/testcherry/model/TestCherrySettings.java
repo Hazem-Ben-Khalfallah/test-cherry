@@ -10,7 +10,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 @State(
         name = "TestCherrySettings",
         storages = {
-                @Storage(file = "$WORKSPACE_FILE$")}
+                @Storage("$WORKSPACE_FILE$")}
 )
 public class TestCherrySettings implements PersistentStateComponent<TestCherrySettings> { // TODO research about idea ProjectComponent interface
 
