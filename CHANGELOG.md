@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+## [3.11]
+### Changed
+- Update `platformVersion` to `2023.1`
+
 ## [3.10]
 ### Changed
 - Update `platformVersion` to `2022.3`
