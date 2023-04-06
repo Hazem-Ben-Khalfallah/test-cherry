@@ -92,6 +92,9 @@ You can download the plugin "**testCherry**" directly from the IDE.
 * run ```gradlew build```
 
 <h2>Change Notes</h2>
+**3.11**
+* Add support for IntelliJ IDEA version **2023.1**
+
 **3.10**
 * Add support for IntelliJ IDEA version **2022.3**
 **3.9**
