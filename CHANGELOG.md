@@ -2,7 +2,9 @@
 
 # IntelliJ Platform Plugin Template Changelog
 
-## [Unreleased]
+## [3.12]
+### Changed
+- Update `platformVersion` to `2023.2`
 
 ## [3.11]
 ### Changed
