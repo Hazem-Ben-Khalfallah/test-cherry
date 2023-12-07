@@ -10,9 +10,8 @@ import com.intellij.psi.PsiJavaCodeReferenceElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.testIntegration.TestFramework;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.concurrency.Promise;
 
 /**
  * User: JHABLUTZEL
@@ -40,19 +39,6 @@ public class JUnit3Strategy extends JUnitStrategyBase {
         return BddUtil.findTestFrameworkByName("JUnit3");
     }
 
-
-    @Override
-    protected String getFrameworkBasePackage() {
-        String s = "junit.framework";
-        return s;
-    }
-
-    @Override
-    protected String getAssertionClassSimpleName() {
-        return "Assert";
-    }
-
-
     /**
      * @param testClass
      * @param sutMethod
@@ -65,7 +51,6 @@ public class JUnit3Strategy extends JUnitStrategyBase {
         return super.createBackingTestMethod(testClass, sutMethod, testDescription);
     }
 
-
     /**
      * @param sutClass
      * @param sourceRoot
@@ -75,6 +60,17 @@ public class JUnit3Strategy extends JUnitStrategyBase {
     @Override  // overridden to write test method only
     public PsiClass createBackingTestClass(PsiClass sutClass, PsiDirectory sourceRoot) {
         return super.createBackingTestClass(sutClass, sourceRoot);
+    }
+
+    @Override
+    protected String getFrameworkBasePackage() {
+        String s = "junit.framework";
+        return s;
+    }
+
+    @Override
+    protected String getAssertionClassSimpleName() {
+        return "Assert";
     }
 
     @Override

@@ -93,6 +93,9 @@ You can download the plugin "**testCherry**" directly from the IDE.
 
 <h2>Change Notes</h2>
 
+**3.13**
+* Add support for IntelliJ IDEA version **2023.3**
+
 **3.12**
 * Add support for IntelliJ IDEA version **2023.2**
 

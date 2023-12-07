@@ -7,7 +7,7 @@ import com.blacknebula.testcherry.testframework.TestFrameworkStrategy;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * In a 'service provider framework' like BDDCore would be the 'service access API'
