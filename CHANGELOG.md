@@ -1,6 +1,10 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # IntelliJ Platform Plugin Template Changelog
+## [3.14]
+### Changed
+- Support build range `241.*`
+
 ## [3.13]
 ### Changed
 - Update `platformVersion` to `2023.3`
