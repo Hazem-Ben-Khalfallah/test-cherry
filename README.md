@@ -92,6 +92,9 @@ You can download the plugin "**testCherry**" directly from the IDE.
 * run ```gradlew build```
 
 <h2>Change Notes</h2>
+**3.15**
+* Remove  internal and scheduled for removal API usages
+
 **3.14**
 * Support build range `241.*`
 

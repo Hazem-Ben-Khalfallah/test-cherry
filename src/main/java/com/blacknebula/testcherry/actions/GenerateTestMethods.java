@@ -26,7 +26,6 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.extensions.ExtensionPoint;
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurableEP;
@@ -103,7 +102,7 @@ public class GenerateTestMethods extends AnAction {
 
             if (StringUtils.isEmpty(testFrameworkProperty)) { //  it haven't been defined yet
 
-                final ExtensionPoint<ConfigurableEP> extensionPoint = project.getExtensionArea().getExtensionPoint(ExtensionPointName.create("com.intellij.projectConfigurable"));
+                ExtensionPointName<ConfigurableEP> extensionPoint = ExtensionPointName.create("com.intellij.projectConfigurable");
                 ConfigurableEP[] extensions = extensionPoint.getExtensions();
                 for (ConfigurableEP component : extensions) {
                     Configurable configurable = (Configurable) component.createConfigurable();
