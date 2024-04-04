@@ -1,6 +1,10 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # IntelliJ Platform Plugin Template Changelog
+## [3.15]
+### Changed
+- Remove  internal and scheduled for removal API usages
+ 
 ## [3.14]
 ### Changed
 - Support build range `241.*`
