@@ -19,7 +19,7 @@ import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
-import com.intellij.psi.PsiType;
+import com.intellij.psi.PsiTypes;
 import com.intellij.psi.javadoc.PsiDocTag;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiUtil;
@@ -38,48 +38,6 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
     public AbstractTestFrameworkStrategy(Project project, NamingConvention namingConvention) {
         this.project = project;
         this.namingConvention = namingConvention;
-    }
-
-    /**
-     * Creates a test method name generic in the form {method_under_test}_should{should_description_camel_cased}
-     *
-     * @param originMethodName
-     * @param shouldDescription
-     * @return
-     * @should create a appropiate name for the test method
-     * @should fail if wrong args
-     */
-    protected String generateGenericTestMethodName(@NotNull String originMethodName, @NotNull String shouldDescription) {
-
-        if (StringUtils.isBlank(originMethodName) || StringUtils.isBlank(shouldDescription)) {
-            throw new IllegalArgumentException();
-        }
-
-        StringBuilder builder = new StringBuilder(originMethodName
-                + "_should");
-        @NotNull
-        String[] tokens = shouldDescription.split("\\s+");
-        for (String token : tokens) {
-            builder.append(getValidatedToken(token));
-        }
-        return builder.toString();
-    }
-
-    @NotNull
-    private String getValidatedToken(final String token) {
-        char[] allChars = token.toCharArray();
-        StringBuilder validChars = new StringBuilder();
-        for (char validChar : allChars) {
-            if (Character.isJavaIdentifierPart(validChar)) {
-                validChars.append(validChar);
-            }
-        }
-
-        if (namingConvention == NamingConvention.CAMEL_CASE_NAMING) {
-            return toCamelCase(validChars.toString());
-        } else {
-            return "_" + validChars;
-        }
     }
 
     private static String toCamelCase(String input) {
@@ -124,7 +82,6 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
         String s = sutClass.getName();
         return s + TEST_CLASS_SUFFIX;
     }
-
 
     /**
      * @param sutClass
@@ -180,16 +137,6 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
 
     }
 
-    /**
-     * This method will be called after the class is created, allowing the extender to do some work (e.g. add some imports) on the created test class
-     *
-     * @param project
-     * @param backingTestClass
-     */
-    protected void afterCreatingClass(Project project, PsiClass backingTestClass) {
-
-    }
-
     @Override
     public PsiMethod findBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
         //  resolve (find) backing test method in test class
@@ -203,8 +150,6 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
         return null;
     }
 
-    // TODO migrate tests that belongs to this level from com.blacknebula.javatestgenerator.testframework.JUnitStrategyBase.createBackingTestMethod()
-
     /**
      * @param testClass
      * @param sutMethod
@@ -217,7 +162,7 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
 
         elementFactory = JavaPsiFacade.getElementFactory(sutMethod.getProject());
         //  get test method name
-        PsiMethod factoriedTestMethod = elementFactory.createMethod(getExpectedNameForThisTestMethod(sutMethod.getName(), testDescription), PsiType.VOID);
+        PsiMethod factoriedTestMethod = elementFactory.createMethod(getExpectedNameForThisTestMethod(sutMethod.getName(), testDescription), PsiTypes.voidType());
 
         //  correr esto dentro de un write-action   ( Write access is allowed inside write-action only )
         testClass.add(factoriedTestMethod);
@@ -284,5 +229,59 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
     @NotNull
     public String getExpectedNameForThisTestMethod(String sutMethodName, String description) {
         return generateGenericTestMethodName(sutMethodName, description);
+    }
+
+    /**
+     * Creates a test method name generic in the form {method_under_test}_should{should_description_camel_cased}
+     *
+     * @param originMethodName
+     * @param shouldDescription
+     * @return
+     * @should create a appropiate name for the test method
+     * @should fail if wrong args
+     */
+    protected String generateGenericTestMethodName(@NotNull String originMethodName, @NotNull String shouldDescription) {
+
+        if (StringUtils.isBlank(originMethodName) || StringUtils.isBlank(shouldDescription)) {
+            throw new IllegalArgumentException();
+        }
+
+        StringBuilder builder = new StringBuilder(originMethodName
+                + "_should");
+        @NotNull
+        String[] tokens = shouldDescription.split("\\s+");
+        for (String token : tokens) {
+            builder.append(getValidatedToken(token));
+        }
+        return builder.toString();
+    }
+
+    // TODO migrate tests that belongs to this level from com.blacknebula.javatestgenerator.testframework.JUnitStrategyBase.createBackingTestMethod()
+
+    /**
+     * This method will be called after the class is created, allowing the extender to do some work (e.g. add some imports) on the created test class
+     *
+     * @param project
+     * @param backingTestClass
+     */
+    protected void afterCreatingClass(Project project, PsiClass backingTestClass) {
+
+    }
+
+    @NotNull
+    private String getValidatedToken(final String token) {
+        char[] allChars = token.toCharArray();
+        StringBuilder validChars = new StringBuilder();
+        for (char validChar : allChars) {
+            if (Character.isJavaIdentifierPart(validChar)) {
+                validChars.append(validChar);
+            }
+        }
+
+        if (namingConvention == NamingConvention.CAMEL_CASE_NAMING) {
+            return toCamelCase(validChars.toString());
+        } else {
+            return "_" + validChars;
+        }
     }
 }
