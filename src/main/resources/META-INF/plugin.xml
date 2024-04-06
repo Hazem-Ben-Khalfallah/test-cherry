@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.blacknebula.TestCherry</id>
     <name>TestCherry</name>
-    <version>3.15</version>
+    <version>3.16</version>
 
     <vendor email="benkhalfallahhazem@gmail.com"
             url="https://github.com/Hazem-Ben-Khalfallah/test-cherry">
@@ -32,6 +32,35 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
     This Project is based on <a href="https://github.com/hablutzel1/GenerateTestCases">GenerateTestCases</a> project.
   ]]></description>
 
+    <change-notes><![CDATA[
+        <ul>
+            <li><b>3.16</b>: Specify plugin display name in settings. Move plugin config under <b>Settings > Tools</b>
+            <li><b>3.15</b>: Remove  internal and scheduled for removal API usages
+            <li><b>3.14</b>: Support build range 241.*
+            <li><b>3.13</b>: Update platformVersion to 2023.3
+            <li><b>3.12</b>: Update platformVersion to 2023.2
+            <li><b>3.11</b>: Update platformVersion to 2023.1
+            <li><b>3.10</b>: Update platformVersion to 2022.3
+            <li><b>3.9</b>: Update platformVersion to 2022.2
+            <li><b>3.8</b>: Update platformVersion to 2021.3
+            <li><b>3.7</b>: Add support for IntelliJ IDEA version 2021.2
+            <li><b>3.6</b>:
+                <ul>
+                    <li>Fix a NullPointerException that is thrown in IntelliJ Idea</li>
+                    <li>Fix outOfBoundException when generating a test case</li>
+                    <li>Add a comment tag for verifies to prevent the warnings</li>
+                </ul>
+            <li><b>3.5</b>: Support for snake case test cases generation
+            <li><b>3.4</b>: Add support for IntelliJ IDEA version 2021.1
+            <li><b>3.1</b>: fix multiple test method generation
+            <li><b>3.0</b>:
+                <ul>
+                    <li>Add support to IntelliJ IDEA version 2020.3</li>
+                    <li>Reduce deprecated methods usage</li>
+                </ul>
+        </ul>
+    ]]></change-notes>
+
     <!-- Product and plugin compatibility requirements. Read more:
     https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
@@ -56,7 +85,10 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
     <extensions defaultExtensionNs="com.intellij">
         <!--for settings-->
         <projectConfigurable id="testcherry"
+                             displayName="Test Cherry"
+                             parentId="tools"
                              instance="com.blacknebula.testcherry.codeinsight.TestCherryConfigurable"/>
+
         <!--for inspections of missing test methods -->
         <inspectionToolProvider implementation="com.blacknebula.testcherry.inspection.BddInspectionsToolProvider"/>
 

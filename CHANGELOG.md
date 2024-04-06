@@ -1,6 +1,10 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # IntelliJ Platform Plugin Template Changelog
+## [3.16]
+### Changed
+- Specify plugin display name in settings. Move plugin config under `Settings > Tools`
+
 ## [3.15]
 ### Changed
 - Remove  internal and scheduled for removal API usages
