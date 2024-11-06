@@ -1,6 +1,10 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # IntelliJ Platform Plugin Template Changelog
+## [3.17]
+### Changed
+- Support build range `242.*`
+
 ## [3.16]
 ### Changed
 - Specify plugin display name in settings. Move plugin config under `Settings > Tools`
