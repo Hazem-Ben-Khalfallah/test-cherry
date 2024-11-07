@@ -92,6 +92,9 @@ You can download the plugin "**testCherry**" directly from the IDE.
 * run ```gradlew build```
 
 <h2>Change Notes</h2>
+**3.17**
+* Support build range `242.*`
+
 **3.16**
 * Specify plugin display name in settings. Move plugin config under `Settings > Tools`
 
