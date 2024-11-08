@@ -154,9 +154,9 @@ You can download the plugin "**testCherry**" directly from the IDE.
 
 <h2>Known issues</h2>
 <h3>Add Test Cherry icon to main Toolbar </h3>
-![toolbar-1](snapshots/toolbar-1.png)
-![toolbar-2](snapshots/toolbar-2.png)
-![toolbar-3](snapshots/toolbar-3.png)
+![toolbar-1](snapshots/toolbar-1.jpg)
+![toolbar-2](snapshots/toolbar-2.jpg)
+![toolbar-3](snapshots/toolbar-3.jpg)
 
 
 <h3>Java doc generation Workaround</h3>
