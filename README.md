@@ -92,6 +92,7 @@ You can download the plugin "**testCherry**" directly from the IDE.
 * run ```gradlew build```
 
 <h2>Change Notes</h2>
+
 **3.17**
 * Support build range `242.*`
 
@@ -151,7 +152,14 @@ You can download the plugin "**testCherry**" directly from the IDE.
 **1.0**
 * Implement test case generation for with IntelliJ IDEA version **2020.2**
 
-<h2>Java doc generation Workaround</h2>
+<h2>Known issues</h2>
+<h3>Add Test Cherry icon to main Toolbar </h3>
+![toolbar-1](snapshots/toolbar-1.png)
+![toolbar-2](snapshots/toolbar-2.png)
+![toolbar-3](snapshots/toolbar-3.png)
+
+
+<h3>Java doc generation Workaround</h3>
 When generating javadoc from code, the javadoc tool generates errors while encountering the TestCherry tags:
 
 > error: unknown tag: should
