@@ -1,6 +1,10 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # IntelliJ Platform Plugin Template Changelog
+## [3.18]
+### Changed
+- Support build range `251.*`
+
 ## [3.17]
 ### Changed
 - Support build range `242.*`
