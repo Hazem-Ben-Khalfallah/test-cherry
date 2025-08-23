@@ -34,6 +34,8 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
 
     <change-notes><![CDATA[
         <ul>
+            <li><b>3.18</b>: Support 252.* version</b>
+            <li><b>3.17</b>: Support 242.* version</b>
             <li><b>3.16</b>: Specify plugin display name in settings. Move plugin config under <b>Settings > Tools</b>
             <li><b>3.15</b>: Remove  internal and scheduled for removal API usages
             <li><b>3.14</b>: Support build range 241.*
