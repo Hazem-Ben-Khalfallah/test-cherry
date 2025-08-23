@@ -2,6 +2,7 @@ package com.blacknebula.testcherry.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.blacknebula.testcherry.TestCherryBundle;
 import com.blacknebula.testcherry.codeinsight.TestCherryConfigurable;
@@ -40,6 +41,7 @@ import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
@@ -271,23 +273,34 @@ public class GenerateTestMethods extends AnAction {
         return PlatformDataKeys.EDITOR.getData(dataContext);
     }
 
-    public void update(Editor editor, Presentation presentation, DataContext dataContext) {
-        //  si no hay ninguna clase en el editor se deberia desactivar la accion
+    private void update(Editor editor, Presentation presentation, DataContext dataContext) {
+        // If there is no class in the editor, the action should be disabled.
         presentation.setEnabled(getSubjectClass(editor, dataContext) != null);
     }
 
     @Nullable
-    private static PsiClass getSubjectClass(Editor editor, DataContext dataContext) {
-        PsiFile file = LangDataKeys.PSI_FILE.getData(dataContext);
-        if (file == null) return null;
+    private PsiClass getSubjectClass(Editor editor, DataContext dataContext) {
+        final var file = getCurrentFile(editor, dataContext);
+        if (file.isEmpty()) return null;
 
-        int offset = editor.getCaretModel().getOffset();
-        PsiElement element = file.findElementAt(offset);
+        int offset = editor != null ? editor.getCaretModel().getOffset() : 0;
+        final var element = file.get().findElementAt(offset);
+        return BddUtil.getParentEligibleForTestingPsiClass(element);
+    }
 
-        PsiClass parentPsiClass = BddUtil.getParentEligibleForTestingPsiClass(element);
-
-        return parentPsiClass;
-
+    private Optional<PsiFile> getCurrentFile(Editor editor, DataContext dataContext) {
+        PsiFile file = null;
+        if (editor != null) {
+            Project project = editor.getProject();
+            if (project != null) {
+                var document = editor.getDocument();
+                file = PsiDocumentManager.getInstance(project).getPsiFile(document);
+            }
+        }
+        if (file == null) {
+            file = LangDataKeys.PSI_FILE.getData(dataContext);
+        }
+        return Optional.ofNullable(file);
     }
 
 }
