@@ -15,17 +15,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * User: jhe
  */
-public class CreateTestMethodFix implements IntentionAction {
-
-    private final TestMethod testMethod;
-
-    public CreateTestMethodFix(TestMethod testMethod) {
-        this.testMethod = testMethod;
-    }
-
-    public TestMethod getTestMethod() {
-        return testMethod;
-    }
+public record CreateTestMethodFix(TestMethod testMethod) implements IntentionAction {
 
     /**
      * @return
@@ -44,19 +34,12 @@ public class CreateTestMethodFix implements IntentionAction {
                 candidateClassName + "." + testMethodName + "()");
     }
 
-    @NotNull
-    @Override
-    public String getFamilyName() {
-        return TestCherryBundle.message("plugin.testCherry.bdd.family");
-    }
-
     @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
         // TODO check better under what conditions it should be unavailable
         // com.intellij.codeInsight.daemon.model.quickfix.SimplifyBooleanExpressionFix.isAvailable()
         return true;
     }
-
 
     /**
      * @throws IncorrectOperationException
@@ -83,6 +66,12 @@ public class CreateTestMethodFix implements IntentionAction {
     public void invoke() {
         testMethod.create();
         testMethod.navigate();
+    }
+
+    @NotNull
+    @Override
+    public String getFamilyName() {
+        return TestCherryBundle.message("plugin.testCherry.bdd.family");
     }
 
 

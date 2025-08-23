@@ -1,5 +1,8 @@
 package com.blacknebula.testcherry.inspection;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.blacknebula.testcherry.model.BDDCore;
 import com.blacknebula.testcherry.model.TestCherrySettings;
 import com.blacknebula.testcherry.model.TestClass;
@@ -32,9 +35,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This inspection will search for classes not tested yet, and it will inspect should annotations
  * without a test method created
@@ -50,11 +50,6 @@ public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspection
         return "BDD";
     }
 
-    @Override
-    public boolean isEnabledByDefault() {
-        return true;
-    }
-
     @Nls
     @NotNull
     @Override
@@ -68,6 +63,10 @@ public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspection
         return "UnusedShould";
     }
 
+    @Override
+    public boolean isEnabledByDefault() {
+        return true;
+    }
 
     /**
      * @should create problem for classes without backing class
@@ -133,16 +132,6 @@ public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspection
         return result.toArray(new ProblemDescriptor[result.size()]);
     }
 
-    @Override
-    public SuppressIntentionAction @NotNull [] getSuppressActions(PsiElement element) {
-        String shortName = getShortName();
-        HighlightDisplayKey key = HighlightDisplayKey.find(shortName);
-        if (key == null) {
-            throw new AssertionError("HighlightDisplayKey.find(" + shortName + ") is null. Inspection: " + getClass());
-        }
-        return SuppressManager.getInstance().createSuppressActions(key);
-    }
-
     private void highlightShouldTags(InspectionManager manager, boolean isOnTheFly, List<ProblemDescriptor> result, TestMethod method) {
         PsiDocTag backingTag = ((TestMethodImpl) method).getBackingTag();
         List<BddUtil.DocOffsetPair> elementPairsInDocTag = BddUtil.getElementPairsInDocTag(backingTag);
@@ -156,15 +145,15 @@ public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspection
                     return createTestMethodFix.getText();
                 }
 
+                @NotNull
+                public String getFamilyName() {
+                    return createTestMethodFix.getFamilyName();
+                }
+
                 public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
                     final PsiElement psiElement = descriptor.getPsiElement();
                     LOG.assertTrue(psiElement.isValid());
                     createTestMethodFix.invoke();
-                }
-
-                @NotNull
-                public String getFamilyName() {
-                    return createTestMethodFix.getFamilyName();
                 }
             };
 
@@ -172,5 +161,15 @@ public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspection
                     "Missing test method for should annotation", ProblemHighlightType.GENERIC_ERROR_OR_WARNING, isOnTheFly, localQuickFix == null ? null : new LocalQuickFix[]{localQuickFix});
             result.add(problemDescriptor);
         }
+    }
+
+    @Override
+    public SuppressIntentionAction @NotNull [] getSuppressActions(PsiElement element) {
+        String shortName = getShortName();
+        HighlightDisplayKey key = HighlightDisplayKey.find(shortName);
+        if (key == null) {
+            throw new AssertionError("HighlightDisplayKey.find(" + shortName + ") is null. Inspection: " + getClass());
+        }
+        return SuppressManager.getInstance().createSuppressActions(key);
     }
 }

@@ -74,9 +74,9 @@ public abstract class JUnitStrategyBase extends AbstractTestFrameworkStrategy {
         return realTestMethod;
     }
 
-    protected abstract String getFrameworkBasePackage();
-
     protected abstract String getAssertionClassSimpleName();
+
+    protected abstract String getFrameworkBasePackage();
 
 
 }

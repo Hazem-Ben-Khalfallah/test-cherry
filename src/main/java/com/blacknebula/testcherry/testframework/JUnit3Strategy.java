@@ -27,13 +27,6 @@ public class JUnit3Strategy extends JUnitStrategyBase {
         super(project, namingConvention);
     }
 
-    @NotNull
-    @Override
-    public String getExpectedNameForThisTestMethod(String sutMethodName, String description) {
-        String s = super.getExpectedNameForThisTestMethod(sutMethodName, description);
-        return "test" + StringUtils.capitalize(s);
-    }
-
     @Override
     public TestFramework getTestFramework() {
         return BddUtil.findTestFrameworkByName("JUnit3");
@@ -51,6 +44,17 @@ public class JUnit3Strategy extends JUnitStrategyBase {
         return super.createBackingTestMethod(testClass, sutMethod, testDescription);
     }
 
+    @Override
+    protected String getAssertionClassSimpleName() {
+        return "Assert";
+    }
+
+    @Override
+    protected String getFrameworkBasePackage() {
+        String s = "junit.framework";
+        return s;
+    }
+
     /**
      * @param sutClass
      * @param sourceRoot
@@ -62,15 +66,11 @@ public class JUnit3Strategy extends JUnitStrategyBase {
         return super.createBackingTestClass(sutClass, sourceRoot);
     }
 
+    @NotNull
     @Override
-    protected String getFrameworkBasePackage() {
-        String s = "junit.framework";
-        return s;
-    }
-
-    @Override
-    protected String getAssertionClassSimpleName() {
-        return "Assert";
+    public String getExpectedNameForThisTestMethod(String sutMethodName, String description) {
+        String s = super.getExpectedNameForThisTestMethod(sutMethodName, description);
+        return "test" + StringUtils.capitalize(s);
     }
 
     @Override

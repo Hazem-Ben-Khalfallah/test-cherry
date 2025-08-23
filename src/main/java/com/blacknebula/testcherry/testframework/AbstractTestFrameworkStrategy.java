@@ -40,116 +40,6 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
         this.namingConvention = namingConvention;
     }
 
-    private static String toCamelCase(String input) {
-        assert input != null;
-        if (input.length() == 0) {
-            return ""; // is it ok?
-        }
-        return input.substring(0, 1).toUpperCase() + input.substring(1);
-    }
-
-    @Override
-    public final boolean isTestFrameworkLibraryAvailable(Module module) {
-        return getTestFramework().isLibraryAttached(module);
-    }
-
-    @Override
-    public PsiClass findBackingPsiClass(PsiClass sutClass) {
-
-        if (sutClass instanceof PsiAnonymousClass) {
-            return null;
-        }
-        String packageName = BddUtil.getPackageName(sutClass);
-        String testClassName = getCandidateTestClassName(sutClass);
-
-
-        String fullyQualifiedTestClass = packageName == null ? testClassName : (packageName + "." + testClassName);
-        //  verify if the test class really exists in classpath for the current module/project
-        return JavaPsiFacade.getInstance(project).findClass(fullyQualifiedTestClass, GlobalSearchScope.projectScope(project));
-    }
-
-    /**
-     * Meant to be overrided for test classses don't doesn't follow the 'Test' suffix
-     * convention in its name
-     *
-     * @param sutClass
-     * @return
-     */
-    @Override
-    public String getCandidateTestClassName(PsiClass sutClass) {
-        //  build the test class name
-        //  get the sut class name
-        String s = sutClass.getName();
-        return s + TEST_CLASS_SUFFIX;
-    }
-
-    /**
-     * @param sutClass
-     * @param sourceRoot
-     * @return
-     * @should create a test class with the suffix 'Test'
-     */
-    @Override
-    public PsiClass createBackingTestClass(PsiClass sutClass, PsiDirectory sourceRoot) {
-
-        PsiClass ret;
-        if (sourceRoot == null || sourceRoot.equals(sutClass.getContainingFile().getParent())) {
-            //  create the test class in the same source root
-
-            //  get psiDirectory for sut class
-            PsiElement parentPackage = sutClass.getScope().getParent();
-            // get test class name
-            String testClassName = getCandidateTestClassName(sutClass);
-            //  check
-            JavaDirectoryService.getInstance().checkCreateClass((PsiDirectory) parentPackage, testClassName);
-            //  create
-            ret = JavaDirectoryService.getInstance().createClass((PsiDirectory) parentPackage, testClassName, "Class");
-
-        } else {
-
-            //  create the test class in the specified source root
-            // get test class name
-            String testClassName = getCandidateTestClassName(sutClass);
-
-
-            String packageName = BddUtil.getPackageName(sutClass);
-            if (packageName == null) {
-                packageName = "";
-            }
-            VirtualFile path = sourceRoot.getVirtualFile().findFileByRelativePath(packageName.replace(".", "/"));
-            PsiDirectory psiDirectory;
-            if (path == null) {
-                //  check or create entire path to package
-                psiDirectory = DirectoryUtil.createSubdirectories(packageName, sourceRoot, ".");
-
-            } else {
-                //  just create a psi directory for VirtualFile
-                psiDirectory = PsiManager.getInstance(project).findDirectory(path);
-            }
-            //  check
-            JavaDirectoryService.getInstance().checkCreateClass(psiDirectory, testClassName);
-            //  create
-            ret = JavaDirectoryService.getInstance().createClass(psiDirectory, testClassName, "Class");
-
-        }
-        afterCreatingClass(project, ret);
-        return ret;
-
-    }
-
-    @Override
-    public PsiMethod findBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
-        //  resolve (find) backing test method in test class
-        String nombreMetodoDePrueba = getExpectedNameForThisTestMethod(sutMethod.getName(), testDescription);
-
-        PsiMethod[] byNameMethods = testClass.findMethodsByName(nombreMetodoDePrueba, false);
-        if (byNameMethods.length > 0) {
-            return byNameMethods[0];
-        }
-
-        return null;
-    }
-
     /**
      * @param testClass
      * @param sutMethod
@@ -220,6 +110,93 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
     }
 
     /**
+     * @param sutClass
+     * @param sourceRoot
+     * @return
+     * @should create a test class with the suffix 'Test'
+     */
+    @Override
+    public PsiClass createBackingTestClass(PsiClass sutClass, PsiDirectory sourceRoot) {
+
+        PsiClass ret;
+        if (sourceRoot == null || sourceRoot.equals(sutClass.getContainingFile().getParent())) {
+            //  create the test class in the same source root
+
+            //  get psiDirectory for sut class
+            PsiElement parentPackage = sutClass.getScope().getParent();
+            // get test class name
+            String testClassName = getCandidateTestClassName(sutClass);
+            //  check
+            JavaDirectoryService.getInstance().checkCreateClass((PsiDirectory) parentPackage, testClassName);
+            //  create
+            ret = JavaDirectoryService.getInstance().createClass((PsiDirectory) parentPackage, testClassName, "Class");
+
+        } else {
+
+            //  create the test class in the specified source root
+            // get test class name
+            String testClassName = getCandidateTestClassName(sutClass);
+
+
+            String packageName = BddUtil.getPackageName(sutClass);
+            if (packageName == null) {
+                packageName = "";
+            }
+            VirtualFile path = sourceRoot.getVirtualFile().findFileByRelativePath(packageName.replace(".", "/"));
+            PsiDirectory psiDirectory;
+            if (path == null) {
+                //  check or create entire path to package
+                psiDirectory = DirectoryUtil.createSubdirectories(packageName, sourceRoot, ".");
+
+            } else {
+                //  just create a psi directory for VirtualFile
+                psiDirectory = PsiManager.getInstance(project).findDirectory(path);
+            }
+            //  check
+            JavaDirectoryService.getInstance().checkCreateClass(psiDirectory, testClassName);
+            //  create
+            ret = JavaDirectoryService.getInstance().createClass(psiDirectory, testClassName, "Class");
+
+        }
+        afterCreatingClass(project, ret);
+        return ret;
+
+    }
+
+    @Override
+    public PsiMethod findBackingTestMethod(PsiClass testClass, PsiMethod sutMethod, String testDescription) {
+        //  resolve (find) backing test method in test class
+        String nombreMetodoDePrueba = getExpectedNameForThisTestMethod(sutMethod.getName(), testDescription);
+
+        PsiMethod[] byNameMethods = testClass.findMethodsByName(nombreMetodoDePrueba, false);
+        if (byNameMethods.length > 0) {
+            return byNameMethods[0];
+        }
+
+        return null;
+    }
+
+    @Override
+    public final boolean isTestFrameworkLibraryAvailable(Module module) {
+        return getTestFramework().isLibraryAttached(module);
+    }
+
+    @Override
+    public PsiClass findBackingPsiClass(PsiClass sutClass) {
+
+        if (sutClass instanceof PsiAnonymousClass) {
+            return null;
+        }
+        String packageName = BddUtil.getPackageName(sutClass);
+        String testClassName = getCandidateTestClassName(sutClass);
+
+
+        String fullyQualifiedTestClass = packageName == null ? testClassName : (packageName + "." + testClassName);
+        //  verify if the test class really exists in classpath for the current module/project
+        return JavaPsiFacade.getInstance(project).findClass(fullyQualifiedTestClass, GlobalSearchScope.projectScope(project));
+    }
+
+    /**
      * It returns the expected name for this method, it could make use
      * of an strategy for naming, investigate it further
      *
@@ -229,6 +206,31 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
     @NotNull
     public String getExpectedNameForThisTestMethod(String sutMethodName, String description) {
         return generateGenericTestMethodName(sutMethodName, description);
+    }
+
+    /**
+     * Meant to be overrided for test classses don't doesn't follow the 'Test' suffix
+     * convention in its name
+     *
+     * @param sutClass
+     * @return
+     */
+    @Override
+    public String getCandidateTestClassName(PsiClass sutClass) {
+        //  build the test class name
+        //  get the sut class name
+        String s = sutClass.getName();
+        return s + TEST_CLASS_SUFFIX;
+    }
+
+    /**
+     * This method will be called after the class is created, allowing the extender to do some work (e.g. add some imports) on the created test class
+     *
+     * @param project
+     * @param backingTestClass
+     */
+    protected void afterCreatingClass(Project project, PsiClass backingTestClass) {
+
     }
 
     /**
@@ -258,16 +260,6 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
 
     // TODO migrate tests that belongs to this level from com.blacknebula.javatestgenerator.testframework.JUnitStrategyBase.createBackingTestMethod()
 
-    /**
-     * This method will be called after the class is created, allowing the extender to do some work (e.g. add some imports) on the created test class
-     *
-     * @param project
-     * @param backingTestClass
-     */
-    protected void afterCreatingClass(Project project, PsiClass backingTestClass) {
-
-    }
-
     @NotNull
     private String getValidatedToken(final String token) {
         char[] allChars = token.toCharArray();
@@ -283,5 +275,13 @@ public abstract class AbstractTestFrameworkStrategy implements TestFrameworkStra
         } else {
             return "_" + validChars;
         }
+    }
+
+    private static String toCamelCase(String input) {
+        assert input != null;
+        if (input.length() == 0) {
+            return ""; // is it ok?
+        }
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 }

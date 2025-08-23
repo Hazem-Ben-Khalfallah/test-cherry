@@ -1,5 +1,8 @@
 package com.blacknebula.testcherry.refactor.listener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.blacknebula.testcherry.TestFrameworkNotConfigured;
 import com.blacknebula.testcherry.model.BDDCore;
 import com.blacknebula.testcherry.model.TestClass;
@@ -9,9 +12,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.refactoring.listeners.RefactoringElementListener;
 import com.intellij.refactoring.listeners.RefactoringElementListenerProvider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Creado por: jaime

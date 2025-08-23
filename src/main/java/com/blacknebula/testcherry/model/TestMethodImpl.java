@@ -7,7 +7,6 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.javadoc.PsiDocTag;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.concurrency.Promise;
 
 /**
  * User: Jaime Hablutzel
@@ -51,6 +50,11 @@ public class TestMethodImpl implements TestMethod {
         this.parent = parent;
     }
 
+    private void resolveSutMethod(PsiDocTag shouldTag) {
+        PsiMethod method = (PsiMethod) shouldTag.getParent().getContext();
+        this.sutMethod = method;
+    }
+
     /**
      * Static factory method
      * Effective Java item 1
@@ -73,26 +77,20 @@ public class TestMethodImpl implements TestMethod {
         return parent;
     }
 
-    private void resolveSutMethod(PsiDocTag shouldTag) {
-        PsiMethod method = (PsiMethod) shouldTag.getParent().getContext();
-        this.sutMethod = method;
+    public String getDescription() {
+        return description;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
-    public boolean reallyExists() {
-        PsiMethod method1 = null;
+    public PsiMethod getSutMethod() {
+        return this.sutMethod;
+    }
+
+    public PsiMethod getBackingElement() {
+        PsiMethod method = null;
         if (this.parent.getBackingElement() != null) {
-            method1 = testFrameworkStrategy.findBackingTestMethod(this.parent.getBackingElement(), sutMethod, description);
+            method = testFrameworkStrategy.findBackingTestMethod(this.parent.getBackingElement(), sutMethod, description);
         }
-        PsiMethod method = method1;
-
-        return null != method;
-
-    }
-
-    @Override
-    public void navigate() {
-        this.getBackingElement().navigate(true);
+        return method;
     }
 
     @Override
@@ -115,23 +113,24 @@ public class TestMethodImpl implements TestMethod {
 
     }
 
-    public String getDescription() {
-        return description;  //To change body of implemented methods use File | Settings | File Templates.
+    @Override
+    public boolean reallyExists() {
+        PsiMethod method1 = null;
+        if (this.parent.getBackingElement() != null) {
+            method1 = testFrameworkStrategy.findBackingTestMethod(this.parent.getBackingElement(), sutMethod, description);
+        }
+        PsiMethod method = method1;
+
+        return null != method;
+
     }
 
-    public PsiMethod getSutMethod() {
-        return this.sutMethod;
+    @Override
+    public void navigate() {
+        this.getBackingElement().navigate(true);
     }
 
     public PsiDocTag getBackingTag() {
         return shouldTag;
-    }
-
-    public PsiMethod getBackingElement() {
-        PsiMethod method = null;
-        if (this.parent.getBackingElement() != null) {
-            method = testFrameworkStrategy.findBackingTestMethod(this.parent.getBackingElement(), sutMethod, description);
-        }
-        return method;
     }
 }

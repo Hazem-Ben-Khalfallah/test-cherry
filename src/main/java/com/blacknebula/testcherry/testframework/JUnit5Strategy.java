@@ -32,13 +32,13 @@ public class JUnit5Strategy extends JUnitStrategyBase {
     }
 
     @Override
-    protected String getFrameworkBasePackage() {
-        return "org.junit.jupiter.api";
+    protected String getAssertionClassSimpleName() {
+        return "Assertions";
     }
 
     @Override
-    protected String getAssertionClassSimpleName() {
-        return "Assertions";
+    protected String getFrameworkBasePackage() {
+        return "org.junit.jupiter.api";
     }
 
 }

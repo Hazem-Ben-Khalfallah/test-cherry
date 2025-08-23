@@ -1,8 +1,6 @@
 package com.blacknebula.testcherry.model;
 
 import com.intellij.psi.PsiMethod;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.concurrency.Promise;
 
 /**
  * User: Jaime Hablutzel
