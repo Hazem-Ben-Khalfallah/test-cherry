@@ -5,6 +5,7 @@ import com.blacknebula.testcherry.model.TestClass;
 import com.blacknebula.testcherry.model.TestMethod;
 import com.blacknebula.testcherry.model.TestMethodImpl;
 import com.blacknebula.testcherry.testframework.TestFrameworkStrategy;
+import com.blacknebula.testcherry.util.PostponedOperations;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
@@ -48,8 +49,7 @@ public record CreateTestMethodFix(TestMethod testMethod) implements IntentionAct
      */
     @Override
     public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
-        //  create test method
-        invoke();
+        PostponedOperations.performLater(project, file,this::invoke);
     }
 
     /**

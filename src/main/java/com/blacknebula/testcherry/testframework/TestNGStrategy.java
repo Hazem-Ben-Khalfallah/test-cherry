@@ -1,6 +1,9 @@
 package com.blacknebula.testcherry.testframework;
 
+import java.util.Objects;
+
 import com.blacknebula.testcherry.util.BddUtil;
+import com.blacknebula.testcherry.util.PostponedOperations;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -18,8 +21,11 @@ import org.jetbrains.annotations.NotNull;
 public class TestNGStrategy extends AbstractTestFrameworkStrategy {
 
 
+    private final Project project;
+
     public TestNGStrategy(Project project, NamingConvention namingConvention) {
         super(project, namingConvention);
+        this.project = project;
     }
 
     @Override
@@ -55,8 +61,9 @@ public class TestNGStrategy extends AbstractTestFrameworkStrategy {
         }
 
         //  add failed assert in testng terms
-
-        backingTestMethod.getBody().addAfter(statement, backingTestMethod.getBody().getLastBodyElement());
+        PostponedOperations.performLater(project,
+                backingTestMethod.getContainingFile(),
+                () -> Objects.requireNonNull(backingTestMethod.getBody()).addAfter(statement, backingTestMethod.getBody().getLastBodyElement()));
 
         //  add the annotation to the method
         final AddAnnotationFix fix = new AddAnnotationFix("org.testng.annotations.Test", backingTestMethod);
