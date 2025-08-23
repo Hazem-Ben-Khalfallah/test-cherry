@@ -43,24 +43,27 @@ public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspection
 
     private static final Logger LOG = Logger.getInstance(MissingTestMethodInspection.class);
 
+    /**
+     * Open Settings > Editor > Inspections
+     * under Java > Test framework Category
+     */
     @Nls
-    @NotNull
     @Override
-    public String getGroupDisplayName() {
-        return "BDD";
+    public String[] getGroupPath() {
+        return new String[]{"Java", "Test framework"};
     }
 
     @Nls
     @NotNull
     @Override
     public String getDisplayName() {
-        return "Unused Should Annotations";
+        return "Missing test method for `@should` annotation";
     }
 
     @NotNull
     @Override
     public String getShortName() {
-        return "UnusedShould";
+        return "MissingTestMethod";
     }
 
     @Override
@@ -113,12 +116,15 @@ public class MissingTestMethodInspection extends AbstractBaseJavaLocalInspection
             //  create warning
             if (testClass.getClassUnderTest() != null && testClass.getClassUnderTest().getNameIdentifier() != null) {
                 return new ProblemDescriptor[]{
-                        manager.createProblemDescriptor(testClass.getClassUnderTest().getNameIdentifier(), "Missing Test Class",
-                                isOnTheFly, LocalQuickFix.EMPTY_ARRAY, ProblemHighlightType.GENERIC_ERROR_OR_WARNING)};
+                        manager.createProblemDescriptor(testClass.getClassUnderTest().getNameIdentifier(),
+                                "Missing test class",
+                                isOnTheFly,
+                                LocalQuickFix.EMPTY_ARRAY,
+                                ProblemHighlightType.GENERIC_ERROR_OR_WARNING)};
             }
         }
 
-        List<ProblemDescriptor> result = new ArrayList<ProblemDescriptor>();
+        var result = new ArrayList<ProblemDescriptor>();
 
         //  if test class exists place warning at javadoc tags level
         List<TestMethod> methods = testClass.getAllMethods();

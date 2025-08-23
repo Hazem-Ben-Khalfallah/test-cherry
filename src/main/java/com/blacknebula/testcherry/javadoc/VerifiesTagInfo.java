@@ -11,7 +11,7 @@ import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.ArrayUtil;
 
 /**
- * Provee de soporte al IDe para reconocer nativamente el should tag
+ * Provides support to the IDe to natively recognize the Verifies tag
  * TODO consider the possibility to use its methods (getReference, ...) to provide renaming and referencing support
  *
  * @author jaime
