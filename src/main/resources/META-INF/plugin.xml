@@ -67,12 +67,6 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.java</depends>
 
-    <project-components>
-        <component>
-            <implementation-class>com.blacknebula.testcherry.model.TestCherrySettings</implementation-class>
-        </component>
-    </project-components>
-
     <actions>
         <action id="com.blacknebula.testcherry.actions.GenerateTestMethods"
                 class="com.blacknebula.testcherry.actions.GenerateTestMethods"
