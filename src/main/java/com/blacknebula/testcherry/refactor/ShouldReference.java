@@ -1,5 +1,7 @@
 package com.blacknebula.testcherry.refactor;
 
+import java.util.List;
+
 import com.blacknebula.testcherry.model.TestMethod;
 import com.blacknebula.testcherry.refactor.psi.NoExistentTestMethodLightReference;
 import com.blacknebula.testcherry.util.BddUtil;
@@ -10,8 +12,6 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.javadoc.PsiDocTag;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * Created by jhe

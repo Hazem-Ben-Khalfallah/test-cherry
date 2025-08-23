@@ -1,5 +1,7 @@
 package com.blacknebula.testcherry.refactor;
 
+import java.util.Set;
+
 import com.blacknebula.testcherry.util.BddUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiWhiteSpace;
@@ -7,8 +9,6 @@ import com.intellij.psi.codeStyle.SuggestedNameInfo;
 import com.intellij.psi.javadoc.PsiDocTag;
 import com.intellij.refactoring.rename.NameSuggestionProvider;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Set;
 
 /**
  * Created by jhe

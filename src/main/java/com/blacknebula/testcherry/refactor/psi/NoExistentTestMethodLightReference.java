@@ -21,12 +21,12 @@ public class NoExistentTestMethodLightReference extends LightElement {
     }
 
     @Override
-    public String toString() {
-        return "PsiBDDTestMethod:";
+    public boolean isWritable() {
+        return true; // true because we allow refactoring :D
     }
 
     @Override
-    public boolean isWritable() {
-        return true; // true because we allow refactoring :D
+    public String toString() {
+        return "PsiBDDTestMethod:";
     }
 }

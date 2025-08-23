@@ -1,6 +1,9 @@
 package com.blacknebula.testcherry.testframework;
 
+import java.util.Objects;
+
 import com.blacknebula.testcherry.util.BddUtil;
+import com.blacknebula.testcherry.util.PostponedOperations;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
@@ -26,7 +29,7 @@ public abstract class JUnitStrategyBase extends AbstractTestFrameworkStrategy {
     }
 
     /**
-     * This method completes the test method structure returned by {@link AbstractTestFrameworkStrategy#createBackingTestMethod(com.intellij.psi.PsiClass, com.intellij.psi.PsiMethod, String)} in the way JUNIT 3 and 4 expect.
+     * This method completes the test method structure returned by {@link AbstractTestFrameworkStrategy#createBackingTestMethod(PsiClass, PsiMethod, String)} in the way JUNIT 3 and 4 expect.
      *
      * @param testClass
      * @param sutMethod
@@ -69,14 +72,17 @@ public abstract class JUnitStrategyBase extends AbstractTestFrameworkStrategy {
             statement = elementFactory2.createStatementFromText(getAssertionClassSimpleName() + ".fail(\"Not yet implemented\");", null);
         }
 
-        realTestMethod.getBody().addAfter(statement, realTestMethod.getBody().getLastBodyElement());
+        PostponedOperations.performLater(project,
+                sutMethod.getContainingFile(),
+                () -> Objects.requireNonNull(realTestMethod.getBody()).addAfter(statement, realTestMethod.getBody().getLastBodyElement())
+        );
 
         return realTestMethod;
     }
 
-    protected abstract String getFrameworkBasePackage();
-
     protected abstract String getAssertionClassSimpleName();
+
+    protected abstract String getFrameworkBasePackage();
 
 
 }

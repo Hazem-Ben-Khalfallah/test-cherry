@@ -1,5 +1,6 @@
 package com.blacknebula.testcherry.testframework;
 
+import com.blacknebula.testcherry.util.PostponedOperations;
 import com.intellij.codeInsight.intention.AddAnnotationPsiFix;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.lang.injection.InjectedLanguageManager;
@@ -27,6 +28,10 @@ public class AddAnnotationFix extends AddAnnotationPsiFix implements IntentionAc
         super(fqn, modifierListOwner, values, annotationsToRemove);
     }
 
+    public boolean isAvailable(@NotNull Project project, PsiFile file) {
+        return isAvailable(project, null, file);
+    }
+
     @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
         if (InjectedLanguageManager.getInstance(project).isInjectedFragment(file)) {
@@ -36,13 +41,9 @@ public class AddAnnotationFix extends AddAnnotationPsiFix implements IntentionAc
         return isAvailable();
     }
 
-    public boolean isAvailable(@NotNull Project project, PsiFile file) {
-        return isAvailable(project, null, file);
-    }
-
     @Override
     public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
-        applyFix();
+        PostponedOperations.performLater(project, file, this::applyFix);
     }
 
     public void invoke() throws IncorrectOperationException {

@@ -1,5 +1,8 @@
 package com.blacknebula.testcherry.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.blacknebula.testcherry.testframework.TestFrameworkStrategy;
 import com.blacknebula.testcherry.util.BddUtil;
 import com.intellij.psi.PsiClass;
@@ -8,9 +11,6 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.impl.source.jsp.jspJava.JspClass;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.javadoc.PsiDocTag;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -39,19 +39,6 @@ public class TestClassImpl implements TestClass {
 
         // init a refactor to the current project
         findAndInitializeAllTestMethods(psiClass);
-    }
-
-
-    /**
-     * Static factory method.
-     * Effective Java item 1
-     *
-     * @param psiClass
-     * @param frameworkStrategy
-     * @return
-     */
-    static TestClassImpl newInstance(PsiClass psiClass, TestFrameworkStrategy frameworkStrategy) {
-        return new TestClassImpl(psiClass, frameworkStrategy);
     }
 
     /**
@@ -88,6 +75,18 @@ public class TestClassImpl implements TestClass {
         }
 
         this.testMethods = array;
+    }
+
+    /**
+     * Static factory method.
+     * Effective Java item 1
+     *
+     * @param psiClass
+     * @param frameworkStrategy
+     * @return
+     */
+    static TestClassImpl newInstance(PsiClass psiClass, TestFrameworkStrategy frameworkStrategy) {
+        return new TestClassImpl(psiClass, frameworkStrategy);
     }
 
     public List<TestMethod> getAllMethods() {

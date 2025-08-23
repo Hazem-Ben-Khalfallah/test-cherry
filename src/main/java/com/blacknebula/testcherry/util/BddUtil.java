@@ -1,5 +1,8 @@
 package com.blacknebula.testcherry.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
@@ -25,9 +28,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.intellij.ide.highlighter.JavaFileType.INSTANCE;
 
 /**
@@ -37,6 +37,40 @@ public final class BddUtil {
 
     private BddUtil() {
         throw new AssertionError();
+    }
+
+    /**
+     * Given a PsiElement it will return a PsiDocTag if it exists up in its hierarchy
+     *
+     * @param supposedPsiDocTagChild
+     * @return a parent @should PsiDocTag or null if no one found
+     */
+    public static PsiDocTag getPsiDocTagParent(@Nullable PsiElement supposedPsiDocTagChild) {
+
+
+        PsiElement startPsiElement = supposedPsiDocTagChild;
+
+        PsiDocTag shouldDocTag = null;
+        // TODO simplify to not iterate over the parents for completely uncompatible Psi hierarchy trees, only for PsiDocTag childs
+        do {
+
+            if (startPsiElement instanceof PsiDocTag) {
+                if (isValidShouldTag((PsiDocTag) startPsiElement)) {
+                    shouldDocTag = (PsiDocTag) startPsiElement;
+                }
+            }
+        } while (null != (startPsiElement = startPsiElement.getParent()));
+        return shouldDocTag;
+    }
+
+    /**
+     * This method test that a PsiDocTag has the name "should" and that its description isn't empty
+     *
+     * @param tag
+     * @return
+     */
+    public static boolean isValidShouldTag(PsiDocTag tag) {
+        return tag.getName().equals(Constants.BDD_TAG) && getShouldTagDescription(tag).length() > 0;
     }
 
     /**
@@ -62,40 +96,6 @@ public final class BddUtil {
 
         return description.toString().trim();
 
-    }
-
-    /**
-     * This method test that a PsiDocTag has the name "should" and that its description isn't empty
-     *
-     * @param tag
-     * @return
-     */
-    public static boolean isValidShouldTag(PsiDocTag tag) {
-        return tag.getName().equals(Constants.BDD_TAG) && getShouldTagDescription(tag).length() > 0;
-    }
-
-    /**
-     * Given a PsiElement it will return a PsiDocTag if it exists up in its hierarchy
-     *
-     * @param supposedPsiDocTagChild
-     * @return a parent @should PsiDocTag or null if no one found
-     */
-    public static PsiDocTag getPsiDocTagParent(@Nullable PsiElement supposedPsiDocTagChild) {
-
-
-        PsiElement startPsiElement = supposedPsiDocTagChild;
-
-        PsiDocTag shouldDocTag = null;
-        // TODO simplify to not iterate over the parents for completely uncompatible Psi hierarchy trees, only for PsiDocTag childs
-        do {
-
-            if (startPsiElement instanceof PsiDocTag) {
-                if (isValidShouldTag((PsiDocTag) startPsiElement)) {
-                    shouldDocTag = (PsiDocTag) startPsiElement;
-                }
-            }
-        } while (null != (startPsiElement = startPsiElement.getParent()));
-        return shouldDocTag;
     }
 
     public static PsiClass getParentEligibleForTestingPsiClass(PsiElement element) {

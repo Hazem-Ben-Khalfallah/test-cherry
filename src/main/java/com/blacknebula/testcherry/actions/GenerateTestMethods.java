@@ -1,5 +1,9 @@
 package com.blacknebula.testcherry.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.blacknebula.testcherry.TestCherryBundle;
 import com.blacknebula.testcherry.codeinsight.TestCherryConfigurable;
 import com.blacknebula.testcherry.codeinsight.generation.PsiDocAnnotationMember;
@@ -37,14 +41,12 @@ import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
@@ -63,18 +65,16 @@ public class GenerateTestMethods extends AnAction {
                 IconLoader.getIcon("/images/logo.png", GenerateTestMethods.class));
     }
 
-    @Nullable
-    private static PsiClass getSubjectClass(Editor editor, DataContext dataContext) {
-        PsiFile file = LangDataKeys.PSI_FILE.getData(dataContext);
-        if (file == null) return null;
-
-        int offset = editor.getCaretModel().getOffset();
-        PsiElement element = file.findElementAt(offset);
-
-        PsiClass parentPsiClass = BddUtil.getParentEligibleForTestingPsiClass(element);
-
-        return parentPsiClass;
-
+    @Override
+    public void update(AnActionEvent e) {
+        Presentation presentation = e.getPresentation();
+        DataContext dataContext = e.getDataContext();
+        Editor editor = getEditor(dataContext);
+        if (editor == null) {
+            presentation.setEnabled(false);
+        } else {
+            update(editor, presentation, dataContext);
+        }
     }
 
     /**
@@ -179,8 +179,7 @@ public class GenerateTestMethods extends AnAction {
 
 
                 for (ClassMember selectedElement : selectedElements) {
-                    if (selectedElement instanceof PsiDocAnnotationMember) {
-                        PsiDocAnnotationMember member = (PsiDocAnnotationMember) selectedElement;
+                    if (selectedElement instanceof PsiDocAnnotationMember member) {
                         methodsToCreate.add(member.getTestMethod());
                     }
                 }
@@ -270,25 +269,38 @@ public class GenerateTestMethods extends AnAction {
 
     }
 
-    public void update(Editor editor, Presentation presentation, DataContext dataContext) {
-        //  si no hay ninguna clase en el editor se deberia desactivar la accion
+    protected Editor getEditor(final DataContext dataContext) {
+        return PlatformDataKeys.EDITOR.getData(dataContext);
+    }
+
+    private void update(Editor editor, Presentation presentation, DataContext dataContext) {
+        // If there is no class in the editor, the action should be disabled.
         presentation.setEnabled(getSubjectClass(editor, dataContext) != null);
     }
 
-    @Override
-    public void update(AnActionEvent e) {
-        Presentation presentation = e.getPresentation();
-        DataContext dataContext = e.getDataContext();
-        Editor editor = getEditor(dataContext);
-        if (editor == null) {
-            presentation.setEnabled(false);
-        } else {
-            update(editor, presentation, dataContext);
-        }
+    @Nullable
+    private PsiClass getSubjectClass(Editor editor, DataContext dataContext) {
+        final var file = getCurrentFile(editor, dataContext);
+        if (file.isEmpty()) return null;
+
+        int offset = editor != null ? editor.getCaretModel().getOffset() : 0;
+        final var element = file.get().findElementAt(offset);
+        return BddUtil.getParentEligibleForTestingPsiClass(element);
     }
 
-    protected Editor getEditor(final DataContext dataContext) {
-        return PlatformDataKeys.EDITOR.getData(dataContext);
+    private Optional<PsiFile> getCurrentFile(Editor editor, DataContext dataContext) {
+        PsiFile file = null;
+        if (editor != null) {
+            Project project = editor.getProject();
+            if (project != null) {
+                var document = editor.getDocument();
+                file = PsiDocumentManager.getInstance(project).getPsiFile(document);
+            }
+        }
+        if (file == null) {
+            file = LangDataKeys.PSI_FILE.getData(dataContext);
+        }
+        return Optional.ofNullable(file);
     }
 
 }

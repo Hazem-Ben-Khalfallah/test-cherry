@@ -1,5 +1,7 @@
 package com.blacknebula.testcherry.refactor.listener;
 
+import java.util.ArrayList;
+
 import com.blacknebula.testcherry.model.TestClass;
 import com.blacknebula.testcherry.model.TestMethod;
 import com.blacknebula.testcherry.testframework.TestFrameworkStrategy;
@@ -9,8 +11,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.refactoring.listeners.RefactoringElementListener;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 /**
  * // TODO move this logic to TestMethod

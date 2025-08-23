@@ -38,13 +38,13 @@ public class JUnit4Strategy extends JUnitStrategyBase {
     }
 
     @Override
-    protected String getFrameworkBasePackage() {
-        return "org.junit";
+    protected String getAssertionClassSimpleName() {
+        return "Assert";
     }
 
     @Override
-    protected String getAssertionClassSimpleName() {
-        return "Assert";
+    protected String getFrameworkBasePackage() {
+        return "org.junit";
     }
 
 }

@@ -11,7 +11,7 @@ import com.intellij.psi.util.PsiUtil;
 import com.intellij.util.ArrayUtil;
 
 /**
- * Provee de soporte al IDe para reconocer nativamente el should tag
+ * Provides support to the IDe to natively recognize the Verifies tag
  * TODO consider the possibility to use its methods (getReference, ...) to provide renaming and referencing support
  *
  * @author jaime
@@ -34,12 +34,12 @@ public class VerifiesTagInfo implements JavadocTagInfo {
         return myName;
     }
 
-    public boolean isValidInContext(PsiElement element) {
-        return PsiUtil.getLanguageLevel(element).compareTo(myLanguageLevel) >= 0 && myContext.isInstance(element);
+    public boolean isInline() {
+        return myInline;
     }
 
-    public Object[] getPossibleValues(PsiElement context, PsiElement place, String prefix) {
-        return ArrayUtil.EMPTY_OBJECT_ARRAY;
+    public boolean isValidInContext(PsiElement element) {
+        return PsiUtil.getLanguageLevel(element).compareTo(myLanguageLevel) >= 0 && myContext.isInstance(element);
     }
 
     public String checkTagValue(PsiDocTagValue value) {
@@ -52,7 +52,7 @@ public class VerifiesTagInfo implements JavadocTagInfo {
         return null;
     }
 
-    public boolean isInline() {
-        return myInline;
+    public Object[] getPossibleValues(PsiElement context, PsiElement place, String prefix) {
+        return ArrayUtil.EMPTY_OBJECT_ARRAY;
     }
 }

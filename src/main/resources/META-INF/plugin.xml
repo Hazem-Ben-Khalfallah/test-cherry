@@ -10,7 +10,7 @@
 
     <!-- Upgrade this version to support newer version of intellij IDE
     please see: https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html#intellij-platform-based-products-of-recent-ide-versions-->
-    <idea-version since-build="230" until-build="241.*"/>
+    <idea-version since-build="250" until-build="252.*"/>
 
     <description><![CDATA[
     <b>About</b>
@@ -67,18 +67,12 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.java</depends>
 
-    <project-components>
-        <component>
-            <implementation-class>com.blacknebula.testcherry.model.TestCherrySettings</implementation-class>
-        </component>
-    </project-components>
-
     <actions>
         <action id="com.blacknebula.testcherry.actions.GenerateTestMethods"
                 class="com.blacknebula.testcherry.actions.GenerateTestMethods"
                 text="Generate Test Methods"
                 description="It generates BDD test methods for class">
-            <add-to-group group-id="ToolbarRunGroup" anchor="first"/>
+            <add-to-group group-id="MainToolbarRight" anchor="first"/>
         </action>
     </actions>
 
@@ -102,12 +96,13 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
         <!--for references with renaming support of PsiDocTag-->
         <!--*******************************************************-->
 
-        <psi.referenceContributor implementation="com.blacknebula.testcherry.util.ReferenceContributor"/>
+        <psi.referenceContributor implementation="com.blacknebula.testcherry.util.ReferenceContributor" language="JAVA"/>
+
         <!-- depending on a PsiElement type it suggest names (including the principal one) in the rename dialog-->
         <nameSuggestionProvider
                 implementation="com.blacknebula.testcherry.refactor.ShouldDescriptionNameSuggestionProvider"/>
 
-        <!-- rename element processor without support for inline renaming, TODO add support for inline renaming-->
+        <!-- rename element processor without support for inline renaming, -->
         <renamePsiElementProcessor
                 implementation="com.blacknebula.testcherry.refactor.ShouldTagsAwareRenameProcessor" order="first"/>
 

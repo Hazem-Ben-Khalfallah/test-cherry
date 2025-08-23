@@ -1,5 +1,7 @@
 package com.blacknebula.testcherry.refactor;
 
+import java.util.List;
+
 import com.blacknebula.testcherry.TestFrameworkNotConfigured;
 import com.blacknebula.testcherry.model.BDDCore;
 import com.blacknebula.testcherry.model.TestClass;
@@ -14,8 +16,6 @@ import com.intellij.psi.PsiReferenceProvider;
 import com.intellij.psi.javadoc.PsiDocTag;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 
 public class ShouldReferenceProvider extends PsiReferenceProvider {
@@ -34,11 +34,6 @@ public class ShouldReferenceProvider extends PsiReferenceProvider {
      */
     public static ShouldReferenceProvider getInstance() {
         return INSTANCE;
-    }
-
-    @Override
-    public boolean acceptsTarget(@NotNull PsiElement target) {
-        throw new UnsupportedOperationException();
     }
 
     @NotNull
@@ -84,5 +79,10 @@ public class ShouldReferenceProvider extends PsiReferenceProvider {
         } else {
             return NO_REFERENCES;
         }
+    }
+
+    @Override
+    public boolean acceptsTarget(@NotNull PsiElement target) {
+        throw new UnsupportedOperationException();
     }
 }

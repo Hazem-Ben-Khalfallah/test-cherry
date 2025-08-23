@@ -1,8 +1,8 @@
 package com.blacknebula.testcherry.testframework;
 
-import com.intellij.openapi.project.Project;
-
 import java.lang.reflect.InvocationTargetException;
+
+import com.intellij.openapi.project.Project;
 
 /**
  * Enum containing one element per supported framework, every entry should implement {@link TestFrameworkStrategy} and have at least one constructor

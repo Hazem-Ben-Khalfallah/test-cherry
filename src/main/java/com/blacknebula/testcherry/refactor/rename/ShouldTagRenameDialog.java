@@ -1,5 +1,7 @@
 package com.blacknebula.testcherry.refactor.rename;
 
+import java.util.List;
+
 import com.blacknebula.testcherry.TestFrameworkNotConfigured;
 import com.blacknebula.testcherry.model.BDDCore;
 import com.blacknebula.testcherry.model.TestClass;
@@ -24,8 +26,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 
 public class ShouldTagRenameDialog extends RenameDialog {
 
@@ -38,12 +38,6 @@ public class ShouldTagRenameDialog extends RenameDialog {
         super(project, psiElement, nameSuggestionContext, editor);
         this.shouldDocTag = shouldDocTag;
         this.testMethod = psiElement;
-    }
-
-    @Override
-    protected boolean areButtonsValid() {
-        //  should return true if there is actually something written
-        return !StringUtils.isEmpty(getNewName());
     }
 
     @Override
@@ -111,6 +105,11 @@ public class ShouldTagRenameDialog extends RenameDialog {
                 });
     }
 
+    @Override
+    protected boolean areButtonsValid() {
+        //  should return true if there is actually something written
+        return !StringUtils.isEmpty(getNewName());
+    }
 
     /**
      * It will change the contents of a PsiDocTag as this one

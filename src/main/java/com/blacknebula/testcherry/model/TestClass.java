@@ -1,9 +1,9 @@
 package com.blacknebula.testcherry.model;
 
+import java.util.List;
+
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
-
-import java.util.List;
 
 /**
  * User: Jaime Hablutzel

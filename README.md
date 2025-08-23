@@ -84,14 +84,23 @@ You can download the plugin "**testCherry**" directly from the IDE.
 <h2>How to test from source code</h2>
 
 * Clone repository
-* run ```gradlew runIde```
+* run 
+```bash
+gradlew runIde
+```
 
 
 <h2>How to build</h2>
 
-* run ```gradlew build```
+* run 
+```bash
+gradlew build
+```
 
 <h2>Change Notes</h2>
+
+**3.18**
+* Support build range `252.*`
 
 **3.17**
 * Support build range `242.*`
