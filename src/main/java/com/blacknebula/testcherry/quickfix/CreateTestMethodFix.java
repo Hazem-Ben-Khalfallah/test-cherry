@@ -31,7 +31,7 @@ public record CreateTestMethodFix(TestMethod testMethod) implements IntentionAct
         String testMethodName = testFrameworkStrategy.getExpectedNameForThisTestMethod(testMethod.getSutMethod().getName(), testMethod.getDescription());
         TestClass parent = tMethod.getParent();
         String candidateClassName = testFrameworkStrategy.getCandidateTestClassName(parent.getClassUnderTest());
-        return TestCherryBundle.message("plugin.testCherry.createtestmethod",
+        return TestCherryBundle.message("plugin.testCherry.create-test-method",
                 candidateClassName + "." + testMethodName + "()");
     }
 
@@ -71,7 +71,7 @@ public record CreateTestMethodFix(TestMethod testMethod) implements IntentionAct
     @NotNull
     @Override
     public String getFamilyName() {
-        return TestCherryBundle.message("plugin.testCherry.bdd.family");
+        return TestCherryBundle.message("plugin.testCherry.family");
     }
 
 

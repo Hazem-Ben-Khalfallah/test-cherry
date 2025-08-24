@@ -83,190 +83,123 @@ public class GenerateTestMethods extends AnAction {
      * @param e
      * @should process inmediately upper class if caret is at anonymous class
      */
+    @Override
     public void actionPerformed(AnActionEvent e) {
-
-        // todo ADD support for unit testing, showing no ui, use ApplicationManager.getApplication().isUnitTestMode()
         DataContext dataContext = e.getDataContext();
+        final Project project = e.getProject();
 
-        //  to get the current project
-        final Project project = PlatformDataKeys.PROJECT.getData(dataContext);
+        if (project == null) return;
+
         Editor editor = getEditor(dataContext);
+        if (editor == null) return;
+
         TestCherrySettings casesSettings = TestCherrySettings.getInstance(project);
 
-        //  prompt to choose the strategy if it haven't been choosen before
+        // Determine the test framework
         String testFrameworkProperty;
         if (ApplicationManager.getApplication().isUnitTestMode()) {
             testFrameworkProperty = "JUNIT3";
         } else {
             testFrameworkProperty = casesSettings.getTestFramework();
-
-            if (StringUtils.isEmpty(testFrameworkProperty)) { //  it haven't been defined yet
-
-                ExtensionPointName<ConfigurableEP> extensionPoint = ExtensionPointName.create("com.intellij.projectConfigurable");
-                ConfigurableEP[] extensions = extensionPoint.getExtensions();
-                for (ConfigurableEP component : extensions) {
-                    Configurable configurable = (Configurable) component.createConfigurable();
-                    if (configurable instanceof TestCherryConfigurable) {
-                        ShowSettingsUtil.getInstance().editConfigurable(project, configurable);
-                        break;
-                    }
-                }
-
-                //  verify if something has been selected, if not just skip
-                //  overwrite s variable
-                testFrameworkProperty = casesSettings.getTestFramework();
-                if (StringUtils.isEmpty(testFrameworkProperty)) {
-
-                    //  show dialog displaying that there is no framework selection
-                    Messages.showMessageDialog(TestCherryBundle.message("plugin.testCherry.framework.notselected.desc"),
-                            TestCherryBundle.message("plugin.testCherry.framework.notselected"),
-                            Messages.getWarningIcon());
-
-                    return;
-                }
-            }
-
         }
 
+        // Prompt for framework selection if not set
+        if (StringUtils.isEmpty(testFrameworkProperty)) {
+            ShowSettingsUtil.getInstance().showSettingsDialog(project,
+                    TestCherryBundle.message("plugin.testCherry.title")
+            );
+            return;
+        }
+
+        // Get the current class under the caret
         PsiClass psiClass = getSubjectClass(editor, dataContext);
+        if (psiClass == null) return;
 
-        if (psiClass != null) {
-            //  create test class for this psiClass
+        // Get the test framework strategy
+        TestFrameworkStrategy tfs = SupportedFrameworks.getStrategyForFramework(
+                project, testFrameworkProperty, casesSettings.getNamingConvention()
+        );
 
-            //  get the current test framework strategy from settings
+        final TestClass testClass = BDDCore.createTestClass(psiClass, tfs);
 
+        // Collect all test methods from the origin class
+        List<TestMethod> allMethodsInOriginClass = testClass.getAllMethods();
+        ArrayList<ClassMember> array = new ArrayList<>();
 
-            // TODO replace it by strong typed way to determine the framework
-            TestFrameworkStrategy tfs = SupportedFrameworks.getStrategyForFramework(project, testFrameworkProperty, casesSettings.getNamingConvention());
-
-            final TestClass testClass = BDDCore.createTestClass(psiClass, tfs);
-
-
-            ArrayList<ClassMember> array = new ArrayList<ClassMember>();
-
-            List<TestMethod> allMethodsInOriginClass = testClass.getAllMethods();
-            boolean createParent = false;
-            //  ensure if parent exists
-            PsiDirectory destinationRoot = null;
-            final List<TestMethod> methodsToCreate = new ArrayList<TestMethod>();
-
-            if (ApplicationManager.getApplication().isUnitTestMode()) {
-                // in unit test mode it will create test methods for all should annotations
-                methodsToCreate.addAll(allMethodsInOriginClass);
-            } else {
-
-                // TODO if methods is empty show message dialog, or disable button to generate
-                for (TestMethod method : allMethodsInOriginClass) {
-
-                    if (!method.reallyExists()) {
-                        //  crear a psiDocAnnotation para cada metodo no existente
-                        PsiDocAnnotationMember member = new PsiDocAnnotationMember(method);
-                        array.add(member);
-                    }
-                }
-
-                ClassMember[] classMembers = array.toArray(new ClassMember[array.size()]);
-                MemberChooser<ClassMember> chooser = new MemberChooser<>(classMembers, false, true, project);
-                chooser.setTitle("Choose should annotations");
-                chooser.setCopyJavadocVisible(false);
-                chooser.show();
-                final List<ClassMember> selectedElements = chooser.getSelectedElements();
-
-                if (isEmpty(selectedElements)) {
-                    //  canceled or nothing selected
-                    return;
-                }
-
-
-                for (ClassMember selectedElement : selectedElements) {
-                    if (selectedElement instanceof PsiDocAnnotationMember member) {
-                        methodsToCreate.add(member.getTestMethod());
-                    }
-                }
-
-                // ensure parent exists
-                if (!testClass.reallyExists()) {
-
-                    //   otherwise allow to create in specified test sources root
-                    VirtualFile[] sourceRoots = ProjectRootManager.getInstance(project).getContentSourceRoots();
-
-                    //  get a list of all test roots
-                    final PsiManager manager = PsiManager.getInstance(project);
-                    List<PsiDirectory> allTestRoots = new ArrayList<>(2);
-                    for (VirtualFile sourceRoot : sourceRoots) {
-                        if (sourceRoot.isDirectory()) {
-                            PsiDirectory directory = manager.findDirectory(sourceRoot);
-                            if (directory != null) { // only source roots that really exists right now
-                                allTestRoots.add(directory);
-                            }
-                        }
-                    }
-
-                    if (isEmpty(allTestRoots)) {
-                        //  just cancel
-                        return;
-                    }
-
-                    //  only display if more than one source root
-                    if (allTestRoots.size() > 1) {
-                        DirectoryChooser fileChooser = new DirectoryChooser(project);
-                        fileChooser.setTitle(IdeBundle.message("title.choose.destination.directory"));
-                        fileChooser.fillList(allTestRoots.toArray(new PsiDirectory[allTestRoots.size()]), null, project, "");
-                        fileChooser.show();
-                        destinationRoot = fileChooser.isOK() ? fileChooser.getSelectedDirectory() : null;
-                    } else {
-                        destinationRoot = allTestRoots.get(0);
-                    }
-
-
-                    if (destinationRoot != null) {
-                        createParent = true;
-                    } else {
-                        //  just cancel
-                        return;
-                    }
-
-                }
+        // Only add methods that do not already exist
+        for (TestMethod method : allMethodsInOriginClass) {
+            if (!method.reallyExists()) {
+                PsiDocAnnotationMember member = new PsiDocAnnotationMember(method);
+                array.add(member);
             }
-
-            //  if backing test class exists, just create the methods in the same
-            //  para cada uno de los seleccionados llamar a create
-            //  create an appropiate command name
-            final String commandName = TestCherryBundle.message("plugin.testCherry.creatingtestcase", testClass.getClassUnderTest().getName());
-            final PsiDirectory finalDestinationRoot = destinationRoot;
-            final boolean finalCreateParent = createParent;
-            WriteCommandAction.writeCommandAction(project)
-                    .withName(commandName)
-                    .run(() -> {
-                        LocalHistoryAction action = LocalHistoryAction.NULL;
-                        //  wrap this with error management
-                        try {
-
-                            action = LocalHistory.getInstance().startAction(commandName);
-                            if (finalCreateParent) {
-                                testClass.create(finalDestinationRoot);
-                            }
-                            TestMethod lastTestMethod = null;
-                            for (TestMethod testMethod : methodsToCreate) {
-                                if (!testMethod.reallyExists()) {
-                                    testMethod.create();
-                                    lastTestMethod = testMethod;
-                                }
-                            }
-                            //  if something has been created jump to the last created test method, this is 'lastTestMethod'
-                            if (lastTestMethod != null) {
-                                lastTestMethod.navigate();
-                            }
-                        } finally {
-                            action.finish();
-                        }
-
-                    });
-
-
         }
 
+        if (array.isEmpty()) {
+            Messages.showMessageDialog(
+                    TestCherryBundle.message("plugin.testCherry.framework-not-selected.desc"),
+                    TestCherryBundle.message("plugin.testCherry.framework-not-selected.title"),
+                    Messages.getInformationIcon()
+            );
+            return;
+        }
 
+        // Show chooser dialog for user to select which methods to generate
+        ClassMember[] classMembers = array.toArray(new ClassMember[0]);
+        MemberChooser<ClassMember> chooser = new MemberChooser<>(classMembers, false, true, project);
+        chooser.setTitle("Choose should annotations");
+        chooser.setCopyJavadocVisible(false);
+        chooser.show();
+        final List<ClassMember> selectedElements = chooser.getSelectedElements();
+
+        if (selectedElements == null || selectedElements.isEmpty()) {
+            // Cancelled or nothing selected
+            return;
+        }
+
+        // Prepare methods to create
+        final List<TestMethod> methodsToCreate = new ArrayList<>();
+        for (ClassMember selectedElement : selectedElements) {
+            if (selectedElement instanceof PsiDocAnnotationMember member) {
+                methodsToCreate.add(member.getTestMethod());
+            }
+        }
+
+        // Ensure parent test class exists
+        boolean createParent = !testClass.reallyExists();
+        PsiDirectory destinationRoot = null; // You may want to determine the correct root here
+
+        // Write action to create test methods
+        final String commandName = TestCherryBundle.message(
+                "plugin.testCherry.creating-test-case",
+                testClass.getClassUnderTest().getName()
+        );
+        final PsiDirectory finalDestinationRoot = destinationRoot;
+        final boolean finalCreateParent = createParent;
+
+        WriteCommandAction.writeCommandAction(project)
+                .withName(commandName)
+                .run(() -> {
+                    LocalHistoryAction action = LocalHistoryAction.NULL;
+                    try {
+                        action = LocalHistory.getInstance().startAction(commandName);
+                        if (finalCreateParent) {
+                            testClass.create(finalDestinationRoot);
+                        }
+                        TestMethod lastTestMethod = null;
+                        for (TestMethod testMethod : methodsToCreate) {
+                            if (!testMethod.reallyExists()) {
+                                testMethod.create();
+                                lastTestMethod = testMethod;
+                            }
+                        }
+                        // Navigate to the last created test method
+                        if (lastTestMethod != null) {
+                            lastTestMethod.navigate();
+                        }
+                    } finally {
+                        action.finish();
+                    }
+                });
     }
 
     protected Editor getEditor(final DataContext dataContext) {

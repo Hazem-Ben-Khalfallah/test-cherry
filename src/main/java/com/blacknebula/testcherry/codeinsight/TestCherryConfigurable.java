@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.blacknebula.testcherry.TestCherryBundle;
 import com.blacknebula.testcherry.model.TestCherrySettings;
 import com.blacknebula.testcherry.testframework.NamingConvention;
 import com.blacknebula.testcherry.testframework.SupportedFrameworks;
@@ -37,7 +38,7 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
     @Nls
     @Override
     public String getDisplayName() {
-        return "Test Cherry";
+        return TestCherryBundle.message("plugin.testCherry.title");
     }
 
     @Override
