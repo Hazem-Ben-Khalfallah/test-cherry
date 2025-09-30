@@ -269,7 +269,8 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
                 }
             }
             // default to first
-            return NamingConvention.values().length > 0 ? NamingConvention.values()[0] : null;
+            NamingConvention[] values = NamingConvention.values();
+            return values.length > 0 ? values[0] : null;
         }
 
         public JPanel getPanel() {
