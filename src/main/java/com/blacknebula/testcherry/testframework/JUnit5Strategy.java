@@ -47,7 +47,7 @@ public class JUnit5Strategy extends JUnitStrategyBase {
             }
         }
 
-        //  add the @Test annotation to the method0.
+        //  add the @Test annotation to the method.
         AddAnnotationFix fix = new AddAnnotationFix("org.junit.jupiter.api.Test", psiMethod);
         if (fix.isAvailable(psiMethod.getProject(), psiMethod.getContainingFile())) {
             PostponedOperations.performLater(psiMethod.getProject(), psiMethod.getContainingFile(), fix::invoke);
