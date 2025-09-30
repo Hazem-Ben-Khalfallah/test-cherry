@@ -2,8 +2,14 @@ package com.blacknebula.testcherry.testframework;
 
 import com.blacknebula.testcherry.util.BddUtil;
 import com.blacknebula.testcherry.util.PostponedOperations;
+import com.blacknebula.testcherry.util.CommentStringEscaper;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElementFactory;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiNameValuePair;
 import com.intellij.testIntegration.TestFramework;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,8 +33,10 @@ public class JUnit5Strategy extends JUnitStrategyBase {
 
         // Conditionally add the @DisplayName annotation based on constructor flag
         if (useDescriptiveName) {
-            String escapedDescription = testDescription.replace("\"", "\\\"");
-            String annotationText = String.format("@DisplayName(\"should %s\")", escapedDescription);
+            String displayNameRaw = "should " + (testDescription == null ? "" : testDescription);
+            // Build a safe constant expression for Java source (handles escaping and avoids raw "\\uXXXX" hazard)
+            String valueExpr = CommentStringEscaper.toJavaStringConstantExpression(displayNameRaw);
+            String annotationText = String.format("@DisplayName(%s)", valueExpr);
             PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(psiMethod.getProject());
             PsiAnnotation dummyAnnotation = elementFactory.createAnnotationFromText(annotationText, psiMethod);
             PsiNameValuePair[] nameValuePairs = dummyAnnotation.getParameterList().getAttributes();
@@ -39,7 +47,7 @@ public class JUnit5Strategy extends JUnitStrategyBase {
             }
         }
 
-        //  add the @Test annotation to the method
+        //  add the @Test annotation to the method0.
         AddAnnotationFix fix = new AddAnnotationFix("org.junit.jupiter.api.Test", psiMethod);
         if (fix.isAvailable(psiMethod.getProject(), psiMethod.getContainingFile())) {
             PostponedOperations.performLater(psiMethod.getProject(), psiMethod.getContainingFile(), fix::invoke);
