@@ -5,9 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.blacknebula.testcherry.TestCherryBundle;
 import com.blacknebula.testcherry.model.TestCherrySettings;
 import com.blacknebula.testcherry.testframework.NamingConvention;
 import com.blacknebula.testcherry.testframework.SupportedFrameworks;
+import com.blacknebula.testcherry.util.Constants;
 import com.intellij.openapi.options.BaseConfigurable;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
@@ -28,6 +30,7 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
 
 
     private static final String EMPTY_STRING = "";
+
     private final Project myProject;
     private MyComponent myComponent;
 
@@ -38,32 +41,33 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
 
     @Override
     public @NotNull String getId() {
-        return getDisplayName();  //To change body of implemented methods use File | Settings | File Templates.
+        return getDisplayName();
     }
 
     @Nls
     @Override
     public String getDisplayName() {
-        return "Test Cherry";
+        return TestCherryBundle.message("plugin.testCherry.title");
     }
 
     @Override
     public String getHelpTopic() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     public Runnable enableSearch(String option) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     public JComponent createComponent() {
         List<String> supportedFrameworkNames = new ArrayList<>();
-        supportedFrameworkNames.add("-");
+        supportedFrameworkNames.add(Constants.FRAMEWORK_PLACEHOLDER);
         SupportedFrameworks[] frameworks = SupportedFrameworks.values();
         for (SupportedFrameworks framework : frameworks) {
-            supportedFrameworkNames.add(framework.toString());
+            // Use enum name() consistently to avoid mismatches with toString()
+            supportedFrameworkNames.add(framework.name());
         }
 
         TestCherrySettings casesSettings = TestCherrySettings.getInstance(myProject);
@@ -125,8 +129,8 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
         TestCherrySettings casesSettings = TestCherrySettings.getInstance(myProject);
         //  persist currently selected test framework
         Object selectedItem = myComponent.comboBoxTestType.getSelectedItem();
-        String testFramework = selectedItem != null ? selectedItem.toString() : "-";
-        if (!testFramework.equals("-")) {
+        String testFramework = selectedItem != null ? selectedItem.toString() : Constants.FRAMEWORK_PLACEHOLDER;
+        if (!testFramework.equals(Constants.FRAMEWORK_PLACEHOLDER)) {
             casesSettings.setTestFramework(testFramework);
         } else {
             casesSettings.setTestFramework(EMPTY_STRING);
@@ -176,9 +180,11 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
 
     private void addNamingConventionOptions(TestCherrySettings casesSettings) {
         NamingConvention namingConvention = casesSettings.getNamingConvention();
-        if (namingConvention != null) {
-            myComponent.setSelectedNamingConvention(namingConvention);
+        if (namingConvention == null) {
+            // Default visually and logically to Camel Case when not set
+            namingConvention = NamingConvention.CAMEL_CASE_NAMING;
         }
+        myComponent.setSelectedNamingConvention(namingConvention);
     }
 
     @Override
@@ -191,7 +197,7 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
     private boolean isTestTypeModified(final TestCherrySettings casesSettings) {
         String currentTestTypeValue = (String) myComponent.comboBoxTestType.getSelectedItem();
         String savedTestTypeValue = casesSettings.getTestFramework();
-        if ("-".equals(currentTestTypeValue)) {
+        if (Constants.FRAMEWORK_PLACEHOLDER.equals(currentTestTypeValue)) {
             return !EMPTY_STRING.equals(savedTestTypeValue);
         } else {
             return currentTestTypeValue != null && !currentTestTypeValue.equals(savedTestTypeValue);
@@ -214,7 +220,7 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
     private static class MyComponent {
 
         private final JComboBox<String> comboBoxTestType = new ComboBox<>();
-        private final JCheckBox checkBoxUseDisplayName = new JCheckBox("Use description as display name");
+        private final JCheckBox checkBoxUseDisplayName = new JCheckBox(TestCherryBundle.message("plugin.testCherry.settings.useDisplayName"));
 
         private final Map<NamingConvention, JRadioButton> namingConventionRadios = new LinkedHashMap<>();
 
@@ -223,9 +229,9 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
         private MyComponent() {
             // Build naming convention radios
             JPanel namingConventionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+            ButtonGroup namingConventionGroup = new ButtonGroup();
             for (NamingConvention value : NamingConvention.values()) {
                 JRadioButton rb = new JRadioButton(value.toString());
-                ButtonGroup namingConventionGroup = new ButtonGroup();
                 namingConventionGroup.add(rb);
                 namingConventionRadios.put(value, rb);
                 namingConventionPanel.add(rb);
@@ -238,16 +244,15 @@ public class TestCherryConfigurable extends BaseConfigurable implements Searchab
 
             // Form with two groups (using TitledSeparator for compatibility)
             panel = FormBuilder.createFormBuilder()
-                    .addComponent(new TitledSeparator("Framework Settings"))
-                    .addLabeledComponent("Framework:", frameworkRow)
-                    .addComponent(new TitledSeparator("Generation Settings"))
-                    .addLabeledComponent("Naming convension:", namingConventionPanel)
+                    .addComponent(new TitledSeparator(TestCherryBundle.message("plugin.testCherry.settings.frameworkSection")))
+                    .addLabeledComponent(TestCherryBundle.message("plugin.testCherry.settings.frameworkLabel"), frameworkRow)
+                    .addComponent(new TitledSeparator(TestCherryBundle.message("plugin.testCherry.settings.generationSection")))
+                    .addLabeledComponent(TestCherryBundle.message("plugin.testCherry.settings.namingConventionLabel"), namingConventionPanel)
                     .getPanel();
         }
 
-        private MyComponent setTestingTypeModel(ComboBoxModel<String> model) {
+        private void setTestingTypeModel(ComboBoxModel<String> model) {
             comboBoxTestType.setModel(model);
-            return this;
         }
 
         private void setSelectedNamingConvention(NamingConvention convention) {

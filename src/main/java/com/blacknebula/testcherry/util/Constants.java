@@ -16,6 +16,9 @@ public final class Constants {
     public static final String BDD_TAG = "should";
     public static final String VERIFIES_DOC_TAG = "verifies";
 
+    @NonNls
+    public static final String FRAMEWORK_PLACEHOLDER = "-";
+
     private Constants() {
         throw new AssertionError();
     }

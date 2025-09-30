@@ -24,6 +24,8 @@ public final class TestCherrySettings implements PersistentStateComponent<TestCh
 
     public TestCherrySettings() {
         testFramework = "";
+        // Default to Camel Case naming when not previously set
+        namingConvention = NamingConvention.CAMEL_CASE_NAMING;
     }
 
     /**
@@ -67,6 +69,10 @@ public final class TestCherrySettings implements PersistentStateComponent<TestCh
     @Override
     public void loadState(@NotNull TestCherrySettings state) {
         XmlSerializerUtil.copyBean(state, this);
+        // Backward compatibility: if namingConvention was never set in older state, default it
+        if (this.namingConvention == null) {
+            this.namingConvention = NamingConvention.CAMEL_CASE_NAMING;
+        }
     }
 
 
