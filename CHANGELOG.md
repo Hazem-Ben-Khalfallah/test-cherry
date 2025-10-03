@@ -1,6 +1,13 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # IntelliJ Platform Plugin Template Changelog
+## [3.19]
+### Added
+- JUnit 5 `@DisplayName` support for generated tests
+### Changed
+- Revamp settings UI for clarity
+- Centralize constants
+
 ## [3.18]
 ### Changed
 - Support build range `252.*`
@@ -79,4 +86,4 @@
 ## [2.0]
 ### Changed
 - Add support to IntelliJ IDEA version **2020.3**
-- Reduce deprecated methods usage 
+- Reduce deprecated methods usage

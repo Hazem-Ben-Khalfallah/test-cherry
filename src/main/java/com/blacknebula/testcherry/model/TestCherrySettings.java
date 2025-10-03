@@ -7,6 +7,7 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.jetbrains.annotations.NotNull;
 
 @State(
         name = "TestCherrySettings",
@@ -18,9 +19,13 @@ public final class TestCherrySettings implements PersistentStateComponent<TestCh
 
     String testFramework;
     NamingConvention namingConvention;
+    // Whether to use JUnit 5 @DisplayName when available
+    boolean useDescriptiveName;
 
     public TestCherrySettings() {
         testFramework = "";
+        // Default to Camel Case naming when not previously set
+        namingConvention = NamingConvention.CAMEL_CASE_NAMING;
     }
 
     /**
@@ -47,12 +52,27 @@ public final class TestCherrySettings implements PersistentStateComponent<TestCh
         this.namingConvention = namingConvention;
     }
 
+    // Accessors for the checkbox option
+    public boolean isUseDescriptiveName() {
+        return useDescriptiveName;
+    }
+
+    public void setUseDescriptiveName(boolean useDescriptiveName) {
+        this.useDescriptiveName = useDescriptiveName;
+    }
+
+    @Override
     public TestCherrySettings getState() {
         return this;
     }
 
-    public void loadState(TestCherrySettings state) {
+    @Override
+    public void loadState(@NotNull TestCherrySettings state) {
         XmlSerializerUtil.copyBean(state, this);
+        // Backward compatibility: if namingConvention was never set in older state, default it
+        if (this.namingConvention == null) {
+            this.namingConvention = NamingConvention.CAMEL_CASE_NAMING;
+        }
     }
 
 

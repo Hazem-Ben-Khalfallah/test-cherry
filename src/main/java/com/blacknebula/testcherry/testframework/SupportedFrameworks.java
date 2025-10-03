@@ -1,8 +1,9 @@
 package com.blacknebula.testcherry.testframework;
 
-import java.lang.reflect.InvocationTargetException;
-
+import com.blacknebula.testcherry.model.TestCherrySettings;
 import com.intellij.openapi.project.Project;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Enum containing one element per supported framework, every entry should implement {@link TestFrameworkStrategy} and have at least one constructor
@@ -34,19 +35,21 @@ public enum SupportedFrameworks {
         try {
             SupportedFrameworks supportedFrameworks = SupportedFrameworks.valueOf(testFramework);
             try {
-                TestFrameworkStrategy testFrameworkStrategy = supportedFrameworks.clazz
+                if (supportedFrameworks == JUNIT5) {
+                    boolean useDisplayName = TestCherrySettings.getInstance(project).isUseDescriptiveName();
+                    return supportedFrameworks.clazz
+                            .getConstructor(Project.class, NamingConvention.class, boolean.class)
+                            .newInstance(project, namingConvention, useDisplayName);
+                }
+
+                return supportedFrameworks.clazz
                         .getConstructor(Project.class, NamingConvention.class)
                         .newInstance(project, namingConvention);
 
-                return testFrameworkStrategy;
-
-            } catch (NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
-                throw new RuntimeException(e);
-            } catch (InstantiationException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
+            } catch (NoSuchMethodException
+                     | InvocationTargetException
+                     | InstantiationException |
+                     IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
 
