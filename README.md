@@ -65,6 +65,8 @@ Auto-generated the test class and test method (using the plugin) and then tested
 ```
 Nothing more.
 
+> Since version 3.19 the plugin can generate JUnit 5 test methods decorated with `@DisplayName` (when using the JUnit 5 template). JUnit 4 style generation remains supported.
+
 <h2>How to install</h2>
 
 You can download the plugin "**testCherry**" directly from the IDE. 
@@ -98,6 +100,11 @@ gradlew build
 ```
 
 <h2>Change Notes</h2>
+
+**3.19**
+* Added JUnit 5 `@DisplayName` support for generated tests
+* Revamped settings UI for clarity
+* Minor internal restructure (centralized constants)
 
 **3.18**
 * Support build range `252.*`
