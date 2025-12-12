@@ -10,7 +10,7 @@
 
     <!-- Upgrade this version to support newer version of intellij IDE
     please see: https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html#intellij-platform-based-products-of-recent-ide-versions-->
-    <idea-version since-build="250" until-build="252.*"/>
+    <idea-version since-build="250" until-build="253.*"/>
 
     <description><![CDATA[
     <b>About</b>
