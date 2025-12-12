@@ -1,6 +1,10 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
 # IntelliJ Platform Plugin Template Changelog
+## [3.20]
+### Changed
+- Support build range `253.*`
+
 ## [3.19]
 ### Added
 - JUnit 5 `@DisplayName` support for generated tests
