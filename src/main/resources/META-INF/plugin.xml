@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.blacknebula.TestCherry</id>
     <name>TestCherry</name>
-    <version>3.19</version>
+    <version>3.20</version>
 
     <vendor email="benkhalfallahhazem@gmail.com"
             url="https://github.com/Hazem-Ben-Khalfallah/test-cherry">
@@ -34,6 +34,7 @@ It aims to make it easier to make TDD with a really cool and easy approach that 
 
     <change-notes><![CDATA[
         <ul>
+            <li><b>3.20</b>: Support 253.* version</b>
             <li><b>3.19</b>: Added JUnit 5 DisplayName support; revamped settings UI; centralized constants</li>
             <li><b>3.18</b>: Support 252.* version</b>
             <li><b>3.17</b>: Support 242.* version</b>
