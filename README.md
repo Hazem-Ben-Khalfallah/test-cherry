@@ -101,6 +101,9 @@ gradlew build
 
 <h2>Change Notes</h2>
 
+**3.20**
+* Support build range `253.*`
+
 **3.19**
 * Added JUnit 5 `@DisplayName` support for generated tests
 * Revamped settings UI for clarity
