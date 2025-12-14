@@ -4,7 +4,7 @@ plugins {
     // Java support
     id("java")
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.13.2"
+    id("org.jetbrains.intellij.platform") version "2.10.5"
 }
 
 group = properties("pluginGroup")
@@ -12,20 +12,37 @@ version = properties("pluginVersion")
 
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(properties("javaVersion").toInt()))
+    }
 }
 
 dependencies {
     testImplementation("junit:junit:4.13.2")
     implementation("org.jetbrains:annotations:24.0.1")
-}
-
-// Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-intellij {
-    pluginName.set(properties("pluginName"))
-    version.set(properties("platformVersion"))
-    type.set(properties("platformType"))
-    // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
-    plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
+    
+    intellijPlatform {
+        val platformType = properties("platformType")
+        val platformVersion = properties("platformVersion")
+        val platformPlugins = properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty)
+        
+        // For 2025.3+, use intellijIdea() instead of intellijIdeaCommunity()
+        when (platformType) {
+            "IC" -> intellijIdea(platformVersion)
+            "IU" -> intellijIdeaUltimate(platformVersion)
+            else -> intellijIdea(platformVersion)
+        }
+        
+        if (platformPlugins.isNotEmpty()) {
+            bundledPlugins(*platformPlugins.toTypedArray())
+        }
+    }
 }
 
 tasks {
@@ -34,9 +51,9 @@ tasks {
     }
 
     patchPluginXml {
-        version.set(properties("pluginVersion"))
-        sinceBuild.set(properties("pluginSinceBuild"))
-        untilBuild.set(properties("pluginUntilBuild"))
+        version = properties("pluginVersion")
+        sinceBuild = properties("pluginSinceBuild")
+        untilBuild = properties("pluginUntilBuild")
     }
 
     buildSearchableOptions {
